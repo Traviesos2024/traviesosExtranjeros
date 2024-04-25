@@ -57,9 +57,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     eventsFav: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }], // array de películas fav
-    experincesFav: [
+    experiencesFav: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Experience" },
     ],
+
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // array de usuarios que le sigues
     followed: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // arrays de usuarios que sigue
     chats: [

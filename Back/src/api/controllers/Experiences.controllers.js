@@ -91,7 +91,9 @@ const toggleLikeExperience = async (req, res, next) => {
           return res.status(200).json({
             action: "like",
             user: await User.findById(_id).populate("experiencesFav"),
-            movie: await Experience.findById(idExperience).populate("likes"),
+            experience: await Experience.findById(idExperience).populate(
+              "likes"
+            ),
           });
         } catch (error) {
           return res.status(404).json({
