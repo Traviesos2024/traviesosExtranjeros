@@ -1,47 +1,76 @@
-/// Nos traemos las importaciones y configuramos dotenv
 const express = require("express");
-const nodemailer = require("nodemailer");
 const dotenv = require("dotenv");
+const { connect } = require("./src/utils/db");
+const cors = require("cors");
+// creamos el servidor web
+const app = express();
+
+// vamos a configurar dotenv para poder utilizar las variables d entorno del .env
 dotenv.config();
 
-// ----- NOS TRAEMOS EL PUERTO DEL .ENV
+//! ------------conectamos con la base de datos----------------
+
+connect();
+
+//!- ------------------- CONFIGURAR cloudinary ----------------
+
+//Traemos cloudinary y la llamamos para utilizarla
+const { configCloudinary } = require("./src/middleware/files.middleware");
+configCloudinary();
+
+//! -----------------VARIABLES CONSTANTES --> PORT
+
 const PORT = process.env.PORT;
 
-// ----- CONFIGURAMOS EN NUEVO SERVIDOR WEB---
-const server = express();
+//!- ----------------CORS -------------------------------
 
-//-------CONFIGURAMOS EL ROUTER DE EXPRESS PARA PROBAR NODEMAILER ------
-const router = express.Router();
+// libreria para configurar el acceso a la appi, hay que traer la librería (lo tengo en la línea 3)
+app.use(cors()); // Para utilizar la librería
 
-router.get("/sendNewMail", (req, res, next) => {
-  const email = process.env.EMAIL;
-  const password = process.env.PASSWORD;
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: email,
-      pass: password,
-    },
-  });
+//! ----------------limitaciones de cantidad en el back end -
 
-  const mailOptions = {
-    from: email,
-    to: "traviesosextranjeros@gmail.com",
-    subject: "Confirmation TEST NODEMAILER",
-    text: `ok todo bien`,
-  };
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return next(error);
-    } else {
-      return res.status(200).json("Email sent: " + info.response);
-    }
-  });
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ limit: "5mb", extended: false }));
+
+//! -----------------ROUTAS ---------------------------------
+
+const UserRoutes = require("./src/api/routes/User.routes");
+app.use("/api/v1/users/", UserRoutes);
+
+/*const AdminRoutes = require("./src/api/routes/Admin.routes");
+app.use("/api/v1/admin/", AdminRoutes);
+
+const MessageRoutes = require("./src/api/routes/Message.routes");
+app.use("/api/v1/messages/", MessageRoutes);
+
+const ExperienceRoutes = require("./src/api/routes/Experience.routes");
+app.use("/api/v1/experience/", ExperienceRoutes);
+
+const EventRoutes = require("./src/api/routes/Event.routes");
+app.use("/api/v1/eventos/", EventRoutes); */
+
+//! --------------- generamos un error de cuando no see encuentre la ruta-
+
+app.use("*", (req, res, next) => {
+  const error = new Error("Route not found");
+  error.status = 404;
+  return next(error);
 });
 
-server.use("/", router);
+//! ------------------> cuando el servidor crachea metemos un 500 ----------
 
-// ---- PONEMOS A ESCUCHAR EL SERVIDOR EN EL PUERTO 8080
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}/`);
+// ----- en este caso como gestionamos un error la callback lleva de parametros error, req, res
+// cuando es un controlador normal llevaria siempre como para parametros REQ, RES, NEXT ---> en este orden siemppre
+app.use((error, req, res) => {
+  return res
+    .status(error.status || 500)
+    .json(error.message || "unexpected error");
 });
+
+//! ----------------ESCUCHAMOS EN EL PUERTO EL SERVIDOR WEB
+
+// esto de aqui  nos revela con que tecnologia esta hecho nuestro back
+app.disable("x-powered-by");
+app.listen(PORT, () =>
+  console.log(`Server listening on port 👌🔍 http://localhost:${PORT}`)
+);

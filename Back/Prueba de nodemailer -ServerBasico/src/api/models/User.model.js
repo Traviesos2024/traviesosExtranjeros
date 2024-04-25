@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema(
       unique: true,
     },
     age: {
-      type: number,
+      type: Number,
       required: true,
       trim: true,
     },
