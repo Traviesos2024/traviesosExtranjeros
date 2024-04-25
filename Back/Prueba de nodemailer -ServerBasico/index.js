@@ -24,7 +24,7 @@ const PORT = process.env.PORT;
 
 //!- ----------------CORS -------------------------------
 
-// libreria para configurar el acceso a la appi, hay que traer la librería (lo tengo en la línea 3)
+// libreria para configurar el acceso a la api, hay que traer la librería (lo tengo en la línea 3)
 app.use(cors()); // Para utilizar la librería
 
 //! ----------------limitaciones de cantidad en el back end -
@@ -37,14 +37,16 @@ app.use(express.urlencoded({ limit: "5mb", extended: false }));
 const UserRoutes = require("./src/api/routes/User.routes");
 app.use("/api/v1/users/", UserRoutes);
 
+const ExperienceRoutes = require("./src/api/routes/Experience.routes");
+app.use("/api/v1/experience/", ExperienceRoutes);
+
 /*const AdminRoutes = require("./src/api/routes/Admin.routes");
 app.use("/api/v1/admin/", AdminRoutes);
 
 const MessageRoutes = require("./src/api/routes/Message.routes");
 app.use("/api/v1/messages/", MessageRoutes);
 
-const ExperienceRoutes = require("./src/api/routes/Experience.routes");
-app.use("/api/v1/experience/", ExperienceRoutes);
+
 
 const EventRoutes = require("./src/api/routes/Event.routes");
 app.use("/api/v1/eventos/", EventRoutes); */
