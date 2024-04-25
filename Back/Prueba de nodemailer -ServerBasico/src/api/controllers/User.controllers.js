@@ -704,6 +704,176 @@ const update = async (req, res, next) => {
     return next(error);
   }
 };
+//! -----------------------------------------------------------------------------
+//? ---------------------------------findById------------------------------------
+//! -----------------------------------------------------------------------------
+
+const byId = async (req, res, next) => {
+  try {
+    /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
+    El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
+    const userById = await User.findById(req.params.id);
+    if (userById) {
+      // comprobamos si existe
+      return res.status(200).json(userById); // mandamos un json con el objeto
+    } else {
+      // si no lo ha encontrado
+      return res.status(404).json("usuario no encontrado"); // mandamos usuario no encontrado
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ---------------------------------getAll--------------------------------------
+//! -----------------------------------------------------------------------------
+
+const getAll = async (req, res, next) => {
+  try {
+    // creamos una constante, apuntamos al modelo y hacemos un find. Esto devuelve un array
+    const getAllUser = await User.find();
+    if (getAllUser.length === 0) {
+      // comprobamos si el getAll ha encontrado alguno, si no tiene ninguno, retornamos no encontrados
+      return res.status(404).json("no encontrados");
+    } else return res.status(200).json({ data: getAllUser });
+  } catch (error) {
+    return next(error);
+  }
+};
+//! -----------------------------------------------------------------------------
+//? ---------------------------------get By name---------------------------------
+//! -----------------------------------------------------------------------------
+
+const byName = async (req, res, next) => {
+  try {
+    /* creamos una constante, apuntamos al modelo y hacemos un findOne para buscar uno y lo vamos a hacer por name. 
+    El name lo encontramos diciendo en la clave que quiero que busque y con req.params y la clave .name buscaré el 
+    nombre exacto.*/
+    const getNameUser = await User.findOne({ name: req.params.name });
+    if (getNameUser) {
+      return res.status(200).json(getNameUser);
+    } else {
+      return res.status(404).json("usuario no encontrado");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ---------------------------------get By Gender----------------------
+//! -----------------------------------------------------------------------------
+
+const byGender = async (req, res, next) => {
+  try {
+    const getGenderUser = await User.find({
+      gender: req.params.gender,
+    });
+    if (getGenderUser) {
+      return res.status(200).json(getGenderUser);
+    } else {
+      return res.status(404).json("usuario no encontrado");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+//! -----------------------------------------------------------------------------
+//? ---------------------------------FOLLOW USER--------------------------------------
+//! -----------------------------------------------------------------------------
+
+const followUserToggle = async (req, res, next) => {
+  try {
+    const { idUserSeQuiereSeguir } = req.params;
+    const { followed } = req.user; // busco en el arrray de seguidores si le sigo o no este usuario
+
+    if (followed.includes(idUserSeQuiereSeguir)) {
+      // si los que sigo esta el id del que quiero seguir lo saco del array
+      //! si lo incluye, quiere decir lo sigo por lo que lo dejo de seguir
+      try {
+        // 1) como lo quiero dejar de seguir quito su id del array de los que me siguen
+
+        await User.findByIdAndUpdate(req.user._id, {
+          $pull: {
+            followed: idUserSeQuiereSeguir,
+          },
+        });
+        try {
+          // 2) del user que dejo de seguir me tengo que quitar de sus seguidores
+
+          await User.findByIdAndUpdate(idUserSeQuiereSeguir, {
+            $pull: {
+              followers: req.user._id,
+            },
+          });
+
+          return res.status(200).json({
+            action: "he dejado de seguirlo",
+            authUser: await User.findById(req.user._id),
+            userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error:
+              "error catch update quien le sigue al user que recibo por el param",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error:
+            "error catch update borrar de seguidor el id que recibo por el param",
+          message: error.message,
+        });
+      }
+    } else {
+      //! si no lo tengo como que lo sigo, lo empiezo a seguir
+
+      try {
+        // 1) como lo quiero dejar de seguir quito su id del array de los que me siguen
+
+        await User.findByIdAndUpdate(req.user._id, {
+          $push: {
+            followed: idUserSeQuiereSeguir,
+          },
+        });
+        try {
+          // 2) del user que dejo de seguir me tengo que quitar de sus seguidores
+
+          await User.findByIdAndUpdate(idUserSeQuiereSeguir, {
+            $push: {
+              followers: req.user._id,
+            },
+          });
+
+          return res.status(200).json({
+            action: "Lo empiezo a seguir de seguirlo",
+            authUser: await User.findById(req.user._id),
+            userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error:
+              "error catch update quien le sigue al user que recibo por el param",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error:
+            "error catch update poner de seguidor el id que recibo por el param",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "error catch general",
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   registerUtil,
@@ -717,11 +887,11 @@ module.exports = {
   sendPassword,
   modifyPassword,
   update,
-  /*deleteUser,
   getAll,
   byId,
   byName,
   byGender,
-  deleteMessageDeleteUser,
-  followUserToggle, */
+  followUserToggle,
+  /*deleteMessageDeleteUser,
+  deleteUser,*/
 };

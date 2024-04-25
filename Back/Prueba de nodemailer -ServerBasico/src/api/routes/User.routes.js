@@ -13,6 +13,11 @@ const {
   sendPassword,
   modifyPassword,
   update,
+  getAll,
+  byId,
+  byName,
+  byGender,
+  followUserToggle,
 } = require("../controllers/User.controllers");
 const { upload } = require("../../middleware/files.middleware");
 const { isAuth, isAuthAdmin } = require("../../middleware/auth.middleware");
@@ -29,12 +34,12 @@ UserRoutes.post("/login/autologin", autoLogin);
 UserRoutes.patch("/forgotpassword", changePassword);
 UserRoutes.patch("/changepassword", [isAuth], modifyPassword);
 UserRoutes.patch("/update/update", [isAuth], upload.single("image"), update);
-/*UserRoutes.delete("/", [isAuth], deleteUser);
 UserRoutes.get("/", getAll);
 UserRoutes.get("/finById/:id", byId);
 UserRoutes.get("/finByName/:name", byName);
-UserRoutes.get("/finByGender/:gender/:name", byGender);
-UserRoutes.patch("/follow/:idUserSeQuiereSeguir", [isAuth], followUserToggle); */
+UserRoutes.get("/finByGender/:gender", byGender);
+UserRoutes.patch("/follow/:idUserSeQuiereSeguir", [isAuth], followUserToggle);
+/*UserRoutes.delete("/", [isAuth], deleteUser);*/
 //!------------------------------------------------------------------------
 //?--------------------------------RUTAS CON REDIRECT----------------------
 //!------------------------------------------------------------------------
