@@ -7,45 +7,6 @@ const User = require("../models/User.model");
 //*const Country= require("../models/Country.model");
 
 //! -------------create new event ----------------
-const createEvent = async (req, res, next) => {
-  try {
-    await Event.syncIndexes();
-
-    // Crear una nueva instancia de Event con los datos proporcionados en el cuerpo de la solicitud
-    const customBody = {
-      name: req.body?.name,
-      description: req.body?.description,
-      image: req.file?.path, // Suponiendo que req.file contiene la información del archivo subido
-    };
-    const newExperience = new Event(customBody);
-    const savedEvent = await newExperience.save();
-    
-    // Obtener el ID del evento creado
-    const idEvent = savedEvent._id;
-
-    // Verificar si el usuario está autenticado
-    if (!req.user) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
-    }
-
-    // Actualizar la clave ExperienceOwner del usuario con el ID del evento
-    const userId = req.user._id;
-    await User.findByIdAndUpdate(userId, { $push: { eventsOwner: idEvent } });
-
-    // Devolver el usuario actualizado
-    const updatedUser = await User.findById(userId).populate("eventsOwner");
-
-    // Redirigir a la página de confirmación de registro
-    return res.status(200).json({
-      action: "update",
-      user: updatedUser,
-    });
-  } catch (error) {
-    // Manejar errores
-    console.error("Error:", error);
-    return res.status(500).json({ error: "Error interno del servidor" });
-  }
-};
 
 // const createEvent = async (req, res, next) => {
 //   try {
@@ -96,147 +57,78 @@ const createEvent = async (req, res, next) => {
 //   }
 // };
 
-// const customBody = req.body; // Supongo que customBody es el cuerpo de la solicitud que contiene la información del evento
-// const newExperience = new Event(customBody); // Crear una nueva instancia de Event con el cuerpo personalizado
-
-// // Guardar el evento en la base de datos y esperar a que se complete la operación
-// newExperience.save()
-//   .then(savedEvent => {
-//     // Obtener el ID del evento creado
-//     const idEvent = savedEvent._id;
-
-//     // Si hay una imagen cargada en la solicitud
-//     if (req.file) {
-//       const imageUrl = req.file.path; // Obtener la URL de la imagen cargada (supongo que estás usando multer para cargar archivos)
-      
-//       // Actualizar el documento del evento con la nueva URL de la imagen
-//       Event.findOneAndUpdate(
-//         { _id: idEvent }, // Filtra el documento por su ID
-//         { $set: { image: imageUrl } }, // Actualiza el campo de imagen con la nueva URL
-//         { new: true } // Opciones: devuelve el documento actualizado
-//       )
-//       .then(updatedEvent => {
-//         // El evento ha sido actualizado con la nueva URL de la imagen
-//         console.log("Evento actualizado:", updatedEvent);
-//       })
-//       .catch(error => {
-//         // Maneja cualquier error que pueda ocurrir durante la actualización
-//         console.error("Error al actualizar el evento:", error);
-//         return res.status(500).json({ error: "Error al actualizar el evento" });
-//       });
-//     }
-
-//     // Si no hay imagen cargada en la solicitud, no es necesario actualizar el evento
-//     // Esto se asume porque la actualización de la imagen está condicionada a la existencia de un archivo adjunto en la solicitud
-
-//     // Verifica si el usuario existe (no está claro de dónde proviene userExist en tu código)
-//     if (!userExist) {
-//       // Crea un nuevo usuario con el req.body y le añade el código de confirmación
-//       const newUser = new User({ ...req.body, confirmationCode });
-
-//       if (req.file) {
-//         newUser.image = req.file.path;
-//       } else {
-//         // Si no se proporciona ninguna imagen, se asigna una imagen predefinida
-//         newUser.image = "https://pic.onlinewebfonts.com/svg/img_181369.png";
-//       }
-
-//       // Guarda el usuario en la base de datos
-//       newUser.save()
-//         .then(userSave => {
-//           // Redirige a la página de confirmación de registro
-//           return res.redirect(
-//             303,
-//             `http://localhost:8080/api/v1/users/register/sendMail/${userSave._id}`
-//           );
-//         })
-//         .catch(error => {
-//           // Maneja cualquier error que pueda ocurrir durante el guardado del usuario
-//           console.error("Error al guardar el usuario:", error);
-//           return res.status(500).json({ error: "Error al guardar el usuario" });
-//         });
-//     }
-//   })
-//   .catch(error => {
-//     // Maneja cualquier error que pueda ocurrir durante el guardado del evento
-//     console.error("Error al guardar el evento:", error);
-//     return res.status(500).json({ error: "Error al guardar el evento" });
-//   });
 // /*//? -------------------------------POST create --------------------------
-// const createEvent = async (req, res, next) => {
-/// *Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
-//   //*si hay un error en el controlador, una vez dentro, el elemento no se crea y por ende
-//   //*tenmos que borrar la imagen en cloudinary */
+const createEvent = async (req, res, next) => {
+  //*Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
+  //*si hay un error en el controlador, una vez dentro, el elemento no se crea y por ende
+  //*tenmos que borrar la imagen en cloudinary */
 
-//   //** El optional chaining se pone porque la imagen no es obligatoria por lo cual
-//   //* puede ser que no tengamos req.file.path
+  //** El optional chaining se pone porque la imagen no es obligatoria por lo cual
+  //* puede ser que no tengamos req.file.path
+  let catchImg = req.file?.path;
 
-//   let catchImg = req.file?.path;
-//   try {
-//     //! -----> ACTUALIZAR INDEXES
-//     /** los indexes se forman cuando una clave del objeto es unique, se puede ver en la
-//      * parte de mongo que esta al lado de find
-//      *
-//      * Esto es importante porque puede que haya modificado el modelo posteriormente a la
-//      * creacion del controlador
-//      */
+  try {
+    //! -----> ACTUALIZAR INDEXES
+    /** los indexes se forman cuando una clave del objeto es unique, se puede ver en la
+     * parte de mongo que esta al lado de find
+     *
+     * Esto es importante porque puede que haya modificado el modelo posteriormente a la
+     * creacion del controlador
+     */
 
-//     await Event.syncIndexes();
-//     //! ------> INSTANCIAR UN NUEVO CHARACTER
-//     /** vamos a instanciar un nuevo character y le metemos como info incial lo que recibimos
-//      * por la req.body
-//      */
-//     const newEvent = new Event(...req.body);
-//      console.log.(newEvent)
+    await Event.syncIndexes();
+    //! ------> INSTANCIAR UN NUEVO CHARACTER
+    /** vamos a instanciar un nuevo character y le metemos como info incial lo que recibimos
+     * por la req.body
+     */
+    const newEvent = new Event(req.body);
 
-//     //! -------> VALORAR SI HEMOS RECIBIDO UNA IMAGEN O NO
-//     /** Si recibimos la imagen tenemos que meter la url en el objeto creado arriba con la
-//      * nueva instancia del Character
-//      */
+    //! -------> VALORAR SI HEMOS RECIBIDO UNA IMAGEN O NO
+    /** Si recibimos la imagen tenemos que meter la url en el objeto creado arriba con la
+     * nueva instancia del Character
+     */
 
-//     if (req.file) {
-//       newEvent.image = req.file.path; /// aqui habia un cathImage;
-//     } else {
-//       newEvent.image =
-//         "https://res.cloudinary.com/dyl5cabrr/image/upload/v1714138030/ac5016f6-7afd-43f8-9d87-f38c82e5a9f1_16-9-discover-aspect-ratio_default_0_gkuvqg.jpg";
-//     }
+    if (req.file) {
+      newEvent.image = catchImg;
+    } else {
+      newEvent.image =
+        "https://res.cloudinary.com/dyl5cabrr/image/upload/v1714138030/ac5016f6-7afd-43f8-9d87-f38c82e5a9f1_16-9-discover-aspect-ratio_default_0_gkuvqg.jpg";
+    }
 
-//     try {
-//       //! ------------> VAMOS A GUARDAR LA INSTANCIA DEL NUEVO EVENTO
-//       const saveEvent = await newEvent.save();
-//       if (saveEvent) {
-//         /** Si existe vamos a enviar un 200 como que todo esta ok y le enviamos con un json
-//          * el objeto creado
-//          */
+    try {
+      //! ------------> VAMOS A GUARDAR LA INSTANCIA DEL NUEVO EVENTO
+      const saveEvent = await newEvent.save();
+      if (saveEvent) {
+        /** Si existe vamos a enviar un 200 como que todo esta ok y le enviamos con un json
+         * el objeto creado
+         */
 
-//         return res.status(200).json(saveEvent);
-//       } catch (error) {
- //            return res.status(404).json(error.message);} 
-//         } else {
-//         return res
-//           .status(404)
-//           .json("No se ha podido guardar el elemento en la DB ❌");
-//       }
-//     } catch (error) {
-//       return res.status(404).json("error general saved event");
-//     }
-//   } catch (error) {
-//     //! -----> solo entramos aqui en el catch cuando ha habido un error
-//     /** SI HA HABIDO UN ERROR -----
-//      * Tenemos que borrar la imagen en cloudinary porque se sube antes de que nos metamos en
-//      * el controlador---> porque es un middleware que esta entre la peticion del cliente y el controlador
-//      */
+        return res.status(200).json(saveEvent);
+      } else {
+        return res
+          .status(404)
+          .json("No se ha podido guardar el elemento en la DB ❌");
+      }
+    } catch (error) {
+      return res.status(404).json("error general saved event");
+    }
+  } catch (error) {
+    //! -----> solo entramos aqui en el catch cuando ha habido un error
+    /** SI HA HABIDO UN ERROR -----
+     * Tenemos que borrar la imagen en cloudinary porque se sube antes de que nos metamos en
+     * el controlador---> porque es un middleware que esta entre la peticion del cliente y el controlador
+     */
 
-//     req.file?.path && deleteImgCloudinary(catchImg);
+    req.file?.path && deleteImgCloudinary(catchImg);
 
-//     return (
-//       res.status(404).json({
-//         messege: "error en el creado del elemento",
-//         error: error.message,
-//       }) && next(error)
-//     );
-//   }
-// };
+    return (
+      res.status(404).json({
+        messege: "error en el creado del elemento",
+        error: error.message,
+      }) && next(error)
+    );
+  }
+};
 
 //? -------------------------------get by category--------------------------
 
