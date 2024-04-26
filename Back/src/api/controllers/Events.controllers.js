@@ -110,6 +110,7 @@ const createEvent = async (req, res, next) => {
           .json("No se ha podido guardar el elemento en la DB ❌");
       }
     } catch (error) {
+      console.log(error.message);
       return res.status(404).json("error general saved event");
     }
   } catch (error) {

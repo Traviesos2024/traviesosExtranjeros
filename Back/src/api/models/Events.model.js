@@ -16,23 +16,20 @@ const EventSchema = new Schema(
     name: { type: String, required: false, unique: false },
     category: {
       type: String,
-      enum: ["deportes", "música", "gastronomía", "otros"],
-      required: false,
+      enum: ["deportes", "musica", "gastronomia", "otros"],
     },
-    // image: {
-    //   type: String,
-    //   // required: false,
-    // },
+    image: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }],
     experience: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],
     likeEvent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     eventFollow: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     cities: [{ type: mongoose.Schema.Types.ObjectId, ref: "City" }],
-    image: {
-      data: Buffer,
-      contentType: String
-    },
-  }, //*countries?//
+  },
   {
     timestamps: true,
   }
