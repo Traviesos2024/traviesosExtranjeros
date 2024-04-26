@@ -25,15 +25,13 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
     city: {
-      type: String,
+      type: String, //-->crear objeto, hace referncia al objeto de la ciudad que hemos creado
       required: true,
       trim: true,
     },
-    country: {
+    country: {//se pone el id de la ciudad
       type: String,
-      enum: ["Alemania", "Inglaterra", "Portugal"],
       required: true,
-      trim: true,
     },
     password: {
       type: String,
