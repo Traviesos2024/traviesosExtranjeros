@@ -113,15 +113,15 @@ const toggleLikeExperience = async (req, res, next) => {
   }
 };
 
-//! -------------add/delete user que ha hecho la experience ----------------
+//! -------------add/delete event que ha hecho la experience ----------------
 
-const toggleUser = async (req, res, next) => {
+const toggleEvent = async (req, res, next) => {
   try {
     /** este es el id de la experiencia que queremos actualizar */
     const { idExperience } = req.params;
     //req.body; No sé si el user va por el req.user o se metería por el body
-    const { _id } = req.user; // -----> idDeLosUser, tienes que estar logado para añadirte como que la has hecho
-    const { users } = req.body;
+    //! const { _id } = req.user; // -----> idDeLosUser, tienes que estar logado para añadirte como que la has hecho
+    const { events } = req.body;
 
     /** Buscamos la experiencia por su id primero para saber si existe */
     const experienceById = await Experience.findById(idExperience);
@@ -132,19 +132,19 @@ const toggleUser = async (req, res, next) => {
        * se hace mediante el metodo del split
        */
 
-      //const arrayIdUser = _id.split(",");
-      const arrayIdUser = users.split(",");
+      //!const arrayIdUser = _id.split(",");
+      const arrayIdEvent = events.split(",");
 
-      /** recorremos este array que hemos creado y vemos si tenemos quee:
-       * 1) ----> sacar eel user si ya lo tenemos en el back
+      /** recorremos este array que hemos creado y vemos si tenemos que:
+       * 1) ----> sacar el user si ya lo tenemos en el back
        * 2) ----> meterlo en caso de que no lo tengamos metido en el back
        */
 
       Promise.all(
-        arrayIdUser.map(async (users, index) => {
-          if (experienceById.users.includes(users)) {
-            // arrayIdUser.map(async (_id, index) => {
-            // if (experienceById._id.includes(_id)) {
+        arrayIdEvent.map(async (event, index) => {
+          if (experienceById.events.includes(event)) {
+            //! arrayIdUser.map(async (_id, index) => {
+            //! if (experienceById._id.includes(_id)) {
             //*************************************************************************** */
 
             //________ BORRAR DEL ARRAY DE USER EL USER DENTRO DE LA EXPERIENCE
@@ -154,12 +154,13 @@ const toggleUser = async (req, res, next) => {
             try {
               await Experience.findByIdAndUpdate(idExperience, {
                 // dentro de la clavee users me vas a sacar el id del elemento que estoy recorriendo
-                $pull: { user: _id },
+                // !$pull: { user: _id },
+                $pull: { events: event },
               });
 
               try {
-                await User.findByIdAndUpdate(user, {
-                  $pull: { experience: idExperience },
+                await Events.findByIdAndUpdate(event, {
+                  $pull: { events: idExperience },
                 });
               } catch (error) {
                 res.status(404).json({
@@ -181,11 +182,11 @@ const toggleUser = async (req, res, next) => {
 
             try {
               await Experience.findByIdAndUpdate(idExperience, {
-                $push: { user: _id },
+                $push: { events: event },
               });
               try {
-                await User.findByIdAndUpdate(user, {
-                  $push: { experience: idExperience },
+                await Events.findByIdAndUpdate(event, {
+                  $push: { events: idExperience },
                 });
               } catch (error) {
                 res.status(404).json({
@@ -216,4 +217,4 @@ const toggleUser = async (req, res, next) => {
   }
 };
 
-module.exports = { toggleLikeExperience, createExperience, toggleUser };
+module.exports = { toggleLikeExperience, createExperience, toggleEvent };

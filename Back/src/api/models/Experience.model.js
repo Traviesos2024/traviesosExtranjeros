@@ -8,7 +8,8 @@ const ExperienceSchema = new mongoose.Schema(
     image: { type: String },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }],
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], //No sé si va a funcionar
+    // users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
   },
   {
     timestamps: true,
