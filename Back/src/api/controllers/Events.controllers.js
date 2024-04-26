@@ -57,152 +57,78 @@ const createEvent = async (req, res, next) => {
   }
 };
 
-//! -------------like experiencie ----------------
+// /*//? -------------------------------POST create --------------------------
+// const createEvent = async (req, res, next) => {
+/// *Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
+//   //*si hay un error en el controlador, una vez dentro, el elemento no se crea y por ende
+//   //*tenmos que borrar la imagen en cloudinary */
 
-const toggleLikeEvent = async (req, res, next) => {
-  try {
-    const { idEvents } = req.params; //De donde saco el id de la experiencia??
-    // Necesitamos estar logado para darle like
-    const { _id } = req.user;
-    // const { _id } = req.body;
+//   //** El optional chaining se pone porque la imagen no es obligatoria por lo cual
+//   //* puede ser que no tengamos req.file.path
 
-    if (req.user.eventsFav.includes(idEvents)) {
-      try {
-        await User.findByIdAndUpdate(_id, {
-          //Actualiza el usuario e incluye su experiencia fav
-          $pull: { eventsFav: idEvents },
-        });
+//   let catchImg = req.file?.path;
+//   try {
+//     //! -----> ACTUALIZAR INDEXES
+//     /** los indexes se forman cuando una clave del objeto es unique, se puede ver en la
+//      * parte de mongo que esta al lado de find
+//      *
+//      * Esto es importante porque puede que haya modificado el modelo posteriormente a la
+//      * creacion del controlador
+//      */
 
-        try {
-          await Events.findByIdAndUpdate(idEvents, {
-            //Actualiza la experiencia y añade el usuario que le ha dado like
-            $pull: { likes: _id },
-          });
+//     await Event.syncIndexes();
+//     //! ------> INSTANCIAR UN NUEVO CHARACTER
+//     /** vamos a instanciar un nuevo character y le metemos como info incial lo que recibimos
+//      * por la req.body
+//      */
+//     const newEvent = new Event(req.body);
 
-          return res.status(200).json({
-            action: "disliked",
-            user: await User.findById(_id).populate("eventsFav"),
-            events: await Events.findById(idEvetns).populate("likes"),
-          });
-        } catch (error) {
-          return res.status(404).json({
-            error: "No se ha actualizado la experiencia - likes",
-            message: error.message,
-          });
-        }
-      } catch (error) {
-        return res.status(404).json({
-          error: "No se ha actualizado el usuario -  eventsFav",
-          message: error.message,
-        });
-      }
-    } else {
-      try {
-        await User.findByIdAndUpdate(_id, {
-          //Saca el id de la experiencia cuando le doy dislike
-          $push: { eventsFav: idevent },
-        });
+//     //! -------> VALORAR SI HEMOS RECIBIDO UNA IMAGEN O NO
+//     /** Si recibimos la imagen tenemos que meter la url en el objeto creado arriba con la
+//      * nueva instancia del Character
+//      */
 
-        try {
-          await Events.findByIdAndUpdate(idEvents, {
-            //Saca el id del usuario en la experiencia cuanod le doy dislike
-            $push: { likes: _id },
-          });
+//     if (req.file) {
+//       newEvent.image = catchImg;
+//     } else {
+//       newEvent.image =
+//         "https://res.cloudinary.com/dyl5cabrr/image/upload/v1714138030/ac5016f6-7afd-43f8-9d87-f38c82e5a9f1_16-9-discover-aspect-ratio_default_0_gkuvqg.jpg";
+//     }
 
-          return res.status(200).json({
-            action: "like",
-            user: await User.findById(_id).populate("eventsFav"),
-            events: await Events.findById(idEvents).populate("likes"),
-          });
-        } catch (error) {
-          return res.status(404).json({
-            error: "No se ha actualizado la experiencia - likes",
-            message: error.message,
-          });
-        }
-      } catch (error) {
-        return res.status(404).json({
-          error: "No se ha actualizado el usuario -  eventsFav",
-          message: error.message,
-        });
-      }
-    }
-  } catch (error) {
-    return res.status(404).json(error.message);
-  }
-};
-// // /*//? -------------------------------POST create --------------------------
-// // const createEvent = async (req, res, next) => {
-// //   /// *Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
-// //   //*si hay un error en el controlador, una vez dentro, el elemento no se crea y por ende
-// //   //*tenmos que borrar la imagen en cloudinary */
+//     try {
+//       //! ------------> VAMOS A GUARDAR LA INSTANCIA DEL NUEVO EVENTO
+//       const saveEvent = await newEvent.save();
+//       if (saveEvent) {
+//         /** Si existe vamos a enviar un 200 como que todo esta ok y le enviamos con un json
+//          * el objeto creado
+//          */
 
-// //   //** El optional chaining se pone porque la imagen no es obligatoria por lo cual
-// //   //* puede ser que no tengamos req.file.path
+//         return res.status(200).json(saveEvent);
+//       } else {
+//         return res
+//           .status(404)
+//           .json("No se ha podido guardar el elemento en la DB ❌");
+//       }
+//     } catch (error) {
+//       return res.status(404).json("error general saved event");
+//     }
+//   } catch (error) {
+//     //! -----> solo entramos aqui en el catch cuando ha habido un error
+//     /** SI HA HABIDO UN ERROR -----
+//      * Tenemos que borrar la imagen en cloudinary porque se sube antes de que nos metamos en
+//      * el controlador---> porque es un middleware que esta entre la peticion del cliente y el controlador
+//      */
 
-// //   let catchImg = req.file?.path;
-// //   try {
-// //     //! -----> ACTUALIZAR INDEXES
-// //     /** los indexes se forman cuando una clave del objeto es unique, se puede ver en la
-// //      * parte de mongo que esta al lado de find
-// //      *
-// //      * Esto es importante porque puede que haya modificado el modelo posteriormente a la
-// //      * creacion del controlador
-// //      */
+//     req.file?.path && deleteImgCloudinary(catchImg);
 
-// //     await Event.syncIndexes();
-// //     //! ------> INSTANCIAR UN NUEVO CHARACTER
-// //     /** vamos a instanciar un nuevo character y le metemos como info incial lo que recibimos
-// //      * por la req.body
-// //      */
-// //     const newEvent = new Event(req.body);
-
-// //     //! -------> VALORAR SI HEMOS RECIBIDO UNA IMAGEN O NO
-// //     /** Si recibimos la imagen tenemos que meter la url en el objeto creado arriba con la
-// //      * nueva instancia del Character
-// //      */
-
-// //     if (req.file) {
-// //       newEvent.image = catchImg;
-// //     } else {
-// //       newEvent.image =
-// //         "https://res.cloudinary.com/dyl5cabrr/image/upload/v1714138030/ac5016f6-7afd-43f8-9d87-f38c82e5a9f1_16-9-discover-aspect-ratio_default_0_gkuvqg.jpg";
-// //     }
-
-// //     try {
-// //       //! ------------> VAMOS A GUARDAR LA INSTANCIA DEL NUEVO EVENTO
-// //       const saveEvent = await newEvent.save();
-// //       if (saveEvent) {
-// //         /** Si existe vamos a enviar un 200 como que todo esta ok y le enviamos con un json
-// //          * el objeto creado
-// //          */
-
-// //         return res.status(200).json(saveEvent);
-// //       } else {
-// //         return res
-// //           .status(404)
-// //           .json("No se ha podido guardar el elemento en la DB ❌");
-// //       }
-// //     } catch (error) {
-// //       return res.status(404).json("error general saved event");
-// //     }
-// //   } catch (error) {
-// //     //! -----> solo entramos aqui en el catch cuando ha habido un error
-// //     /** SI HA HABIDO UN ERROR -----
-// //      * Tenemos que borrar la imagen en cloudinary porque se sube antes de que nos metamos en
-// //      * el controlador---> porque es un middleware que esta entre la peticion del cliente y el controlador
-// //      */
-
-// //     req.file?.path && deleteImgCloudinary(catchImg);
-
-// //     return (
-// //       res.status(404).json({
-// //         messege: "error en el creado del elemento",
-// //         error: error.message,
-// //       }) && next(error)
-// //     );
-// //   }
-// // };
+//     return (
+//       res.status(404).json({
+//         messege: "error en el creado del elemento",
+//         error: error.message,
+//       }) && next(error)
+//     );
+//   }
+// };
 
 //? -------------------------------get by category--------------------------
 
@@ -280,74 +206,74 @@ const getByName = async (req, res, next) => {
 
 //? -------------------------------toggle like Event --------------------------
 
-// const toggleLikeEvent = async (req, res, next) => {
-//   try {
-//     const { categoryEvent } = req.params;
-//     //* vamos a tener el middleware de auth por lo cual se crea req.user
-//     const { _id } = req.user;
+const toggleLikeEvent = async (req, res, next) => {
+  try {
+    const { categoryEvent } = req.params;
+    //* vamos a tener el middleware de auth por lo cual se crea req.user
+    const { _id } = req.user;
 
-//     if (req.user.eventFav.includes(categoryEvent)) {
-//       try {
-//         await User.findByIdAndUpdateEvent(_id, {
-//           $pull: { eventFav: categoryEvent },
-//         });
+    if (req.user.eventFav.includes(categoryEvent)) {
+      try {
+        await User.findByIdAndUpdateEvent(_id, {
+          $pull: { eventFav: categoryEvent },
+        });
 
-//         try {
-//           await Event.findByCategoryAndUpdateEvent(categoryEvent, {
-//             $pull: { likes: _id },
-//           });
+        try {
+          await Event.findByCategoryAndUpdateEvent(categoryEvent, {
+            $pull: { likes: _id },
+          });
 
-//           return res.status(200).json({
-//             action: "disliked",
-//             user: await User.findById(_id).populate("eventFav"),
-//             event: await Event.findById(idEvent).populate("likes"),
-//           });
-//         } catch (error) {
-//           return res.status(404).json({
-//             error: "no update Event - likes",
-//             message: error.message,
-//           });
-//         }
-//       } catch (error) {
-//         return res.status(404).json({
-//           error: "no update user-  EventFav",
-//           message: error.message,
-//         });
-//       }
-//     } else {
-//       try {
-//         await User.findByIdAndUpdateEvent(_category, {
-//           $push: { eventFav: categoryEvent },
-//         });
+          return res.status(200).json({
+            action: "disliked",
+            user: await User.findById(_id).populate("eventFav"),
+            event: await Event.findById(idEvent).populate("likes"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "no update Event - likes",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "no update user-  EventFav",
+          message: error.message,
+        });
+      }
+    } else {
+      try {
+        await User.findByIdAndUpdateEvent(_category, {
+          $push: { eventFav: categoryEvent },
+        });
 
-//         try {
-//           await Event.findByIdAndUpdate(categoryEvent, {
-//             //*categoryEventEvent
-//             $push: { likes: _type },
-//           });
+        try {
+          await Event.findByIdAndUpdate(categoryEvent, {
+            //*categoryEventEvent
+            $push: { likes: _type },
+          });
 
-//           return res.status(200).json({
-//             action: "like",
-//             user: await User.findById(_category).populate("eventsFav"),
-//             event: await Event.findByCategory(categoryEvent).populate("likes"),
-//           });
-//         } catch (error) {
-//           return res.status(404).json({
-//             error: "no update Event - likes",
-//             message: error.message,
-//           });
-//         }
-//       } catch (error) {
-//         return res.status(404).json({
-//           error: "no update user-  eventFav",
-//           message: error.message,
-//         });
-//       }
-//     }
-//   } catch (error) {
-//     return res.status(404).json(error.message);
-//   }
-// };
+          return res.status(200).json({
+            action: "like",
+            user: await User.findById(_category).populate("eventsFav"),
+            event: await Event.findByCategory(categoryEvent).populate("likes"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "no update Event - likes",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "no update user-  eventFav",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
 
 //? -------------------------------toggle Follow event--------------------------
 
@@ -429,6 +355,18 @@ const toggleFollowEvent = async (req, res, next) => {
 //     return res.status(400).json ({error:})
 //   }
 // };
+
+// const sortCountriesMiddleware = (req, res, next) => {
+//   let countries = ["Alemania", "Inglaterra", "Portugal", "Dinamarca", "Grecia"];
+//   countries.sort();
+//   req.sortedCountries = countries;
+//   next();
+// };
+// //* Endpoint para obtener los países ordenados
+// event.get("/Event", sortCountriesMiddleware, (req, res) => {
+//   //* Utilizar los países ordenados del objeto request
+//   res.json(req.sortedCountries);
+// });
 
 //? -------------------------------UPDATE -------------------------------
 
@@ -576,5 +514,5 @@ module.exports = {
   deleteEvent,
   toggleLikeEvent,
   toggleFollowEvent,
-  // sortByDateEvent,
+  //sortByDateEvent,
 };

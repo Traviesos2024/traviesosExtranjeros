@@ -46,11 +46,12 @@ app.use("/api/v1/experiences/", ExperienceRoutes);
 const EventRoutes = require("./src/api/routes/Event.routes");
 app.use("/api/v1/event/", EventRoutes);
 
-/*const AdminRoutes = require("./src/api/routes/Admin.routes");
+const AdminRoutes = require("./src/api/routes/Admin.routes");
 app.use("/api/v1/admin/", AdminRoutes);
-//
-const EventRoutes = require("./src/api/routes/Event.routes");
+
+/*const EventRoutes = require("./src/api/routes/Event.routes");
 app.use("/api/v1/eventos/", EventRoutes); */
+
 app.use("/api/v1/admin/", AdminRoutes);
 
 //! --------------- generamos un error de cuando no se encuentre la ruta--

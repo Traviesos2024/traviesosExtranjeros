@@ -1,4 +1,4 @@
-//Nos requeerimos la librería y 
+//Nos requeerimos la librería y
 const express = require("express");
 const AdminRoutes = express.Router();
 
