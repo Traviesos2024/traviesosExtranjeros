@@ -20,7 +20,7 @@ EventRoutes.get("/getAll", getAll);
 EventRoutes.get("/get/name/:name", getByName);
 EventRoutes.get("/get/category/:category", getByCategory);
 EventRoutes.get("/get/city/:city", getByCity);
-EventRoutes.get("/get/date/:date", sortByDateEvent);
+//EventRoutes.get("/get/date/:date", sortByDateEvent);
 EventRoutes.patch("/:id", [isAuth], upload.single("image"), updateEvent);
 EventRoutes.delete("/:id", [isAuth], deleteEvent);
 EventRoutes.patch("/like/:idEvent", [isAuth], toggleLikeEvent);

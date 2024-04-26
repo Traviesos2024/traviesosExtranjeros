@@ -30,14 +30,14 @@ const createEvent = async (req, res, next) => {
 
     try {
       const userId = req.user._id;
-
+      console.log("id del usuario", req.user._id);
       // Actualizar la clave ExperienceOwner del usuario con el ID del evento
       await User.findByIdAndUpdate(userId, {
-        $push: { EventsOwner: idEvent },
+        $push: { eventsOwner: idEvent },
       });
 
       // Devolver el usuario actualizado
-      const updatedUser = await User.findById(userId).populate("EventsOwner");
+      const updatedUser = await User.findById(userId).populate("eventsOwner");
 
       return res.status(200).json({
         action: "update",

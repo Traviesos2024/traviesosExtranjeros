@@ -7,7 +7,7 @@ const CountrySchema = new mongoose.Schema(
     description: { type: String, required: true },
     cities: [{ type: mongoose.Schema.Types.ObjectId, ref: "City" }],
     tipicalFood: { type: String },
-    traditions: {type: String},
+    traditions: { type: String },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
