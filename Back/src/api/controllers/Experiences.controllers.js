@@ -370,10 +370,61 @@ const update = async (req, res, next) => {
   }
 };
 
+//! ---------------------------------------------------------------------
+//? -------------------------------DELETE -------------------------------
+//! ---------------------------------------------------------------------
+
+const deleteExperience = async (req, res, next) => {
+  try {
+    const { idExperience } = req.params;
+
+    const experience = await Experience.findByIdAndDelete(idExperience);
+    if (experience) {
+      // lo buscamos para vr si sigue existiendo o no
+      const findByIdExperience = await Experience.findById(idExperience);
+
+      try {
+        const test = await Events.updateMany(
+          //!!!Falta linkear el evento modelo
+          //borramos la experiencia de los eventos que tenga.
+          { experience: idExperience },
+          { $pull: { experience: idExperience } }
+        );
+        console.log(test);
+
+        try {
+          await User.updateMany(
+            //borramos la experiencia de los usuarios
+            { experience: idExperience },
+            { $pull: { experience: idExperience } }
+          );
+
+          return res.status(findByIdExperience ? 404 : 200).json({
+            deleteTest: findByIdExperience ? false : true,
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "error catch update User",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "error catch update Event",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
 module.exports = {
   toggleLikeExperience,
   createExperience,
   toggleEvent,
   byId,
   update,
+  deleteExperience,
 };

@@ -45,10 +45,7 @@ app.use("/api/v1/experiences/", ExperienceRoutes);
 
 /*const AdminRoutes = require("./src/api/routes/Admin.routes");
 app.use("/api/v1/admin/", AdminRoutes);
-
-
-
-
+//
 const EventRoutes = require("./src/api/routes/Event.routes");
 app.use("/api/v1/eventos/", EventRoutes); */
 
