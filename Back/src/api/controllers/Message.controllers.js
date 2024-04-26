@@ -29,6 +29,7 @@ const createMessage = async (req, res, next) => {
      */
 
     if (findUser) {
+      req.body["owner"] = req.user;
       const newMessage = new Message(req.body);
       const savedMessage = await newMessage.save();
 
@@ -440,4 +441,68 @@ const updateMessage = async (req, res, next) => {
   }
 };
 
-module.exports = { createMessage, deleteMessage, updateMessage };
+//! ---------------------------------------------------------------------
+//? -------------------------------get message by id--------------------------
+//! ---------------------------------------------------------------------
+const getMessageById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const messageById = await Message.findById(id).populate("owner");
+    if (messageById) {
+      return res.status(200).json(messageById);
+    } else {
+      return res.status(404).json("no se ha encontrado el mensaje");
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+//! ---------------------------------------------------------------------
+//? -------------------------------get message by user owner--------------------------
+//! ---------------------------------------------------------------------
+
+const getMessageByUserOwner = async (req, res, next) => {
+  try {
+    const { idUserOwner } = req.params;
+    const messageByUserOwner = await Message.find({
+      owner: idUserOwner,
+    });
+    if (messageByUserOwner) {
+      return res.status(200).json(messageByUserOwner);
+    } else {
+      return res.status(404).json("no se ha encontrado ningún mensaje ");
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+//! ---------------------------------------------------------------------
+//? -------------------------------get all messages------------------------------
+//! ---------------------------------------------------------------------
+
+const getAllMessages = async (req, res, next) => {
+  try {
+    const allMessages = await Message.find().populate("owner");
+    /** el find nos devuelve un array */
+    if (allMessages.length > 0) {
+      return res.status(200).json(allMessages);
+    } else {
+      return res.status(404).json("no se han encontrado mensajes");
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "error al buscar - lanzado en el catch",
+      message: error.message,
+    });
+  }
+};
+module.exports = {
+  createMessage,
+  deleteMessage,
+  updateMessage,
+  getAllMessages,
+  getMessageById,
+  getMessageByUserOwner,
+};
