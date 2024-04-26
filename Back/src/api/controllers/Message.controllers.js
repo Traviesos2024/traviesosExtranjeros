@@ -2,6 +2,7 @@ const Chat = require("../models/Chat.model");
 const Message = require("../models/Message.model");
 const Experience = require("../models/Experience.model");
 const User = require("../models/User.model");
+const enumMessageTypeOk = require("../../utils/enumMessageTypeOk");
 
 /**+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  * ++++++++++++++++++++++++++-------C R U D--------+++++++++++++++++++++++++++++++++++
@@ -13,7 +14,7 @@ const User = require("../models/User.model");
 
 const createMessage = async (req, res, next) => {
   try {
-    const { type, content } = req.body;
+    const { type } = req.body;
     const { idRecipient } = req.params; // -----> id de a quien quiero hacer el comentario
     /**
      * idRecipient puede ser el id de : experience, user
@@ -364,4 +365,79 @@ const deleteMessage = async (req, res, next) => {
   }
 };
 
-module.exports = { createMessage, deleteMessage };
+//! ---------------------------------------------------------------------
+//? -------------------------------UPDATE MESSAGE -------------------------------
+//! ---------------------------------------------------------------------
+
+const updateMessage = async (req, res, next) => {
+  try {
+    await Message.syncIndexes();
+    const { id } = req.params;
+    const messageById = await Message.findById(id);
+    if (messageById) {
+      const customBody = {
+        _id: messageById._id,
+        content: req.body?.content ? req.body?.content : messageById.content,
+      };
+
+      if (req.body?.type) {
+        const resultEnum = enumMessageTypeOk(req.body?.type);
+        customBody.type = resultEnum.check ? req.body?.type : messageById.type;
+      }
+
+      try {
+        await Message.findByIdAndUpdate(id, customBody);
+
+        // ......> VAMOS A BUSCAR EL ELEMENTO ACTUALIZADO POR ID
+
+        const messageByIdUpdate = await Message.findById(id);
+
+        // ......> me cojer el req.body y vamos a sacarle las claves para saber que elementos nos ha dicho de actualizar
+        const elementUpdate = Object.keys(req.body);
+
+        /** vamos a hacer un objeto vacion donde meteremos los test */
+
+        let test = {};
+
+        /** vamos a recorrer las claves del body y vamos a crear un objeto con los test */
+
+        elementUpdate.forEach((item) => {
+          if (req.body[item] === messageByIdUpdate[item]) {
+            test[item] = true;
+          } else {
+            test[item] = false;
+          }
+        });
+
+        /** vamos a ver que no haya ningun false. Si hay un false lanzamos un 404,
+         * si no hay ningun false entonces lanzamos un 200 porque todo esta correcte
+         */
+
+        let acc = 0;
+        for (clave in test) {
+          test[clave] == false && acc++;
+        }
+
+        if (acc > 0) {
+          return res.status(404).json({
+            dataTest: test,
+            update: false,
+          });
+        } else {
+          return res.status(200).json({
+            dataTest: test,
+            update: true,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json(error.message);
+      }
+    } else {
+      return res.status(404).json("este mensaje no existe");
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+module.exports = { createMessage, deleteMessage, updateMessage };
