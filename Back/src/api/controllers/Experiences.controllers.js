@@ -296,8 +296,12 @@ const update = async (req, res, next) => {
 
       // si nos ha metido una imagen nueva y ya la hemos actualizado pues tenemos que borrar la antigua
       // la antigua imagen la tenemos guardada con el usuario autenticado --> req.user
-      if (req.file) deleteImgCloudinary(req.user.image);
-
+      //if (req.file) deleteImgCloudinary(req.user.image);
+      if (req.file) {
+        if (req.user.image) {
+            deleteImgCloudinary(req.user.image);
+        }
+    }
       // ++++++++++++++++++++++ TEST RUNTIME+++++++++++++++++++++++++++++++++++++++
       /** siempre lo pprimero cuando testeamos es el elemento actualizado para comparar la info que viene
        * del req.body

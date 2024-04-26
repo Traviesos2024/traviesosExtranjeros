@@ -186,7 +186,8 @@ const createEvent = async (req, res, next) => {
 //     /** vamos a instanciar un nuevo character y le metemos como info incial lo que recibimos
 //      * por la req.body
 //      */
-//     const newEvent = new Event(req.body);
+//     const newEvent = new Event(...req.body);
+//      console.log.(newEvent)
 
 //     //! -------> VALORAR SI HEMOS RECIBIDO UNA IMAGEN O NO
 //     /** Si recibimos la imagen tenemos que meter la url en el objeto creado arriba con la
@@ -194,7 +195,7 @@ const createEvent = async (req, res, next) => {
 //      */
 
 //     if (req.file) {
-//       newEvent.image = catchImg;
+//       newEvent.image = req.file.path; /// aqui habia un cathImage;
 //     } else {
 //       newEvent.image =
 //         "https://res.cloudinary.com/dyl5cabrr/image/upload/v1714138030/ac5016f6-7afd-43f8-9d87-f38c82e5a9f1_16-9-discover-aspect-ratio_default_0_gkuvqg.jpg";
@@ -209,7 +210,9 @@ const createEvent = async (req, res, next) => {
 //          */
 
 //         return res.status(200).json(saveEvent);
-//       } else {
+//       } catch (error) {
+ //            return res.status(404).json(error.message);} 
+//         } else {
 //         return res
 //           .status(404)
 //           .json("No se ha podido guardar el elemento en la DB ❌");
