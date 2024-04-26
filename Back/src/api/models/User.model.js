@@ -25,7 +25,10 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
     city: { type: mongoose.Schema.Types.ObjectId, ref: "City" },
-    country: { type: mongoose.Schema.Types.ObjectId, ref: "Country" },
+    country: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Country",
+    },
     password: {
       type: String,
       required: true,
