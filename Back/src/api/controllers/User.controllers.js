@@ -14,7 +14,7 @@ dotenv.config();
 const User = require("../models/User.model");
 const Event = require("../models/Events.model");
 const Experience = require("../models/Experience.model");
-const Menssage = require("../models/Message.model");
+const Message = require("../models/Message.model");
 const Chat = require("../models/Chat.model");
 
 //! -----------------------------------------------------------------------

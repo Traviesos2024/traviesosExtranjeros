@@ -1,5 +1,5 @@
 const Chat = require("../models/Chat.model");
-const Menssage = require("../models/Message.model");
+const Message = require("../models/Message.model");
 const Experience = require("../models/Experience.model");
 const User = require("../models/User.model");
 
@@ -28,7 +28,7 @@ const createMessage = async (req, res, next) => {
      */
 
     if (findUser) {
-      const newMessage = new Menssage(req.body);
+      const newMessage = new Message(req.body);
       const savedMessage = await newMessage.save();
 
       if (type == "private") {
@@ -68,6 +68,11 @@ const createMessage = async (req, res, next) => {
                       postedMessages: newMessage._id,
                     },
                   });
+                  await User.findByIdAndUpdate(findUser._id, {
+                    $push: {
+                      commentsPublicByOther: newMessage._id,
+                    },
+                  });
                   return res.status(200).json({
                     chat: await Chat.findById(chatExistOne._id).populate(
                       "messages  userOne  userTwo"
@@ -77,12 +82,12 @@ const createMessage = async (req, res, next) => {
                 } catch (error) {
                   return res.status(404).json({
                     error:
-                      "no hemos actualizado el user en la clave postedMenssages",
+                      "no hemos actualizado el user en la clave postedMessages",
                     idMessage: newMessage._id,
                   });
                 }
               } catch (error) {
-                await Menssage.findByIdAndDelete(savedMessage._id);
+                await Message.findByIdAndDelete(savedMessage._id);
                 return res
                   .status(404)
                   .json(
@@ -101,6 +106,11 @@ const createMessage = async (req, res, next) => {
                       postedMessages: newMessage._id,
                     },
                   });
+                  await User.findByIdAndUpdate(findUser._id, {
+                    $push: {
+                      commentsPublicByOther: newMessage._id,
+                    },
+                  });
                   return res.status(200).json({
                     chat: await Chat.findById(chatExistTwo._id).populate(
                       "messages  userOne  userTwo"
@@ -110,13 +120,13 @@ const createMessage = async (req, res, next) => {
                 } catch (error) {
                   return res.status(404).json({
                     error:
-                      "no hemos actualizado el user en la clave postedMenssages",
+                      "no hemos actualizado el user en la clave postedMessages",
                     idMessage: newMessage._id,
                   });
                 }
               } catch (error) {
                 try {
-                  await Menssage.findByIdAndDelete(savedMessage._id);
+                  await Message.findByIdAndDelete(savedMessage._id);
                   return res
                     .status(404)
                     .json(
@@ -157,6 +167,7 @@ const createMessage = async (req, res, next) => {
                 try {
                   await User.findByIdAndUpdate(idRecipient, {
                     $push: {
+                      commentsPublicByOther: newMessage._id,
                       chats: newChat._id,
                     },
                   });
@@ -177,14 +188,14 @@ const createMessage = async (req, res, next) => {
               } catch (error) {
                 return res.status(404).json({
                   error:
-                    "no hemos actualizado el user el dueño del mensaje en la clave postedMenssages y en la clave chats",
+                    "no hemos actualizado el user el dueño del mensaje en la clave postedMessages y en la clave chats",
                   idMessage: newMessage._id,
                 });
               }
             } catch (error) {
               // lo borramos porque no nos ha enviado bien el tipo
               try {
-                await Menssage.findByIdAndDelete(savedMessage._id);
+                await Message.findByIdAndDelete(savedMessage._id);
                 return res.status(404).json(error.message);
               } catch (error) {
                 return res.status(404).json({
@@ -247,7 +258,7 @@ const createMessage = async (req, res, next) => {
         return res.status(404).json("no puedes hacer comentarios privados");
       } else {
         try {
-          const newMessage = new Menssage(req.body);
+          const newMessage = new Message(req.body);
           const savedMessage = await newMessage.save();
 
           try {
@@ -296,4 +307,61 @@ const createMessage = async (req, res, next) => {
   }
 };
 
-module.exports = { createMessage };
+//! ---------------------------------------------------------------------
+//? -------------------------------DELETE MESSAGE -------------------------------
+//! ---------------------------------------------------------------------
+const deleteMessage = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const message = await Message.findByIdAndDelete(id);
+    if (message) {
+      // lo buscamos para vr si sigue existiendo o no
+      const finByIdMessage = await Message.findById(id);
+
+      try {
+        const test = await Experience.updateMany(
+          { message: id },
+          { $pull: { message: id } }
+        );
+        try {
+          const removeMessageFromChat = await Chat.updateMany(
+            { messages: id },
+            { $pull: { messages: id } }
+          );
+          try {
+            await User.updateMany(
+              { messagesFav: id },
+              { $pull: { messagesFav: id } }
+            );
+            await User.updateMany(
+              { postedMessages: id },
+              { $pull: { postedMessages: id } }
+            );
+            await User.updateMany(
+              { commentsPublicByOther: id },
+              { $pull: { commentsPublicByOther: id } }
+            );
+
+            return res.status(finByIdMessage ? 404 : 200).json({
+              deleteTest: finByIdMessage ? false : true,
+            });
+          } catch (error) {
+            return res.status(404).json({
+              error: "error catch update User",
+              message: error.message,
+            });
+          }
+        } catch (error) {}
+      } catch (error) {
+        return res.status(404).json({
+          error: "error catch update Experience",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+module.exports = { createMessage, deleteMessage };

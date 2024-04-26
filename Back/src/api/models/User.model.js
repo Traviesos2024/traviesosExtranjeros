@@ -80,10 +80,11 @@ const UserSchema = new mongoose.Schema(
     banned: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // para si te quiere bannear la página, bannear es bloquear porque el usuario ha hecho algo que no debía
     // blockedByApp : { type: Boolean, default: false },
     commentsPublicByOther: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Menssage" },
+      { type: mongoose.Schema.Types.ObjectId, ref: "Message" },
     ], // los comentarios que me hacen a mi
-    postedMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }], // son los messages que creo
+    postedMessages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }], // son los messages que creo
     /// cuando relacionamos un modelo de con otro lo hacemos con populate y el ref a otr
+    messagesFav: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }], // son los messages favoritos
   },
   {
     // esto es cuando se crea y se actualiza el objeto

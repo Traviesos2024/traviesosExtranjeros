@@ -9,7 +9,7 @@ const Schema = mongoose.Schema;
 
 const ChatSchema = new Schema(
   {
-    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }],
+    messages: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
     userOne: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     userTwo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     /* un array de muchos mensajes por eso va entre [], entre dos usuarios, 

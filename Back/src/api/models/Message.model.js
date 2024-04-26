@@ -12,7 +12,7 @@ const Schema = mongoose.Schema;
 // ------------> definimos otras propiedades que limitan la informacion que se puede incluir en esa clave
 // ------------> que sea requerido, una longitud maxima y minima, etc etc
 
-const MenssageSchema = new Schema(
+const MessageSchema = new Schema(
   {
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     type: {
@@ -42,8 +42,8 @@ const MenssageSchema = new Schema(
 
 //! -------- con la definicion de datos y su esquema vamos a crear el modelo de datos
 
-const Menssage = mongoose.model("Menssage", MenssageSchema);
+const Message = mongoose.model("Message", MessageSchema);
 
 //! -------- exportar el modelo para que lo utilicen los controladores
 
-module.exports = Menssage;
+module.exports = Message;
