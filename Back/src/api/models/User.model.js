@@ -31,7 +31,7 @@ const UserSchema = new mongoose.Schema(
     },
     country: {
       type: String,
-      enum: [""],
+      enum: ["Alemania", "Inglaterra", "Portugal"],
       required: true,
       trim: true,
     },

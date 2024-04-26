@@ -13,22 +13,44 @@ const createExperience = async (req, res, next) => {
     const customBody = {
       name: req.body?.name,
       description: req.body?.description,
-      // image: req.file?.image,
+      image: req.file?.image,
     };
     const newExperiencie = new Experience(customBody);
     const savedExperience = await newExperiencie.save();
+    // Obtener el ID de la experiencia creada
+    const idExperience = savedExperience._id;
 
-    // test en el runtime
-    return res
-      .status(savedExperience ? 200 : 404) //200 si se ha guardado y 404 si no se ha guardado
-      .json(
-        savedExperience
-          ? savedExperience
-          : "error al crear la nueva experiencia ❌"
+    // Verificar si el usuario está autenticado
+    if (!req.user) {
+      return res.status(401).json({ error: "Usuario no autenticado" });
+    }
+
+    try {
+      const userId = req.user._id;
+
+      // Actualizar la clave experiencesOwner del usuario con el ID de la experiencia
+      await User.findByIdAndUpdate(userId, {
+        $push: { experiencesOwner: idExperience },
+      });
+
+      // Devolver el usuario actualizado
+      const updatedUser = await User.findById(userId).populate(
+        "experiencesOwner"
       );
+
+      return res.status(200).json({
+        action: "update",
+        user: updatedUser,
+      });
+    } catch (error) {
+      return res.status(404).json({
+        error: "No se ha actualizado la experiencia creada - user",
+        message: error.message,
+      });
+    }
   } catch (error) {
     return res.status(404).json({
-      error: "error catch create experiencie",
+      error: "error catch create experience",
       message: error.message,
     });
   }
