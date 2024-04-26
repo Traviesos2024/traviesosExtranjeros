@@ -29,6 +29,12 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    country: {
+      type: String,
+      enum: [""],
+      required: true,
+      trim: true,
+    },
     password: {
       type: String,
       required: true,
@@ -56,7 +62,12 @@ const UserSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    eventsFav: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }], // array de películas fav
+    eventsOwner: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }], // array de los eventos que yo he creado
+    experiencesOwner: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Experience" },
+    ], // array de las experiencias que hemos creado
+
+    eventsFav: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
     experiencesFav: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Experience" },
     ],

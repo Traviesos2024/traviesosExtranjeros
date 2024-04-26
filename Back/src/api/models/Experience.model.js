@@ -9,7 +9,7 @@ const ExperienceSchema = new mongoose.Schema(
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }],
     // users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
+    events: { type: mongoose.Schema.Types.ObjectId, ref: "Events" },
   },
   {
     timestamps: true,
