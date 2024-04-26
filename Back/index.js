@@ -51,7 +51,7 @@ app.use("/api/v1/admin/", AdminRoutes);
 //
 const EventRoutes = require("./src/api/routes/Event.routes");
 app.use("/api/v1/eventos/", EventRoutes); */
-app.use("/api/v1/admin/", AdminRoutes);*/
+app.use("/api/v1/admin/", AdminRoutes);
 
 //! --------------- generamos un error de cuando no se encuentre la ruta--
 
