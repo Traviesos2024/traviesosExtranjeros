@@ -24,6 +24,10 @@ const MenssageSchema = new Schema(
       type: String,
       required: true,
     },
+    recipientEvents: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Event",
+    },
     recipientExperience: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Experience",

@@ -121,6 +121,7 @@ const toggleUser = async (req, res, next) => {
     const { idExperience } = req.params;
     //req.body; No sé si el user va por el req.user o se metería por el body
     const { _id } = req.user; // -----> idDeLosUser, tienes que estar logado para añadirte como que la has hecho
+    const { users } = req.body;
 
     /** Buscamos la experiencia por su id primero para saber si existe */
     const experienceById = await Experience.findById(idExperience);
@@ -131,7 +132,8 @@ const toggleUser = async (req, res, next) => {
        * se hace mediante el metodo del split
        */
 
-      const arrayIdUser = _id.split(",");
+      //const arrayIdUser = _id.split(",");
+      const arrayIdUser = users.split(",");
 
       /** recorremos este array que hemos creado y vemos si tenemos quee:
        * 1) ----> sacar eel user si ya lo tenemos en el back
@@ -139,8 +141,10 @@ const toggleUser = async (req, res, next) => {
        */
 
       Promise.all(
-        arrayIdUser.map(async (_id, index) => {
-          if (experienceById._id.includes(_id)) {
+        arrayIdUser.map(async (users, index) => {
+          if (experienceById.users.includes(users)) {
+            // arrayIdUser.map(async (_id, index) => {
+            // if (experienceById._id.includes(_id)) {
             //*************************************************************************** */
 
             //________ BORRAR DEL ARRAY DE USER EL USER DENTRO DE LA EXPERIENCE
