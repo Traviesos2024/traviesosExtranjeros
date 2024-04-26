@@ -134,7 +134,7 @@ const toggleLikeExperience = async (req, res, next) => {
     return res.status(404).json(error.message);
   }
 };
-
+//!-----------------------A FALTA DE PROBAR CUANDO ESTÉ EN EVENT-----------------------
 //! -------------add/delete event que ha hecho la experience ----------------
 
 const toggleEvent = async (req, res, next) => {
@@ -239,4 +239,141 @@ const toggleEvent = async (req, res, next) => {
   }
 };
 
-module.exports = { toggleLikeExperience, createExperience, toggleEvent };
+//! -----------------------------------------------------------------------------
+//? ---------------------------------findById------------------------------------
+//! -----------------------------------------------------------------------------
+
+const byId = async (req, res, next) => {
+  try {
+    /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
+    El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
+    const { idExperience } = req.params;
+    const experienceById = await Experience.findById(idExperience);
+    if (experienceById) {
+      // comprobamos si existe
+      return res.status(200).json(experienceById); // mandamos un json con el objeto
+    } else {
+      // si no lo ha encontrado
+      return res.status(404).json("experiencia no encontrado"); // mandamos usuario no encontrado
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ---------------------------------UPDATE--------------------------------------
+//! -----------------------------------------------------------------------------
+
+const update = async (req, res, next) => {
+  // capturamos la imagen nueva subida a cloudinary
+  let catchImg = req.file?.path;
+
+  try {
+    // actualizamos los elementos unique del modelo
+    await Experience.syncIndexes();
+
+    // instanciamos un nuevo objeto del modelo de experience con el req.body
+    const patchExperience = new Experience(req.body);
+
+    // si tenemos imagen metemos a la instancia del modelo esta imagen nueva que es lo que capturamos en catchImg
+    req.file && (patchExperience.image = catchImg);
+
+    /** vamos a salvaguardar info que no quiero que el usuario pueda cambiarme */
+    // AUNQUE ME PIDA CAMBIAR ESTAS CLAVES NO SE LO VOY A CAMBIAR
+    patchExperience._id = req.user._id;
+    patchExperience.name = req.user.name;
+    patchExperience.description = req.user.description;
+    patchExperience.events = req.user.events;
+
+    try {
+      /** hacemos una actualizacion NO HACER CON EL SAVE
+       * le metemos en el primer valor el id de el objeto a actualizar
+       * y en el segundo valor le metemos la info que queremos actualizar
+       */
+      await Experience.findByIdAndUpdate(req.user._id, patchExperience);
+
+      // si nos ha metido una imagen nueva y ya la hemos actualizado pues tenemos que borrar la antigua
+      // la antigua imagen la tenemos guardada con el usuario autenticado --> req.user
+      if (req.file) deleteImgCloudinary(req.user.image);
+
+      // ++++++++++++++++++++++ TEST RUNTIME+++++++++++++++++++++++++++++++++++++++
+      /** siempre lo pprimero cuando testeamos es el elemento actualizado para comparar la info que viene
+       * del req.body
+       */
+      const updateExperience = await Experience.findById(req.user._id);
+
+      /** sacamos las claves del objeto del req.body para saber que info nos han pedido actualizar */
+      const updateKeys = Object.keys(req.body); // ["name"]
+
+      // creamos un array donde guardamos los test
+      const testUpdate = [];
+
+      // recorremos el array de la info que con el req.body nos dijeron de actualizar
+      /** recordar este array lo sacamos con el Object.keys */
+
+      // updateKeys ES UN ARRAY CON LOS NOMBRES DE LAS CLAVES = ["name", "email", "rol"]
+
+      ///----------------> para todo lo diferente de la imagen ----------------------------------
+      updateKeys.forEach((item) => {
+        /** vamos a comprobar que la info actualizada sea igual que lo que me mando por el body... */
+        if (updateExperience[item] === req.body[item]) {
+          /** aparte vamos a comprobar que esta info sea diferente a lo que ya teniamos en mongo subido antes */
+          if (updateExperience[item] != req.user[item]) {
+            // si es diferente a lo que ya teniamos lanzamos el nombre de la clave y su valor como true en un objeto
+            // este objeto see pusea en el array que creamos arriba que guarda todos los testing en el runtime
+            testUpdate.push({
+              [item]: true,
+            });
+          } else {
+            // si son igual lo que pusearemos sera el mismo objeto que arrriba pro diciendo que la info es igual
+            testUpdate.push({
+              [item]: "sameOldInfo",
+            });
+          }
+        } else {
+          testUpdate.push({
+            [item]: false,
+          });
+        }
+      });
+
+      /// ---------------------- para la imagen ---------------------------------
+      if (req.file) {
+        /** si la imagen del user actualizado es estrictamente igual a la imagen nueva que la
+         * guardamos en el catchImg, mandamos un objeto con la clave image y su valor en true
+         * en caso contrario mandamos esta clave con su valor en false
+         */
+        updateExperience.image === catchImg
+          ? testUpdate.push({
+              image: true,
+            })
+          : testUpdate.push({
+              image: false,
+            });
+      }
+
+      /** una vez finalizado el testing en el runtime vamos a mandar el usuario actualizado y el objeto
+       * con los test
+       */
+      return res.status(200).json({
+        updateExperience,
+        testUpdate,
+      });
+    } catch (error) {
+      if (req.file) deleteImgCloudinary(catchImg);
+      return res.status(404).json(error.message);
+    }
+  } catch (error) {
+    if (req.file) deleteImgCloudinary(catchImg);
+    return next(error);
+  }
+};
+
+module.exports = {
+  toggleLikeExperience,
+  createExperience,
+  toggleEvent,
+  byId,
+  update,
+};
