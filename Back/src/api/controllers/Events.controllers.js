@@ -7,20 +7,20 @@ const User = require("../models/User.model");
 //*const Country= require("../models/Country.model");
 
 //! -------------create new event ----------------
-
 const createEvent = async (req, res, next) => {
   try {
     await Event.syncIndexes();
 
-    /** hacemos una instancia del modelo, por el body tengo el name y la descripción*/
+    // Crear una nueva instancia de Event con los datos proporcionados en el cuerpo de la solicitud
     const customBody = {
       name: req.body?.name,
       description: req.body?.description,
-      image: req.file?.image,
+      image: req.file?.path, // Suponiendo que req.file contiene la información del archivo subido
     };
-    const newExperiencie = new Event(customBody);
-    const savedEvent = await newExperiencie.save();
-    // Obtener el ID de la evvento creada
+    const newExperience = new Event(customBody);
+    const savedEvent = await newExperience.save();
+    
+    // Obtener el ID del evento creado
     const idEvent = savedEvent._id;
 
     // Verificar si el usuario está autenticado
@@ -28,35 +28,140 @@ const createEvent = async (req, res, next) => {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
 
-    try {
-      const userId = req.user._id;
-      console.log("id del usuario", req.user._id);
-      // Actualizar la clave ExperienceOwner del usuario con el ID del evento
-      await User.findByIdAndUpdate(userId, {
-        $push: { eventsOwner: idEvent },
-      });
+    // Actualizar la clave ExperienceOwner del usuario con el ID del evento
+    const userId = req.user._id;
+    await User.findByIdAndUpdate(userId, { $push: { eventsOwner: idEvent } });
 
-      // Devolver el usuario actualizado
-      const updatedUser = await User.findById(userId).populate("eventsOwner");
+    // Devolver el usuario actualizado
+    const updatedUser = await User.findById(userId).populate("eventsOwner");
 
-      return res.status(200).json({
-        action: "update",
-        user: updatedUser,
-      });
-    } catch (error) {
-      return res.status(404).json({
-        error: "No se ha actualizado la experiencia creada - user",
-        message: error.message,
-      });
-    }
-  } catch (error) {
-    return res.status(404).json({
-      error: "error catch create Event",
-      message: error.message,
+    // Redirigir a la página de confirmación de registro
+    return res.status(200).json({
+      action: "update",
+      user: updatedUser,
     });
+  } catch (error) {
+    // Manejar errores
+    console.error("Error:", error);
+    return res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
+// const createEvent = async (req, res, next) => {
+//   try {
+//     await Event.syncIndexes();
+
+//     /** hacemos una instancia del modelo, por el body tengo el name y la descripción*/
+//     const customBody = {
+//       name: req.body?.name,
+//       description: req.body?.description,
+//       image: req.file?.image,
+//     };
+//     const newExperiencie = new Event(customBody);
+//     const savedEvent = await newExperiencie.save();
+//     // Obtener el ID de la evvento creada
+//     const idEvent = savedEvent._id;
+
+//     // Verificar si el usuario está autenticado
+//     if (!req.user) {
+//       return res.status(401).json({ error: "Usuario no autenticado" });
+//     }
+
+//     try {
+//       const userId = req.user._id;
+//       console.log("id del usuario", req.user._id);
+//       // Actualizar la clave ExperienceOwner del usuario con el ID del evento
+//       await User.findByIdAndUpdate(userId, {
+//         $push: { eventsOwner: idEvent },
+//       });
+
+//       // Devolver el usuario actualizado
+//       const updatedUser = await User.findById(userId).populate("eventsOwner");
+
+//       return res.status(200).json({
+//         action: "update",
+//         user: updatedUser,
+//       });
+//     } catch (error) {
+//       return res.status(404).json({
+//         error: "No se ha actualizado la experiencia creada - user",
+//         message: error.message,
+//       });
+//     }
+//   } catch (error) {
+//     return res.status(404).json({
+//       error: "error catch create Event",
+//       message: error.message,
+//     });
+//   }
+// };
+
+// const customBody = req.body; // Supongo que customBody es el cuerpo de la solicitud que contiene la información del evento
+// const newExperience = new Event(customBody); // Crear una nueva instancia de Event con el cuerpo personalizado
+
+// // Guardar el evento en la base de datos y esperar a que se complete la operación
+// newExperience.save()
+//   .then(savedEvent => {
+//     // Obtener el ID del evento creado
+//     const idEvent = savedEvent._id;
+
+//     // Si hay una imagen cargada en la solicitud
+//     if (req.file) {
+//       const imageUrl = req.file.path; // Obtener la URL de la imagen cargada (supongo que estás usando multer para cargar archivos)
+      
+//       // Actualizar el documento del evento con la nueva URL de la imagen
+//       Event.findOneAndUpdate(
+//         { _id: idEvent }, // Filtra el documento por su ID
+//         { $set: { image: imageUrl } }, // Actualiza el campo de imagen con la nueva URL
+//         { new: true } // Opciones: devuelve el documento actualizado
+//       )
+//       .then(updatedEvent => {
+//         // El evento ha sido actualizado con la nueva URL de la imagen
+//         console.log("Evento actualizado:", updatedEvent);
+//       })
+//       .catch(error => {
+//         // Maneja cualquier error que pueda ocurrir durante la actualización
+//         console.error("Error al actualizar el evento:", error);
+//         return res.status(500).json({ error: "Error al actualizar el evento" });
+//       });
+//     }
+
+//     // Si no hay imagen cargada en la solicitud, no es necesario actualizar el evento
+//     // Esto se asume porque la actualización de la imagen está condicionada a la existencia de un archivo adjunto en la solicitud
+
+//     // Verifica si el usuario existe (no está claro de dónde proviene userExist en tu código)
+//     if (!userExist) {
+//       // Crea un nuevo usuario con el req.body y le añade el código de confirmación
+//       const newUser = new User({ ...req.body, confirmationCode });
+
+//       if (req.file) {
+//         newUser.image = req.file.path;
+//       } else {
+//         // Si no se proporciona ninguna imagen, se asigna una imagen predefinida
+//         newUser.image = "https://pic.onlinewebfonts.com/svg/img_181369.png";
+//       }
+
+//       // Guarda el usuario en la base de datos
+//       newUser.save()
+//         .then(userSave => {
+//           // Redirige a la página de confirmación de registro
+//           return res.redirect(
+//             303,
+//             `http://localhost:8080/api/v1/users/register/sendMail/${userSave._id}`
+//           );
+//         })
+//         .catch(error => {
+//           // Maneja cualquier error que pueda ocurrir durante el guardado del usuario
+//           console.error("Error al guardar el usuario:", error);
+//           return res.status(500).json({ error: "Error al guardar el usuario" });
+//         });
+//     }
+//   })
+//   .catch(error => {
+//     // Maneja cualquier error que pueda ocurrir durante el guardado del evento
+//     console.error("Error al guardar el evento:", error);
+//     return res.status(500).json({ error: "Error al guardar el evento" });
+//   });
 // /*//? -------------------------------POST create --------------------------
 // const createEvent = async (req, res, next) => {
 /// *Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
