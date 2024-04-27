@@ -18,7 +18,12 @@ ExperienceRoutes.post(
   upload.single("image"),
   createExperience
 );
-ExperienceRoutes.patch("/update/update/:idExperience", [isAuth], upload.single("image"), update);
+ExperienceRoutes.patch(
+  "/update/:idExperience",
+  [isAuth],
+  upload.single("image"),
+  update
+);
 ExperienceRoutes.get("/finById/:idExperience", byId);
 
 module.exports = ExperienceRoutes;
