@@ -498,6 +498,79 @@ const getAllMessages = async (req, res, next) => {
     });
   }
 };
+
+//! ---------------------------------------------------------------------
+//? -------------------------------Toggle like messages------------------------------
+//! ---------------------------------------------------------------------
+
+const toggleLikeMessage = async (req, res, next) => {
+  try {
+    const { idMessage } = req.params;
+    // vamos a tener el middleware de auth por lo cual se crea req.user
+    const { _id } = req.user;
+
+    if (req.user.messagesFav.includes(idMessage)) {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $pull: { messagesFav: idMessage },
+        });
+
+        try {
+          await Message.findByIdAndUpdate(idMessage, {
+            $pull: { likes: _id },
+          });
+
+          return res.status(200).json({
+            action: "disliked",
+            user: await User.findById(_id).populate("messagesFav"),
+            message: await Message.findById(idMessage).populate("likes"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "no update Message - likes",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "no update user-  messagesFav",
+          message: error.message,
+        });
+      }
+    } else {
+      try {
+        await User.findByIdAndUpdate(_id, {
+          $push: { messagesFav: idMessage },
+        });
+
+        try {
+          await Message.findByIdAndUpdate(idMessage, {
+            $push: { likes: _id },
+          });
+
+          return res.status(200).json({
+            action: "like",
+            user: await User.findById(_id).populate("messagesFav"),
+            message: await Message.findById(idMessage).populate("likes"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "no update Message - likes",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "no update user-  messagesFav",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
 module.exports = {
   createMessage,
   deleteMessage,
@@ -505,4 +578,5 @@ module.exports = {
   getAllMessages,
   getMessageById,
   getMessageByUserOwner,
+  toggleLikeMessage,
 };
