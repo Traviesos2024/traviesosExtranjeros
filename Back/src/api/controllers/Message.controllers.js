@@ -22,6 +22,7 @@ const createMessage = async (req, res, next) => {
 
     const findUser = await User.findById(idRecipient);
     const findExperience = await Experience.findById(idRecipient);
+    const findEvent = await Event.findById(idEvent);
 
     /**
      * cuando no lo encuentre devuelve un null y el que encuentre va a devolver el objeto encontrado
@@ -255,6 +256,52 @@ const createMessage = async (req, res, next) => {
       } else {
         return res.status(404).json("no has puesto el tipo correctamente");
       }
+    } else if (findEvent) {
+      if (type == "private") {
+        return res.status(404).json("no puedes hacer comentarios privados");
+      } else {
+        try {
+          const newMessage = new Message(req.body);
+          const savedMessage = await newMessage.save();
+
+          try {
+            await User.findByIdAndUpdate(req.user._id, {
+              $push: {
+                postedMessages: newMessage._id,
+              },
+            });
+
+            try {
+              await Event.findByIdAndUpdate(findEvent._id, {
+                $push: { comments: newMessage._id },
+              });
+
+              return res.status(200).json({
+                userOwner: await User.findById(req.user._id).populate(
+                  "postedMessages"
+                ),
+                Event: await Event.findById(findEvent._id).populate("comments"),
+              });
+            } catch (error) {
+              return res.status(404).json({
+                error: "error catch update Event - comments",
+                message: error.message,
+              });
+            }
+          } catch (error) {
+            return res.status(404).json({
+              error:
+                "error catch update userOwner del comentario  -  postedMessages",
+              message: error.message,
+            });
+          }
+        } catch (error) {
+          return res.status(404).json({
+            error: "error catch save message",
+            message: error.message,
+          });
+        }
+      }
     } else if (findExperience) {
       if (type == "private") {
         return res.status(404).json("no puedes hacer comentarios privados");
@@ -321,7 +368,7 @@ const deleteMessage = async (req, res, next) => {
       const finByIdMessage = await Message.findById(id);
 
       try {
-        const test = await Experience.updateMany(
+        const removeMessageFromExperience = await Experience.updateMany(
           { message: id },
           { $pull: { message: id } }
         );
@@ -331,29 +378,45 @@ const deleteMessage = async (req, res, next) => {
             { $pull: { messages: id } }
           );
           try {
-            await User.updateMany(
-              { messagesFav: id },
-              { $pull: { messagesFav: id } }
+            const removeMessageFromEvent = await Event.updateMany(
+              { messages: id },
+              { $pull: { messages: id } }
             );
-            await User.updateMany(
-              { postedMessages: id },
-              { $pull: { postedMessages: id } }
-            );
-            await User.updateMany(
-              { commentsPublicByOther: id },
-              { $pull: { commentsPublicByOther: id } }
-            );
+            try {
+              await User.updateMany(
+                { messagesFav: id },
+                { $pull: { messagesFav: id } }
+              );
+              await User.updateMany(
+                { postedMessages: id },
+                { $pull: { postedMessages: id } }
+              );
+              await User.updateMany(
+                { commentsPublicByOther: id },
+                { $pull: { commentsPublicByOther: id } }
+              );
 
-            return res.status(finByIdMessage ? 404 : 200).json({
-              deleteTest: finByIdMessage ? false : true,
-            });
+              return res.status(finByIdMessage ? 404 : 200).json({
+                deleteTest: finByIdMessage ? false : true,
+              });
+            } catch (error) {
+              return res.status(404).json({
+                error: "error catch update User",
+                message: error.message,
+              });
+            }
           } catch (error) {
             return res.status(404).json({
-              error: "error catch update User",
+              error: "error catch update Event",
               message: error.message,
             });
           }
-        } catch (error) {}
+        } catch (error) {
+          return res.status(404).json({
+            error: "error catch update Chat",
+            message: error.message,
+          });
+        }
       } catch (error) {
         return res.status(404).json({
           error: "error catch update Experience",
