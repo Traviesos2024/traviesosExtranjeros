@@ -2,8 +2,6 @@ const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const enumOk = require("../../utils/enumOk");
 const Event = require("../models/Events.model");
 const User = require("../models/User.model");
-//*const City= require("../models"/City.model");
-//*const Country= require("../models/Country.model");
 
 //! -------------create new experiencie ----------------
 //? -------------------------------POST create --------------------------
@@ -450,5 +448,4 @@ module.exports = {
   deleteEvent,
   toggleLikeEvent,
   toggleFollowEvent,
-  //sortByDateEvent,
 };
