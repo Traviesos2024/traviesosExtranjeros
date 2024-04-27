@@ -1,6 +1,7 @@
 const Experience = require("../models/Experience.model");
 const Events = require("../models/Events.model");
 const City = require("../models/City.models");
+const User =require("../models/User.model");
 
 //! -------------create new city ----------------
 
@@ -301,8 +302,8 @@ const deleteCity = async (req, res, next) => {
         try {
           await User.updateMany(
             //borra el usuario que tenía la city
-            { charactersFav: id }, //!¿COMO SE LLMA EL ARRAY DE LAS CITIES ENEL USER?
-            { $pull: { charactersFav: id } }
+            { cities: idCity }, //!¿COMO SE LLMA EL ARRAY DE LAS CITIES ENEL USER?
+            { $pull: { user: idCity  } } //{ $pull: { user: id} } ---> esto no lo pilla
           );
 
           return res.status(findByIdCity ? 404 : 200).json({
