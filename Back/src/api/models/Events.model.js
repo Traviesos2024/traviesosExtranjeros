@@ -11,16 +11,14 @@ const Schema = mongoose.Schema;
 // *------------> definimos otras propiedades que limitan la informacion que se puede incluir en esa clave
 // *------------> que sea requerido, una longitud maxima y minima, etc etc
 
-const EventSchema = new Schema(
+const EventSchema = new mongoose.Schema(
   {
     name: { type: String, required: false, unique: false },
     category: {
       type: String,
       enum: ["deportes", "musica", "gastronomia", "otros"],
     },
-    image: {
-      type: String,
-    },
+    image: { type: String, require: true },
     description: {
       type: String,
     },

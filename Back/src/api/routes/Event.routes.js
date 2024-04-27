@@ -7,11 +7,12 @@ const {
   getByCity,
   getAll,
   getByName,
-  updateEvent,
+  update,
   deleteEvent,
   toggleLikeEvent,
   toggleFollowEvent,
   sortByDateEvent,
+  updateEvent,
 } = require("../controllers/Events.controllers"); //* cuidado si el archivo es en singular//
 const EventRoutes = express.Router();
 
@@ -21,7 +22,7 @@ EventRoutes.get("/get/name/:name", getByName);
 EventRoutes.get("/get/category/:category", getByCategory);
 EventRoutes.get("/get/city/:city", getByCity);
 //EventRoutes.get("/get/date/:date", sortByDateEvent);
-EventRoutes.patch("/:id", [isAuth], upload.single("image"), updateEvent);
+EventRoutes.patch("/:idEvent", [isAuth], upload.single("image"), updateEvent);
 EventRoutes.delete("/:id", [isAuth], deleteEvent);
 EventRoutes.patch("/like/:idEvent", [isAuth], toggleLikeEvent);
 EventRoutes.patch("follow/:categoryEvent", [isAuth], toggleFollowEvent);

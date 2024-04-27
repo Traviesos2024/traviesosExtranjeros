@@ -6,57 +6,6 @@ const User = require("../models/User.model");
 //*const City= require("../models"/City.model");
 //*const Country= require("../models/Country.model");
 
-//! -------------create new event ----------------
-
-// const createEvent = async (req, res, next) => {
-//   try {
-//     await Event.syncIndexes();
-
-//     /** hacemos una instancia del modelo, por el body tengo el name y la descripción*/
-//     const customBody = {
-//       name: req.body?.name,
-//       description: req.body?.description,
-//       image: req.file?.image,
-//     };
-//     const newExperiencie = new Event(customBody);
-//     const savedEvent = await newExperiencie.save();
-//     // Obtener el ID de la evvento creada
-//     const idEvent = savedEvent._id;
-
-//     // Verificar si el usuario está autenticado
-//     if (!req.user) {
-//       return res.status(401).json({ error: "Usuario no autenticado" });
-//     }
-
-//     try {
-//       const userId = req.user._id;
-//       console.log("id del usuario", req.user._id);
-//       // Actualizar la clave ExperienceOwner del usuario con el ID del evento
-//       await User.findByIdAndUpdate(userId, {
-//         $push: { eventsOwner: idEvent },
-//       });
-
-//       // Devolver el usuario actualizado
-//       const updatedUser = await User.findById(userId).populate("eventsOwner");
-
-//       return res.status(200).json({
-//         action: "update",
-//         user: updatedUser,
-//       });
-//     } catch (error) {
-//       return res.status(404).json({
-//         error: "No se ha actualizado la experiencia creada - user",
-//         message: error.message,
-//       });
-//     }
-//   } catch (error) {
-//     return res.status(404).json({
-//       error: "error catch create Event",
-//       message: error.message,
-//     });
-//   }
-// };
-
 // /*//? -------------------------------POST create --------------------------
 const createEvent = async (req, res, next) => {
   //*Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
@@ -373,18 +322,19 @@ const toggleFollowEvent = async (req, res, next) => {
 
 const updateEvent = async (req, res, next) => {
   let catchImg = req.file?.path;
+
   try {
     await Event.syncIndexes();
-    const { type } = req.params;
-    const eventByType = await Event.findByType(type);
-    if (eventByType) {
+    const { idEvent } = req.params;
+    const event = await Event.findById(idEvent);
+    if (event) {
       //*eventByTypeByType//
-      const oldImg = eventByType.image;
+      const oldImg = event.image;
 
       const customBody = {
-        _type: eventByType._type,
+        _category: event._category,
         image: req.file?.path ? catchImg : oldImg,
-        name: req.body?.name ? req.body?.name : eventByType.name,
+        name: req.body?.name ? req.body?.name : event.name,
       };
 
       if (req.body?.category) {
@@ -392,11 +342,11 @@ const updateEvent = async (req, res, next) => {
         const resultEnum = enumOk(req.body?.category);
         customBody.category = resultEnum.check
           ? req.body?.category
-          : eventByType.category;
+          : event.category;
       }
 
       try {
-        await Event.findByTypeAndUpdateEvent(type, customBody);
+        await Event.findByIdAndUpdate(idEvent, customBody);
         if (req.file?.path) {
           deleteImgCloudinary(oldImg);
         }
@@ -407,7 +357,7 @@ const updateEvent = async (req, res, next) => {
 
         // ......> VAMOS A BUSCAR EL ELEMENTO ACTUALIZADO POR ID //* modificado por type//
 
-        const eventByTypeUpdateEvent = await Event.findByType(type);
+        //const eventByTypeUpdateEvent = await Event.findById(idEvent);
 
         // ......> me cojer el req.body y vamos a sacarle las claves para saber que elementos nos ha dicho de actualizar
         const elementUpdateEvent = Object.keys(req.body);
@@ -419,7 +369,7 @@ const updateEvent = async (req, res, next) => {
         /** vamos a recorrer las claves del body y vamos a crear un objeto con los test */
 
         elementUpdateEvent.forEach((item) => {
-          if (req.body[item] === eventByTypeUpdateEvent[item]) {
+          if (req.body[item] === event[item]) {
             test[item] = true;
           } else {
             test[item] = false;
@@ -427,9 +377,9 @@ const updateEvent = async (req, res, next) => {
         });
 
         if (catchImg) {
-          eventByIdUpdateEvent.image === catchImg //*
-            ? (test = { ...test, file: true })
-            : (test = { ...test, file: false });
+          event.image === catchImg //*
+            ? (test = { ...test, file: false })
+            : (test = { ...test, file: true });
         }
 
         //* vamos a ver que no haya ningun false. Si hay un false lanzamos un 404,
@@ -439,7 +389,6 @@ const updateEvent = async (req, res, next) => {
         for (clave in test) {
           test[clave] == false && acc++;
         }
-
         if (acc > 0) {
           return res.status(404).json({
             dataTest: test,
@@ -452,12 +401,15 @@ const updateEvent = async (req, res, next) => {
           });
         }
       } catch (error) {
+        console.log(error.message);
         return res.status(404).json(error.message);
       }
     } else {
+      console.log(error.message);
       return res.status(404).json("este character no existe");
     }
   } catch (error) {
+    console.log(error.message);
     return res.status(404).json(error.message);
   }
 };
