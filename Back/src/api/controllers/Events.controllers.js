@@ -2,6 +2,7 @@ const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const enumOk = require("../../utils/enumOk");
 const Event = require("../models/Events.model");
 const User = require("../models/User.model");
+const City = require("../models/City.models");
 
 //! -------------create new experiencie ----------------
 //? -------------------------------POST create --------------------------
@@ -294,6 +295,80 @@ const toggleFollowEvent = async (req, res, next) => {
   }
 };
 
+//? ----------------------------toggle events-----add o delete un events  --------------
+
+const toggleEvent = async (req, res, next) => {
+  try {
+    const { idCity, idEvent } = req.params;
+    // Obtener los objetos City y Event por sus IDs
+    const city = await City.findById(idCity);
+    const event = await Event.findById(idEvent);
+
+    if (!city || !event) {
+      return res.status(404).json({ error: "Ciudad o evento no encontrado" });
+    }
+    console.log(city);
+    console.log(event);
+    if (event.cities.includes(idCity)) {
+      try {
+        // Actualizar el evento y eliminar la ciudad
+        await Event.findByIdAndUpdate(idEvent, { $pull: { cities: idCity } });
+        console.log("borrado el evento");
+
+        try {
+          // Actualizar la ciudad y eliminar el evento
+          await City.findByIdAndUpdate(idCity, { $pull: { events: idEvent } });
+          console.log("borrada la ciudad");
+          return res.status(200).json({
+            action: "delete",
+            cities: await Event.findById(idEvent).populate("cities"),
+            events: await City.findById(idCity).populate("events"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la ciudad - events",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado el evento - cities",
+          message: error.message,
+        });
+      }
+    } else {
+      try {
+        // Actualizar el evento y agregar la ciudad
+        await Event.findByIdAndUpdate(idEvent, { $push: { cities: idCity } });
+        console.log("actualizado el evento");
+
+        try {
+          // Actualizar la ciudad y agregar el evento
+          await City.findByIdAndUpdate(idCity, { $push: { events: idEvent } });
+          console.log("actualizada la ciudad");
+          return res.status(200).json({
+            action: "events",
+            cities: await Event.findById(idEvent).populate("cities"),
+            events: await City.findById(idCity).populate("events"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la ciudad - events",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado el evento - cities",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 //? -------------------------------UPDATE -------------------------------
 
 const updateEvent = async (req, res, next) => {
@@ -448,4 +523,5 @@ module.exports = {
   deleteEvent,
   toggleLikeEvent,
   toggleFollowEvent,
+  toggleEvent,
 };
