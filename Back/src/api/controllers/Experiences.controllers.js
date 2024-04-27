@@ -2,7 +2,7 @@ const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const Experience = require("../models/Experience.model");
 const User = require("../models/User.model");
 const Chat = require("../models/Chat.model");
-const Event = require("../models/Events.model");
+const Events = require("../models/Events.model");
 
 //! -------------create new experiencie ----------------
 
@@ -308,44 +308,40 @@ const deleteExperience = async (req, res, next) => {
     const { idExperience } = req.params;
 
     const experience = await Experience.findByIdAndDelete(idExperience);
-    if (experience) {
-      // lo buscamos para vr si sigue existiendo o no
-      const findByIdExperience = await Experience.findById(idExperience);
+    if (!experience) {
+      return res.status(404).json({ error: "Experiencia no encontrada" });
+    }
 
-      try {
-        const test = await Events.updateMany(
-          //!!!Falta linkear el evento modelo
-          //borramos la experiencia de los eventos que tenga.
-          { experience: idExperience },
-          { $pull: { experience: idExperience } }
-        );
-        console.log(test);
+    // Eliminamos la experiencia del modelo de eventos si está vinculada
+    try {
+      await Events.updateMany(
+        { experience: idExperience },
+        { $pull: { experience: idExperience } }
+      );
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Error al actualizar eventos", message: error.message });
+    }
 
-        try {
-          await User.updateMany(
-            //borramos la experiencia de los usuarios
-            { experience: idExperience },
-            { $pull: { experience: idExperience } }
-          );
+    // Actualizamos el modelo de usuario para quitar la referencia a la experiencia eliminada
+    try {
+      await User.updateMany(
+        { experiencesOwner: idExperience },
+        { $pull: { experiencesOwner: idExperience } }
+      );
 
-          return res.status(findByIdExperience ? 404 : 200).json({
-            deleteTest: findByIdExperience ? false : true,
-          });
-        } catch (error) {
-          return res.status(404).json({
-            error: "error catch update User",
-            message: error.message,
-          });
-        }
-      } catch (error) {
-        return res.status(404).json({
-          error: "error catch update Event",
-          message: error.message,
-        });
-      }
+      return res.status(200).json({ deletedExperienceId: idExperience });
+    } catch (error) {
+      return res.status(500).json({
+        error: "Error al actualizar usuarios",
+        message: error.message,
+      });
     }
   } catch (error) {
-    return res.status(404).json(error.message);
+    return res
+      .status(500)
+      .json({ error: "Error al eliminar experiencia", message: error.message });
   }
 };
 
