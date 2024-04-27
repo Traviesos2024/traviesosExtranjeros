@@ -52,6 +52,9 @@ app.use("/api/v1/admin/", AdminRoutes);
 const CityRoutes = require("./src/api/routes/City.routes");
 app.use("/api/v1/city/", CityRoutes);
 
+const CountryRoutes = require("./src/api/routes/Country.routes");
+app.use("/api/v1/country/", CountryRoutes);
+
 const ChatRoutes = require("./src/api/routes/Chat.routes");
 app.use("/api/v1/chat/", ChatRoutes);
 //! --------------- generamos un error de cuando no se encuentre la ruta--
