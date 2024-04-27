@@ -272,7 +272,7 @@ const update = async (req, res, next) => {
     const experienceById = await Experience.findById(idExperience);
 
     if (!experienceById) {
-      return res.status(404).json("Este personaje no existe");
+      return res.status(404).json("Esta experiencia no existe");
     }
 
     // Verificar si se ha subido una nueva imagen
@@ -283,7 +283,7 @@ const update = async (req, res, next) => {
       return res.status(400).json("Debes subir una imagen para actualizar");
     }
 
-    // Actualizar solo la imagen del personaje
+    // Actualizar solo la imagen de la experiencia
     const updatedExperience = await Experience.findByIdAndUpdate(
       idExperience,
       { image: catchImg },
