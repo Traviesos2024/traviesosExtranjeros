@@ -1,12 +1,12 @@
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const enumOk = require("../../utils/enumOk");
 const Event = require("../models/Events.model");
-/*const Event = require("../models/Event.model");*/
 const User = require("../models/User.model");
 //*const City= require("../models"/City.model");
 //*const Country= require("../models/Country.model");
 
-// /*//? -------------------------------POST create --------------------------
+//! -------------create new experiencie ----------------
+//? -------------------------------POST create --------------------------
 const createEvent = async (req, res, next) => {
   //*Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
   //*si hay un error en el controlador, una vez dentro, el elemento no se crea y por ende
@@ -118,7 +118,7 @@ const getByCity = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const allEvent = await Event.find().populate("movies");
+    const allEvent = await Event.find().populate("experience");
     /** el find nos devuelve un array */
     if (allEvent.length > 0) {
       return res.status(200).json(allEvent);
@@ -296,28 +296,6 @@ const toggleFollowEvent = async (req, res, next) => {
   }
 };
 
-//? -------------------------------sort country event --------------------------
-
-// const sortByCountryEvent = async (req, res, next) => {
-//   const country = req.body.date;
-
-//   if (!country || !Array.isArray(country)) {
-//     return res.status(400).json ({error:})
-//   }
-// };
-
-// const sortCountriesMiddleware = (req, res, next) => {
-//   let countries = ["Alemania", "Inglaterra", "Portugal", "Dinamarca", "Grecia"];
-//   countries.sort();
-//   req.sortedCountries = countries;
-//   next();
-// };
-// //* Endpoint para obtener los países ordenados
-// event.get("/Event", sortCountriesMiddleware, (req, res) => {
-//   //* Utilizar los países ordenados del objeto request
-//   res.json(req.sortedCountries);
-// });
-
 //? -------------------------------UPDATE -------------------------------
 
 const updateEvent = async (req, res, next) => {
@@ -335,6 +313,7 @@ const updateEvent = async (req, res, next) => {
         _category: event._category,
         image: req.file?.path ? catchImg : oldImg,
         name: req.body?.name ? req.body?.name : event.name,
+        date: req.body?.date ? req.body?.date : event.date,
       };
 
       if (req.body?.category) {
@@ -369,10 +348,14 @@ const updateEvent = async (req, res, next) => {
         /** vamos a recorrer las claves del body y vamos a crear un objeto con los test */
 
         elementUpdateEvent.forEach((item) => {
+          console.log("el item", item);
+          console.log("req.body", req.body[item]);
+          console.log("event[item]", event[item]);
+
           if (req.body[item] === event[item]) {
-            test[item] = true;
-          } else {
             test[item] = false;
+          } else {
+            test[item] = true;
           }
         });
 
@@ -425,7 +408,7 @@ const deleteEvent = async (req, res, next) => {
       const findByTypeEvent = await Event.findByType(type);
 
       try {
-        const test = await Movie.updateMany(
+        const test = await Experience.updateMany(
           { event: type },
           { $pull: { event: type } }
         );
@@ -448,7 +431,7 @@ const deleteEvent = async (req, res, next) => {
         }
       } catch (error) {
         return res.status(404).json({
-          error: "error catch update Movie",
+          error: "error catch update Experience",
           message: error.message,
         });
       }

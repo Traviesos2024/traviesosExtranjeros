@@ -22,6 +22,9 @@ const EventSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    date: {
+      type: Date,
+    },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }],
     experience: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],
     likeEvent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
