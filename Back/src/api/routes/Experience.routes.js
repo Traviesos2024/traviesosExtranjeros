@@ -3,6 +3,8 @@ const {
   toggleLikeExperience,
   toggleEvent,
   createExperience,
+  byId,
+  update,
 } = require("../controllers/Experiences.controllers");
 const { isAuth } = require("../../middleware/auth.middleware");
 const { upload } = require("../../middleware/files.middleware");
@@ -16,5 +18,12 @@ ExperienceRoutes.post(
   upload.single("image"),
   createExperience
 );
+ExperienceRoutes.patch(
+  "/update/:idExperience",
+  [isAuth],
+  upload.single("image"),
+  update
+);
+ExperienceRoutes.get("/finById/:idExperience", byId);
 
 module.exports = ExperienceRoutes;

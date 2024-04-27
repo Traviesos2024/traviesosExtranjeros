@@ -1,3 +1,4 @@
+const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const Experience = require("../models/Experience.model");
 const User = require("../models/User.model");
 const Chat = require("../models/Chat.model");
@@ -13,22 +14,44 @@ const createExperience = async (req, res, next) => {
     const customBody = {
       name: req.body?.name,
       description: req.body?.description,
-      // image: req.file?.image,
+      image: req.file?.path,
     };
     const newExperiencie = new Experience(customBody);
     const savedExperience = await newExperiencie.save();
+    // Obtener el ID de la experiencia creada
+    const idExperience = savedExperience._id;
 
-    // test en el runtime
-    return res
-      .status(savedExperience ? 200 : 404) //200 si se ha guardado y 404 si no se ha guardado
-      .json(
-        savedExperience
-          ? savedExperience
-          : "error al crear la nueva experiencia ❌"
+    // Verificar si el usuario está autenticado
+    if (!req.user) {
+      return res.status(401).json({ error: "Usuario no autenticado" });
+    }
+
+    try {
+      const userId = req.user._id;
+
+      // Actualizar la clave experiencesOwner del usuario con el ID de la experiencia
+      await User.findByIdAndUpdate(userId, {
+        $push: { experiencesOwner: idExperience },
+      });
+
+      // Devolver el usuario actualizado
+      const updatedUser = await User.findById(userId).populate(
+        "experiencesOwner"
       );
+
+      return res.status(200).json({
+        action: "update",
+        user: updatedUser,
+      });
+    } catch (error) {
+      return res.status(404).json({
+        error: "No se ha actualizado la experiencia creada - user",
+        message: error.message,
+      });
+    }
   } catch (error) {
     return res.status(404).json({
-      error: "error catch create experiencie",
+      error: "error catch create experience",
       message: error.message,
     });
   }
@@ -112,7 +135,7 @@ const toggleLikeExperience = async (req, res, next) => {
     return res.status(404).json(error.message);
   }
 };
-
+//!-----------------------A FALTA DE PROBAR CUANDO ESTÉ EN EVENT-----------------------
 //! -------------add/delete event que ha hecho la experience ----------------
 
 const toggleEvent = async (req, res, next) => {
@@ -217,4 +240,120 @@ const toggleEvent = async (req, res, next) => {
   }
 };
 
-module.exports = { toggleLikeExperience, createExperience, toggleEvent };
+//! -----------------------------------------------------------------------------
+//? ---------------------------------findById------------------------------------
+//! -----------------------------------------------------------------------------
+
+const byId = async (req, res, next) => {
+  try {
+    /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
+    El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
+    const { idExperience } = req.params;
+    const experienceById = await Experience.findById(idExperience);
+    if (experienceById) {
+      // comprobamos si existe
+      return res.status(200).json(experienceById); // mandamos un json con el objeto
+    } else {
+      // si no lo ha encontrado
+      return res.status(404).json("experiencia no encontrado"); // mandamos usuario no encontrado
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ---------------------------------UPDATE--------------------------------------
+//! -----------------------------------------------------------------------------
+
+const update = async (req, res, next) => {
+  try {
+    const { idExperience } = req.params;
+    const experienceById = await Experience.findById(idExperience);
+
+    if (!experienceById) {
+      return res.status(404).json("Esta experiencia no existe");
+    }
+
+    // Verificar si se ha subido una nueva imagen
+    let catchImg;
+    if (req.file) {
+      catchImg = req.file.path;
+    } else {
+      return res.status(400).json("Debes subir una imagen para actualizar");
+    }
+
+    // Actualizar solo la imagen de la experiencia
+    const updatedExperience = await Experience.findByIdAndUpdate(
+      idExperience,
+      { image: catchImg },
+      { new: true }
+    );
+
+    // Eliminar la antigua imagen de Cloudinary
+    deleteImgCloudinary(experienceById.image);
+
+    return res.status(200).json({ updatedExperience });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+//! ---------------------------------------------------------------------
+//? -------------------------------DELETE -------------------------------
+//! ---------------------------------------------------------------------
+
+const deleteExperience = async (req, res, next) => {
+  try {
+    const { idExperience } = req.params;
+
+    const experience = await Experience.findByIdAndDelete(idExperience);
+    if (experience) {
+      // lo buscamos para vr si sigue existiendo o no
+      const findByIdExperience = await Experience.findById(idExperience);
+
+      try {
+        const test = await Events.updateMany(
+          //!!!Falta linkear el evento modelo
+          //borramos la experiencia de los eventos que tenga.
+          { experience: idExperience },
+          { $pull: { experience: idExperience } }
+        );
+        console.log(test);
+
+        try {
+          await User.updateMany(
+            //borramos la experiencia de los usuarios
+            { experience: idExperience },
+            { $pull: { experience: idExperience } }
+          );
+
+          return res.status(findByIdExperience ? 404 : 200).json({
+            deleteTest: findByIdExperience ? false : true,
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "error catch update User",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "error catch update Event",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+module.exports = {
+  toggleLikeExperience,
+  createExperience,
+  toggleEvent,
+  byId,
+  update,
+  deleteExperience,
+};

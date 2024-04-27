@@ -24,16 +24,10 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    city: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+    city: { type: mongoose.Schema.Types.ObjectId, ref: "City" },
     country: {
-      type: String,
-      enum: [""],
-      required: true,
-      trim: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Country",
     },
     password: {
       type: String,

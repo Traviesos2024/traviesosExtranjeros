@@ -8,7 +8,7 @@ dotenv.config();
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "userProyect04FT",
+    folder: "traviesosExtrajeros",
     allowedFormats: ["jpg", "png", "jpeg", "gif", "svg", "webp"], // formatos permitidos de subida
   },
 });
@@ -31,9 +31,12 @@ const deleteImgCloudinary = (imgUrl) => {
 //función que utiliza el index.js, tenemos que crear en el .env el name, secret y key
 const configCloudinary = () => {
   cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-    api_key: process.env.CLOUDINARY_API_KEY,
+    // cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    // api_secret: process.env.CLOUDINARY_API_SECRET,
+    // api_key: process.env.CLOUDINARY_API_KEY,
+    cloud_name: "dqiudrruv",
+    api_secret: "ZpRHhAlsbvfgiuRWjCFLfBPwKA8",
+    api_key: "699445391151192",
   });
 };
 

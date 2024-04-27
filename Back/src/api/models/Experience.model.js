@@ -5,7 +5,7 @@ const ExperienceSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
-    image: { type: String },
+    image: { type: String, require: true },
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
     // users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
