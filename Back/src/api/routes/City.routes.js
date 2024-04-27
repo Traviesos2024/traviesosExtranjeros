@@ -1,6 +1,6 @@
 const express = require("express");
 
-const { isAuth } = require("../../middleware/auth.middleware");
+const { isAuth, isAuthSuper } = require("../../middleware/auth.middleware");
 const { upload } = require("../../middleware/files.middleware");
 const {
   createCity,
@@ -11,7 +11,7 @@ const {
 } = require("../controllers/City.controller");
 const CityRoutes = express.Router();
 
-CityRoutes.post("/create", [isAuth], upload.single("image"), createCity);
+CityRoutes.post("/create", [isAuthSuper], upload.single("image"), createCity);
 CityRoutes.get("/finById/:idCity", cityById);
 CityRoutes.patch("/addCity/:idCity", [isAuth], toggleEvent);
 CityRoutes.patch(

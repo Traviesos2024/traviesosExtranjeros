@@ -32,7 +32,7 @@ app.use(cors()); // Para utilizar la librería
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ limit: "5mb", extended: false }));
 
-//! -----------------ROUTAS ---------------------------------
+//! -----------------ROUTAS ----------------------------------
 
 const UserRoutes = require("./src/api/routes/User.routes");
 app.use("/api/v1/users/", UserRoutes);
@@ -49,8 +49,8 @@ app.use("/api/v1/event/", EventRoutes);
 const AdminRoutes = require("./src/api/routes/Admin.routes");
 app.use("/api/v1/admin/", AdminRoutes);
 
-/*const EventRoutes = require("./src/api/routes/Event.routes");
-app.use("/api/v1/eventos/", EventRoutes); */
+const CityRoutes = require("./src/api/routes/City.routes");
+app.use("/api/v1/city/", CityRoutes);
 
 app.use("/api/v1/admin/", AdminRoutes);
 

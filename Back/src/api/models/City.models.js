@@ -5,8 +5,8 @@ const CitySchema = new mongoose.Schema(
   {
     name: { type: String, required: true, unique: true },
     description: { type: String, required: true },
-    image: {type: String},
-    numHab: {type: number},
+    image: { type: String, required: true },
+    numHab: { type: Number },
     country: { type: mongoose.Schema.Types.ObjectId, ref: "Country" },
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
   },

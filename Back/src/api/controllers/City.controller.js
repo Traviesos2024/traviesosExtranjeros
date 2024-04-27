@@ -1,6 +1,8 @@
 const Experience = require("../models/Experience.model");
-const Event = require("../models/Events.model");
+const Events = require("../models/Events.model");
 const City = require("../models/City.models");
+
+//! -------------create new experiencie ----------------
 
 const createCity = async (req, res, next) => {
   try {
@@ -10,11 +12,18 @@ const createCity = async (req, res, next) => {
     const customBody = {
       name: req.body?.name,
       description: req.body?.description,
-      image: req.file?.image,
+      image: req.file?.path,
       numHab: req.body?.numHab,
     };
     const newCity = new City(customBody);
     const savedCity = await newCity.save();
+    // Obtener el ID de la experiencia creada
+    const idCity = savedCity._id;
+
+    // Verificar si el usuario es superAdmin
+    if (!req.user) {
+      return res.status(401).json({ error: "No eres superAdmin" });
+    }
 
     // test en el runtime
     return res
@@ -69,7 +78,7 @@ const toggleEvent = async (req, res, next) => {
        * se hace mediante el metodo del split
        */
 
-      const arrayIdEvent = Events.split(","); //!Linkear el modelo de events que aun no tengo
+      const arrayIdEvent = Events.split(",");
 
       /** recorremos este array que hemos creado y vemos si tenemos quee:
        * 1) ----> sacar eel character si ya lo tenemos en el back
@@ -89,7 +98,6 @@ const toggleEvent = async (req, res, next) => {
 
               try {
                 await Events.findByIdAndUpdate(events, {
-                  //!LINKEAR EL MODELO EVENTS QUE NO LO TENGO AUN
                   $pull: { city: idCity },
                 });
               } catch (error) {
@@ -113,7 +121,6 @@ const toggleEvent = async (req, res, next) => {
               });
               try {
                 await Events.findByIdAndUpdate(events, {
-                  //! FALTA LINKEAR EL MODELO DE EVENTS Q NO LO TENGO
                   $push: { city: idCity },
                 });
               } catch (error) {
@@ -243,9 +250,9 @@ const deleteCity = async (req, res, next) => {
       const findByIdCity = await City.findById(idCity);
 
       try {
-        const test = await Event.updateMany(
+        const test = await Events.updateMany(
           //borra el evento donde estuviera la ciudad
-          //!FALTA LINKEAR EL EVENTS MODELO Q NO LO TENGO
+
           { city: idCity },
           { $pull: { city: idCity } }
         );
