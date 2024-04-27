@@ -8,12 +8,14 @@ const {
   toggleEvent,
   updateCity,
   deleteCity,
+  toggleCountry,
 } = require("../controllers/City.controller");
 const CityRoutes = express.Router();
 
 CityRoutes.post("/create", [isAuthSuper], upload.single("image"), createCity);
 CityRoutes.get("/finById/:idCity", cityById);
 CityRoutes.patch("/cities/:idCity/events/:idEvent", [isAuth], toggleEvent);
+CityRoutes.patch("/cities/:idCity/country/:idCountry", [isAuth], toggleCountry);
 CityRoutes.patch(
   "/update/:idCity",
   [isAuth],

@@ -52,8 +52,8 @@ app.use("/api/v1/admin/", AdminRoutes);
 const CityRoutes = require("./src/api/routes/City.routes");
 app.use("/api/v1/city/", CityRoutes);
 
-app.use("/api/v1/admin/", AdminRoutes);
-
+const ChatRoutes = require("./src/api/routes/Chat.routes");
+app.use("/api/v1/chat/", ChatRoutes);
 //! --------------- generamos un error de cuando no se encuentre la ruta--
 
 app.use("*", (req, res, next) => {

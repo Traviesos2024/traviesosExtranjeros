@@ -1,5 +1,6 @@
 const Chat = require("../models/Chat.model");
 const Message = require("../models/Message.model");
+const Event = require("../models/Events.model");
 const Experience = require("../models/Experience.model");
 const User = require("../models/User.model");
 const enumMessageTypeOk = require("../../utils/enumMessageTypeOk");
@@ -22,7 +23,7 @@ const createMessage = async (req, res, next) => {
 
     const findUser = await User.findById(idRecipient);
     const findExperience = await Experience.findById(idRecipient);
-    const findEvent = await Event.findById(idEvent);
+    const findEvent = await Event.findById(idRecipient);
 
     /**
      * cuando no lo encuentre devuelve un null y el que encuentre va a devolver el objeto encontrado
