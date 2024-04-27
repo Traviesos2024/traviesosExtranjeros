@@ -13,7 +13,7 @@ const CityRoutes = express.Router();
 
 CityRoutes.post("/create", [isAuthSuper], upload.single("image"), createCity);
 CityRoutes.get("/finById/:idCity", cityById);
-CityRoutes.patch("/addCity/:idCity", [isAuth], toggleEvent);
+CityRoutes.patch("/cities/:idCity/events/:idEvent", [isAuth], toggleEvent);
 CityRoutes.patch(
   "/update/:idCity",
   [isAuth],

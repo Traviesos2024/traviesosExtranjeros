@@ -2,18 +2,19 @@ const Experience = require("../models/Experience.model");
 const Events = require("../models/Events.model");
 const City = require("../models/City.models");
 
-//! -------------create new experiencie ----------------
+//! -------------create new city ----------------
 
 const createCity = async (req, res, next) => {
   try {
     await City.syncIndexes();
 
-    / hacemos una instancia del modelo, por el body tengo el name, la descripción, la imagen y el número de habitantes/;
+    // hacemos una instancia del modelo, por el body tengo el name, la descripción, la imagen y el número de habitantes/;
     const customBody = {
       name: req.body?.name,
       description: req.body?.description,
       image: req.file?.path,
       numHab: req.body?.numHab,
+      country: req.body?.country,
     };
     const newCity = new City(customBody);
     const savedCity = await newCity.save();
@@ -52,7 +53,7 @@ const cityById = async (req, res, next) => {
       return res.status(200).json(cityById); // mandamos un json con el objeto
     } else {
       // si no lo ha encontrado
-      return res.status(404).json("experiencia no encontrado"); // mandamos usuario no encontrado
+      return res.status(404).json("city no encontrada"); // mandamos usuario no encontrado
     }
   } catch (error) {
     return next(error);
@@ -62,91 +63,74 @@ const cityById = async (req, res, next) => {
 //! ---------------------------------------------------------------------
 //? ----------------------------add o delete un events  --------------
 //! ---------------------------------------------------------------------
-/// aqui metemos los personajes en el array del modelo de movie
+
 const toggleEvent = async (req, res, next) => {
   try {
-    /** este id es el id de la city en el que queremos añadir */
-    const { idCity } = req.params;
-    const { events } = req.body; // -----> idDeLosEvents enviaremos esto por el req.body
+    const { idCity, idEvent } = req.params;
 
-    /** Buscamos la ciudad por id para saber si existe */
-    const cityById = await City.findById(idCity);
+    // Obtener los objetos City y Event por sus IDs
+    const city = await City.findById(idCity);
+    const event = await Events.findById(idEvent);
 
-    if (cityById) {
-      /** cogeemos el string que traemos del body y lo convertimos en un array
-       * separando las posiciones donde en el string habia una coma
-       * se hace mediante el metodo del split
-       */
+    if (!city || !event) {
+      return res.status(404).json({ error: "Ciudad o evento no encontrado" });
+    }
 
-      const arrayIdEvent = Events.split(",");
+    if (event.cities.includes(idCity)) {
+      try {
+        // Actualizar el evento y eliminar la ciudad
+        await Events.findByIdAndUpdate(idEvent, { $pull: { cities: idCity } });
 
-      /** recorremos este array que hemos creado y vemos si tenemos quee:
-       * 1) ----> sacar eel character si ya lo tenemos en el back
-       * 2) ----> meterlo en caso de que no lo tengamos metido en el back
-       */
+        try {
+          // Actualizar la ciudad y eliminar el evento
+          await City.findByIdAndUpdate(idCity, { $pull: { events: idEvent } });
 
-      Promise.all(
-        arrayIdEvent.map(async (events, index) => {
-          if (cityById.events.includes(events)) {
-            //BORRAR DEL ARRAY DE EVENTS EL EVENTO DENTRO DE LA CIUDAD
-
-            try {
-              await City.findByIdAndUpdate(idCity, {
-                // dentro de la clavee event me vas a sacar el id del elemento que estoy recorriendo
-                $pull: { events: events },
-              });
-
-              try {
-                await Events.findByIdAndUpdate(events, {
-                  $pull: { city: idCity },
-                });
-              } catch (error) {
-                res.status(404).json({
-                  error: "error update event",
-                  message: error.message,
-                }) && next(error);
-              }
-            } catch (error) {
-              res.status(404).json({
-                error: "error update city",
-                message: error.message,
-              }) && next(error);
-            }
-          } else {
-            //________ METER EL EVENTO EN EL ARRAY DE EVENTO DE LA CIUDAD_________________
-
-            try {
-              await City.findByIdAndUpdate(idCity, {
-                $push: { events: events },
-              });
-              try {
-                await Events.findByIdAndUpdate(events, {
-                  $push: { city: idCity },
-                });
-              } catch (error) {
-                res.status(404).json({
-                  error: "error update event",
-                  message: error.message,
-                }) && next(error);
-              }
-            } catch (error) {
-              res.status(404).json({
-                error: "error update city",
-                message: error.message,
-              }) && next(error);
-            }
-          }
-        })
-      )
-        .catch((error) => res.status(404).json(error.message))
-        .then(async () => {
           return res.status(200).json({
-            dataUpdate: await City.findById(idCity).populate("events"),
+            action: "delete",
+            cities: await Events.findById(idEvent).populate("cities"),
+            events: await City.findById(idCity).populate("events"),
           });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la ciudad - events",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado el evento - cities",
+          message: error.message,
         });
+      }
+    } else {
+      try {
+        // Actualizar el evento y agregar la ciudad
+        await Events.findByIdAndUpdate(idEvent, { $push: { cities: idCity } });
+
+        try {
+          // Actualizar la ciudad y agregar el evento
+          await City.findByIdAndUpdate(idCity, { $push: { events: idEvent } });
+
+          return res.status(200).json({
+            action: "events",
+            cities: await Events.findById(idEvent).populate("cities"),
+            events: await City.findById(idCity).populate("events"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la ciudad - events",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado el evento - cities",
+          message: error.message,
+        });
+      }
     }
   } catch (error) {
-    return res.status(404).json(error.message);
+    return res.status(500).json({ error: error.message });
   }
 };
 

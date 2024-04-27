@@ -7,7 +7,7 @@ const CitySchema = new mongoose.Schema(
     description: { type: String, required: true },
     image: { type: String, required: true },
     numHab: { type: Number },
-    country: { type: mongoose.Schema.Types.ObjectId, ref: "Country" },
+    country: { type: String, required: true },
     events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
   },
   {

@@ -13,7 +13,7 @@ const Schema = mongoose.Schema;
 
 const EventSchema = new mongoose.Schema(
   {
-    name: { type: String, required: false, unique: false },
+    name: { type: String, required: true, unique: false },
     category: {
       type: String,
       enum: ["deportes", "musica", "gastronomia", "otros"],
@@ -38,8 +38,8 @@ const EventSchema = new mongoose.Schema(
 
 //*-------- con la definicion de datos y su esquema vamos a crear el modelo de datos
 
-const Event = mongoose.model("Event", EventSchema);
+const Events = mongoose.model("Events", EventSchema);
 
 //*-------- exportar el modelo para que lo utilicen los controladores
 
-module.exports = Event;
+module.exports = Events;
