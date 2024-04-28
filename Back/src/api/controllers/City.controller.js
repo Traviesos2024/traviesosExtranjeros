@@ -1,7 +1,8 @@
 const Experience = require("../models/Experience.model");
 const Events = require("../models/Events.model");
 const City = require("../models/City.models");
-const User =require("../models/User.model");
+const User = require("../models/User.model");
+const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 
 //! -------------create new city ----------------
 
@@ -196,85 +197,45 @@ const toggleCountry = async (req, res, next) => {
 //! ---------------------------------------------------------------------
 
 const updateCity = async (req, res, next) => {
-  let catchImg = req.file?.path;
   try {
-    await City.syncIndexes();
     const { idCity } = req.params;
     const cityById = await City.findById(idCity);
-    if (cityById) {
-      const oldImg = cityById.image;
 
-      const customBody = {
-        _id: cityById.idCity,
-        image: req.file?.path ? catchImg : oldImg,
-        name: req.body?.name ? req.body?.name : characterById.name,
-      };
-
-      try {
-        await City.findByIdAndUpdate(idCity, customBody);
-        if (req.file?.path) {
-          deleteImgCloudinary(oldImg);
-        }
-
-        //** ------------------------------------------------------------------- */
-        //** VAMOS A TESTEAR EN TIEMPO REAL QUE ESTO SE HAYA HECHO CORRECTAMENTE */
-        //** ------------------------------------------------------------------- */
-
-        // ......> VAMOS A BUSCAR EL ELEMENTO ACTUALIZADO POR ID
-
-        const cityByIdUpdate = await City.findById(idCity);
-
-        // ......> me cojer el req.body y vamos a sacarle las claves para saber que elementos nos ha dicho de actualizar
-        const elementUpdate = Object.keys(req.body);
-
-        /** vamos a hacer un objeto vacion donde meteremos los test */
-
-        let test = {};
-
-        /** vamos a recorrer las claves del body y vamos a crear un objeto con los test */
-
-        elementUpdate.forEach((item) => {
-          if (req.body[item] === cityByIdUpdate[item]) {
-            test[item] = true;
-          } else {
-            test[item] = false;
-          }
-        });
-
-        if (catchImg) {
-          cityByIdUpdate.image === catchImg
-            ? (test = { ...test, file: true })
-            : (test = { ...test, file: false });
-        }
-
-        /** vamos a ver que no haya ningun false. Si hay un false lanzamos un 404,
-         * si no hay ningun false entonces lanzamos un 200 porque todo esta correcte
-         */
-
-        let acc = 0;
-        for (clave in test) {
-          test[clave] == false && acc++;
-        }
-
-        if (acc > 0) {
-          return res.status(404).json({
-            dataTest: test,
-            update: false,
-          });
-        } else {
-          return res.status(200).json({
-            dataTest: test,
-            update: true,
-          });
-        }
-      } catch (error) {
-        return res.status(404).json(error.message);
-      }
-    } else {
-      return res.status(404).json("esta city no existe");
+    if (!cityById) {
+      return res.status(404).json("Esta ciudad no existe");
     }
+
+    // Verificar si se ha subido una nueva imagen o se ha enviado un nuevo numHab
+    let updateFields = {};
+    if (req.file) {
+      updateFields.image = req.file.path;
+    }
+    if (req.body.numHab) {
+      updateFields.numHab = req.body.numHab;
+    }
+
+    // Verificar que al menos uno de los campos a actualizar esté presente
+    if (Object.keys(updateFields).length === 0) {
+      return res
+        .status(400)
+        .json(
+          "Debes enviar al menos una imagen o un nuevo número de habitaciones para actualizar"
+        );
+    }
+
+    // Actualizar la ciudad con los campos proporcionados
+    const updatedCity = await City.findByIdAndUpdate(idCity, updateFields, {
+      new: true,
+    });
+
+    // Eliminar la antigua imagen de Cloudinary si se actualizó la imagen
+    if (req.file && cityById.image) {
+      deleteImgCloudinary(cityById.image);
+    }
+
+    return res.status(200).json({ updatedCity });
   } catch (error) {
-    return res.status(404).json(error.message);
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -303,7 +264,7 @@ const deleteCity = async (req, res, next) => {
           await User.updateMany(
             //borra el usuario que tenía la city
             { cities: idCity }, //!¿COMO SE LLMA EL ARRAY DE LAS CITIES ENEL USER?
-            { $pull: { user: idCity  } } //{ $pull: { user: id} } ---> esto no lo pilla
+            { $pull: { user: idCity } } //{ $pull: { user: id} } ---> esto no lo pilla
           );
 
           return res.status(findByIdCity ? 404 : 200).json({
