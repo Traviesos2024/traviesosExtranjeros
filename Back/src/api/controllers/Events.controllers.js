@@ -466,6 +466,17 @@ const updateEvent = async (req, res, next) => {
   }
 };
 
+//? -------------------------------SORT BY DATE -------------------------------
+
+const sortByDate = async (req, res) => {
+  try {
+    const events = await Events.find().sort({ date: 1 });
+    return res.status(200).json({ events });
+  } catch (error) {
+    return res.status(500).json("error.message");
+  }
+};
+
 //? -------------------------------DELETE -------------------------------
 
 const deleteEvent = async (req, res, next) => {
@@ -522,4 +533,5 @@ module.exports = {
   toggleLikeEvent,
   toggleFollowEvent,
   toggleCity,
+  sortByDate,
 };
