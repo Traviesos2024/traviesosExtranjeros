@@ -18,7 +18,7 @@ const EventSchema = new mongoose.Schema(
     date: {
       type: Date,
     },
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Menssage" }],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Message" }],
     experience: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],
     likeEvent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     eventFollowers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],

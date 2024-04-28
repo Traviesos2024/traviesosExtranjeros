@@ -895,18 +895,17 @@ const deleteUser = async (req, res, next) => {
       deleteImgCloudinary(image);
 
       /**
-       * 0) borrar la persona
-       * 1) likes ---> Eventos
-       * 2) likes ---> Experiencias
-       * 3) likes ---> Messages
-       * 4) userOne, userTwo: Chat
+       * 0) borrar la persona ---ok
+       * 1) likes ---> Eventos -- ok
+       * 2) likes ---> Experiencias --ok
+       * 3) likes ---> Messages --ok
+       * 4) userOne, userTwo: Chat ---ok
        * 5) owner -->Message
        * 6) mensajes (comments) ---> Eventos
        * 7) mensajes (comments) ---> Experiencias
        * 8) eventos creados por user
        * 9) experiencias creadas por user.
        * 10) eventos follow --> eventos
-       * 11) recipientUser --> Message
        */
 
       try {
@@ -956,65 +955,70 @@ const deleteUser = async (req, res, next) => {
                         //* 5) owner -->Message
                         await Message.deleteMany({ owner: _id });
 
+                        // try {
+                        //   // 6) mensajes (comments) ---> Eventos
+                        //   await Events.deleteMany(
+                        //     { comments: id },
+                        //     { $pull: { comments: id } }
+                        //   );
+                        //   try {
+                        //     // 7) mensajes (comments) ---> Experiencias
+                        //     await Experience.updateMany(
+                        //       { comments: id },
+                        //       { $pull: { comments: id } }
+                        //     );
                         try {
-                          // 6) mensajes (comments) ---> Eventos
-                          await Events.deleteMany({ comments: _id });
-
+                          // 8) eventos creados por user
+                          await User.deleteMany({ eventsOwner: _id });
                           try {
-                            // 7) mensajes (comments) ---> Experiencias
-                            await Experience.deleteMany({ comments: _id });
-                            try {
-                              // 8) eventos creados por user
-                              await User.deleteMany({ eventsOwner: _id });
-                              try {
-                                // 9) experiencias creadas por user
-                                await User.deleteMany({
-                                  experiencesOwner: _id,
-                                });
+                            // 9) experiencias creadas por user
+                            await User.deleteMany({
+                              experiencesOwner: _id,
+                            });
 
-                                try {
-                                  // 10) eventos follow --> eventos
-                                  await Events.deleteMany({
-                                    eventFollow: _id,
-                                  });
-                                  //! ----------REDIRECT--------------------------
-                                  console.log("😘", req.user.postedMessages);
-                                  return res.redirect(
-                                    307,
-                                    `http://localhost:8080/api/v1/users/redirect/message/${JSON.stringify(
-                                      req.user.postedMessages
-                                    )}`
-                                  );
-                                } catch (error) {
-                                  return res.status(404).json({
-                                    error: "Commentos borrado - eventos",
-                                    message: error.message,
-                                  });
-                                }
-                              } catch (error) {
-                                return res.status(404).json({
-                                  error: "Commentos borrado - experiencias",
-                                  message: error.message,
-                                });
-                              }
+                            try {
+                              // 10) eventos follow --> eventos
+                              await Events.deleteMany({
+                                eventFollow: _id,
+                              });
+                              //! ----------REDIRECT--------------------------
+                              console.log("😘", req.user.postedMessages);
+                              return res.redirect(
+                                307,
+                                `http://localhost:8080/api/v1/users/redirect/message/${JSON.stringify(
+                                  req.user.postedMessages
+                                )}`
+                              );
                             } catch (error) {
                               return res.status(404).json({
-                                error: "Eventos creados por el user",
+                                error: "Comment borrado - eventos",
                                 message: error.message,
                               });
                             }
                           } catch (error) {
                             return res.status(404).json({
-                              error: "Experiencias creados por el user",
+                              error: "Comment borrado - experiencias",
                               message: error.message,
                             });
                           }
                         } catch (error) {
                           return res.status(404).json({
-                            error: "Eventos seguidos por el user por el user",
+                            error: "Eventos creados por el user",
                             message: error.message,
                           });
                         }
+                        //   } catch (error) {
+                        //     return res.status(404).json({
+                        //       error: "Experiencias creados por el user",
+                        //       message: error.message,
+                        //     });
+                        //   }
+                        // } catch (error) {
+                        //   return res.status(404).json({
+                        //     error: "Eventos seguidos por el user por el user",
+                        //     message: error.message,
+                        //   });
+                        // }
                       } catch (error) {
                         return res.status(404).json({
                           error: "Messages deleteMany - owner",
@@ -1048,13 +1052,13 @@ const deleteUser = async (req, res, next) => {
               }
             } catch (error) {
               return res.status(404).json({
-                error: " Movies updateMany  --  likes",
+                error: " Experiences updateMany  --  likes",
                 message: error.message,
               });
             }
           } catch (error) {
             return res.status(404).json({
-              error: " Character updateMany  --  likes",
+              error: " Events updateMany  --  likes",
               message: error.message,
             });
           }
@@ -1084,35 +1088,20 @@ const deleteMessageDeleteUser = async (req, res, next) => {
 
     await parseArray.forEach(async (id) => {
       try {
-        const mensageDelete = await Menssage.findByIdAndDelete(id);
+        const mensageDelete = await Message.findByIdAndDelete(id);
 
         if (mensageDelete.type == "public") {
           try {
-            // update many Movie - comments
-
-            await Movie.updateMany(
+            await Experience.updateMany(
               { comments: id },
               { $pull: { comments: id } }
             );
 
             try {
-              // update many Characters - comments
-              await Character.updateMany(
+              await Events.updateMany(
                 { comments: id },
                 { $pull: { comments: id } }
               );
-              try {
-                // update many User - commentsPublicByOther
-                await User.updateMany(
-                  { commentsPublicByOther: id },
-                  { $pull: { commentsPublicByOther: id } }
-                );
-              } catch (error) {
-                return res.status(404).json({
-                  error: " user updateMany  -- commentsPublicByOther ",
-                  message: error.message,
-                });
-              }
             } catch (error) {
               return res.status(404).json({
                 error: " character updateMany  -- comments ",

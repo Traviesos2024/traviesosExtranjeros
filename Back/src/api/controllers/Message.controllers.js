@@ -15,7 +15,7 @@ const enumMessageTypeOk = require("../../utils/enumMessageTypeOk");
 
 const createMessage = async (req, res, next) => {
   try {
-    const { type } = req.body;
+    const { type, content } = req.body;
     const { idRecipient } = req.params; // -----> id del objetivo del comentario
     /**
      * idRecipient puede ser el id de : experience, user
