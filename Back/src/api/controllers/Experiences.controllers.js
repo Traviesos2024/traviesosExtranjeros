@@ -135,8 +135,6 @@ const toggleLikeExperience = async (req, res, next) => {
     return res.status(404).json(error.message);
   }
 };
-//!-----------------------A FALTA DE PROBAR CUANDO ESTÉ EN EVENT-----------------------
-//! -------------add/delete event que ha hecho la experience ----------------
 
 //! ---------------------------------------------------------------------
 //? -------------------TOGLEEVENT add o delete un events  ---------------

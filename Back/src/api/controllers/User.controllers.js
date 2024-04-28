@@ -12,7 +12,7 @@ dotenv.config();
 //? ------------------------------modelos----------------------------------
 //! -----------------------------------------------------------------------
 const User = require("../models/User.model");
-const Event = require("../models/Events.model");
+const Events = require("../models/Events.model");
 const Experience = require("../models/Experience.model");
 const Message = require("../models/Message.model");
 const Chat = require("../models/Chat.model");
@@ -30,6 +30,7 @@ const {
 const setError = require("../../helpers/handle-error");
 const { generateToken } = require("../../utils/token");
 const randomPassword = require("../../utils/randomPassword");
+const Events = require("../models/Events.model");
 
 //! -----------------------------------------------------------------------------
 //? ----------------------------REGISTER CORTO EN CODIGO ------------------------
@@ -875,6 +876,271 @@ const followUserToggle = async (req, res, next) => {
   }
 };
 
+//! -----------------------------------------------------------------------------
+//? ---------------------------------DELETE--------------------------------------
+//! -----------------------------------------------------------------------------
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { _id, image } = req.user;
+    await User.findByIdAndDelete(_id);
+
+    // hacemos un test para ver si lo ha borrado
+    if (await User.findById(_id)) {
+      // si el usuario
+      return res.status(404).json("not deleted"); ///
+    } else {
+      /**
+       * HAY QUE BORRARR TODO LO QUE HAY HECHO EL USER: LIKE, COMENTARIOS, LOS CHATS, LOS MENSAJES , EVENTOS, EXPERIENCIAS, ....
+       */
+      deleteImgCloudinary(image);
+
+      /**
+       * 0) borrar la persona
+       * 1) likes ---> Eventos
+       * 2) likes ---> Experiencias
+       * 3) likes ---> Messages
+       * 4) userOne, userTwo: Chat
+       * 5) owner -->Message
+       * 6) mensajes (comments) ---> Eventos
+       * 7) mensajes (comments) ---> Experiencias
+       * 8) eventos creados por user
+       * 9) experiencias creadas por user.
+       * 10) eventos follow --> eventos
+       * 11) recipientUser --> Message
+       */
+
+      try {
+        await User.updateMany(
+          { followers: _id },
+          { $pull: { followers: _id } }
+        );
+        try {
+          await User.updateMany(
+            { followed: _id },
+            { $pull: { followed: _id } }
+          );
+          try {
+            //* 1) likes ---> Events
+            await Events.updateMany(
+              { likeEvent: _id },
+              { $pull: { likeEvent: _id } }
+            );
+
+            try {
+              //* 2) likes ---> Experiencias
+
+              await Experience.updateMany(
+                { likes: _id },
+                { $pull: { likes: _id } }
+              );
+
+              try {
+                //* 3) likes ---> Messages
+                await Message.updateMany(
+                  { likes: _id },
+                  { $pull: { likes: _id } }
+                );
+                try {
+                  //* 4) userOne, userTwo: Chat
+                  await Chat.deleteMany({ userOne: _id });
+                  try {
+                    await Chat.deleteMany({ userTwo: _id });
+                    try {
+                      req.user.chats.forEach(async (idDeLosChatsBorrados) => {
+                        await User.updateMany(
+                          { chats: idDeLosChatsBorrados },
+                          { $pull: { chats: idDeLosChatsBorrados } }
+                        );
+                      });
+                      try {
+                        //* 5) owner -->Message
+                        await Message.deleteMany({ owner: _id });
+
+                        try {
+                          // 6) mensajes (comments) ---> Eventos
+                          await Events.deleteMany({ comments: _id });
+
+                          try {
+                            // 7) mensajes (comments) ---> Experiencias
+                            await Experience.deleteMany({ comments: _id });
+                            try {
+                              // 8) eventos creados por user
+                              await User.deleteMany({ eventsOwner: _id });
+                              try {
+                                // 9) experiencias creadas por user
+                                await User.deleteMany({
+                                  experiencesOwner: _id,
+                                });
+
+                                try {
+                                  // 10) eventos follow --> eventos
+                                  await Events.deleteMany({
+                                    eventFollow: _id,
+                                  });
+                                  //! ----------REDIRECT--------------------------
+                                  console.log("😘", req.user.postedMessages);
+                                  return res.redirect(
+                                    307,
+                                    `http://localhost:8080/api/v1/users/redirect/message/${JSON.stringify(
+                                      req.user.postedMessages
+                                    )}`
+                                  );
+                                } catch (error) {
+                                  return res.status(404).json({
+                                    error: "Commentos borrado - eventos",
+                                    message: error.message,
+                                  });
+                                }
+                              } catch (error) {
+                                return res.status(404).json({
+                                  error: "Commentos borrado - experiencias",
+                                  message: error.message,
+                                });
+                              }
+                            } catch (error) {
+                              return res.status(404).json({
+                                error: "Eventos creados por el user",
+                                message: error.message,
+                              });
+                            }
+                          } catch (error) {
+                            return res.status(404).json({
+                              error: "Experiencias creados por el user",
+                              message: error.message,
+                            });
+                          }
+                        } catch (error) {
+                          return res.status(404).json({
+                            error: "Eventos seguidos por el user por el user",
+                            message: error.message,
+                          });
+                        }
+                      } catch (error) {
+                        return res.status(404).json({
+                          error: "Messages deleteMany - owner",
+                          message: error.message,
+                        });
+                      }
+                    } catch (error) {
+                      return res.status(404).json({
+                        error:
+                          "User updateMany -- bucle de los id del resto de user de mis chats borrados",
+                        message: error.message,
+                      });
+                    }
+                  } catch (error) {
+                    return res.status(404).json({
+                      error: "chat deleteMany -- userTwo",
+                      message: error.message,
+                    });
+                  }
+                } catch (error) {
+                  return res.status(404).json({
+                    error: "chat deleteMany -- userOne",
+                    message: error.message,
+                  });
+                }
+              } catch (error) {
+                return res.status(404).json({
+                  error: " Menssage updateMany  --  likes",
+                  message: error.message,
+                });
+              }
+            } catch (error) {
+              return res.status(404).json({
+                error: " Movies updateMany  --  likes",
+                message: error.message,
+              });
+            }
+          } catch (error) {
+            return res.status(404).json({
+              error: " Character updateMany  --  likes",
+              message: error.message,
+            });
+          }
+        } catch (error) {
+          return res.status(404).json({
+            error: " user updateMany  -- followers ",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: " user updateMany  -- followed ",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+const deleteMessageDeleteUser = async (req, res, next) => {
+  try {
+    const { arrayIdMessages } = req.params;
+    const parseArray = JSON.parse(arrayIdMessages);
+    console.log("😘", parseArray);
+
+    await parseArray.forEach(async (id) => {
+      try {
+        const mensageDelete = await Menssage.findByIdAndDelete(id);
+
+        if (mensageDelete.type == "public") {
+          try {
+            // update many Movie - comments
+
+            await Movie.updateMany(
+              { comments: id },
+              { $pull: { comments: id } }
+            );
+
+            try {
+              // update many Characters - comments
+              await Character.updateMany(
+                { comments: id },
+                { $pull: { comments: id } }
+              );
+              try {
+                // update many User - commentsPublicByOther
+                await User.updateMany(
+                  { commentsPublicByOther: id },
+                  { $pull: { commentsPublicByOther: id } }
+                );
+              } catch (error) {
+                return res.status(404).json({
+                  error: " user updateMany  -- commentsPublicByOther ",
+                  message: error.message,
+                });
+              }
+            } catch (error) {
+              return res.status(404).json({
+                error: " character updateMany  -- comments ",
+                message: error.message,
+              });
+            }
+          } catch (error) {
+            return res.status(404).json({
+              error: "movie updateMany  --  comments ",
+              message: error.message,
+            });
+          }
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "message delete",
+          message: error.message,
+        });
+      }
+    });
+
+    return await res.status(200).json("delete ok");
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
 module.exports = {
   registerUtil,
   registerWithRedirect,
@@ -892,6 +1158,6 @@ module.exports = {
   byName,
   byGender,
   followUserToggle,
-  /*deleteMessageDeleteUser,
-  deleteUser,*/
+  deleteMessageDeleteUser,
+  deleteUser,
 };
