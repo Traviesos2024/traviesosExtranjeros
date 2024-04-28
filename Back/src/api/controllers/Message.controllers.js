@@ -16,7 +16,7 @@ const enumMessageTypeOk = require("../../utils/enumMessageTypeOk");
 const createMessage = async (req, res, next) => {
   try {
     const { type } = req.body;
-    const { idRecipient } = req.params; // -----> id de a quien quiero hacer el comentario
+    const { idRecipient } = req.params; // -----> id del objetivo del comentario
     /**
      * idRecipient puede ser el id de : experience, user
      */
@@ -453,18 +453,18 @@ const updateMessage = async (req, res, next) => {
       try {
         await Message.findByIdAndUpdate(id, customBody);
 
-        // ......> VAMOS A BUSCAR EL ELEMENTO ACTUALIZADO POR ID
+        // ...> Se busca el elemento actualizado a través de la ID
 
         const messageByIdUpdate = await Message.findById(id);
 
-        // ......> me cojer el req.body y vamos a sacarle las claves para saber que elementos nos ha dicho de actualizar
+        // ......> Se coge el req.body y vamos a sacarle las claves para saber que elementos nos ha dicho de actualizar
         const elementUpdate = Object.keys(req.body);
 
-        /** vamos a hacer un objeto vacion donde meteremos los test */
+        /** vamos a hacer un objeto vacio donde poder meter los test */
 
         let test = {};
 
-        /** vamos a recorrer las claves del body y vamos a crear un objeto con los test */
+        /** vamos a recorrer las claves del body y a crear un objeto con los test */
 
         elementUpdate.forEach((item) => {
           if (req.body[item] === messageByIdUpdate[item]) {
@@ -474,8 +474,8 @@ const updateMessage = async (req, res, next) => {
           }
         });
 
-        /** vamos a ver que no haya ningun false. Si hay un false lanzamos un 404,
-         * si no hay ningun false entonces lanzamos un 200 porque todo esta correcte
+        /** En caso de false, lanzamos un 404,
+         * si no hay false, entonces lanzamos un 200 porque todo esta correcte
          */
 
         let acc = 0;
