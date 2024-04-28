@@ -30,7 +30,6 @@ const {
 const setError = require("../../helpers/handle-error");
 const { generateToken } = require("../../utils/token");
 const randomPassword = require("../../utils/randomPassword");
-const Events = require("../models/Events.model");
 
 //! -----------------------------------------------------------------------------
 //? ----------------------------REGISTER CORTO EN CODIGO ------------------------

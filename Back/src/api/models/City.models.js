@@ -9,7 +9,7 @@ const CitySchema = new mongoose.Schema(
     numHab: { type: Number },
     country: [{ type: mongoose.Schema.Types.ObjectId, ref: "Country" }],
     // country: { type: String, required: true },
-    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Events" }],
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
   },
   {
     timestamps: true,

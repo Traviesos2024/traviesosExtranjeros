@@ -1,8 +1,9 @@
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const enumOk = require("../../utils/enumOk");
-const Event = require("../models/Events.model");
+const Events = require("../models/Events.model");
 const User = require("../models/User.model");
 const City = require("../models/City.models");
+const Experience = require("../models/Experience.model");
 
 //! -------------create new experiencie ----------------
 //? -------------------------------POST create --------------------------
@@ -24,12 +25,12 @@ const createEvent = async (req, res, next) => {
      * creacion del controlador
      */
 
-    await Event.syncIndexes();
+    await Events.syncIndexes();
     //! ------> INSTANCIAR UN NUEVO CHARACTER
     /** vamos a instanciar un nuevo character y le metemos como info incial lo que recibimos
      * por la req.body
      */
-    const newEvent = new Event(req.body);
+    const newEvent = new Events(req.body);
 
     //! -------> VALORAR SI HEMOS RECIBIDO UNA IMAGEN O NO
     /** Si recibimos la imagen tenemos que meter la url en el objeto creado arriba con la
@@ -85,7 +86,7 @@ const createEvent = async (req, res, next) => {
 const getByCategory = async (req, res, next) => {
   try {
     const { category } = req.params;
-    const eventByCategory = await Event.findByCategory(category);
+    const eventByCategory = await Events.findByCategory(category);
     if (eventByCategory) {
       return res.status(200).json(eventByCategory);
     } else {
@@ -102,7 +103,7 @@ const getByCategory = async (req, res, next) => {
 const getByCity = async (req, res, next) => {
   try {
     const { city } = req.params;
-    const eventByCity = await Event.findByCity(city);
+    const eventByCity = await Events.findByCity(city);
     if (eventByCity) {
       return res.status(200).json(eventByCity);
     } else {
@@ -117,7 +118,7 @@ const getByCity = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const allEvent = await Event.find().populate("experience");
+    const allEvent = await Events.find().populate("experience");
     /** el find nos devuelve un array */
     if (allEvent.length > 0) {
       return res.status(200).json(allEvent);
@@ -139,7 +140,7 @@ const getByName = async (req, res, next) => {
     const { name } = req.params;
 
     /// nos devuelve un array de elementos
-    const eventByName = await Event.find({ name });
+    const eventByName = await Events.find({ name });
     if (characterByName.length > 0) {
       return res.status(200).json(eventByName);
     } else {
@@ -157,25 +158,24 @@ const getByName = async (req, res, next) => {
 
 const toggleLikeEvent = async (req, res, next) => {
   try {
-    const { categoryEvent } = req.params;
-    //* vamos a tener el middleware de auth por lo cual se crea req.user
+    const { idEvent } = req.params;
     const { _id } = req.user;
 
-    if (req.user.eventFav.includes(categoryEvent)) {
+    if (req.user.eventsFav.includes(idEvent)) {
       try {
-        await User.findByIdAndUpdateEvent(_id, {
-          $pull: { eventFav: categoryEvent },
+        await User.findByIdAndUpdate(_id, {
+          $pull: { eventsFav: idEvent },
         });
 
         try {
-          await Event.findByCategoryAndUpdateEvent(categoryEvent, {
-            $pull: { likes: _id },
+          await Events.findByIdAndUpdate(idEvent, {
+            $pull: { likeEvent: _id },
           });
 
           return res.status(200).json({
             action: "disliked",
-            user: await User.findById(_id).populate("eventFav"),
-            event: await Event.findById(idEvent).populate("likes"),
+            user: await User.findById(_id).populate("eventsFav"),
+            events: await Events.findById(idEvent).populate("likeEvent"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -185,36 +185,35 @@ const toggleLikeEvent = async (req, res, next) => {
         }
       } catch (error) {
         return res.status(404).json({
-          error: "no update user-  EventFav",
+          error: "no update user-  EventsFav",
           message: error.message,
         });
       }
     } else {
       try {
-        await User.findByIdAndUpdateEvent(_category, {
-          $push: { eventFav: categoryEvent },
+        await User.findByIdAndUpdate(_id, {
+          $push: { eventsFav: idEvent },
         });
 
         try {
-          await Event.findByIdAndUpdate(categoryEvent, {
-            //*categoryEventEvent
-            $push: { likes: _type },
+          await Events.findByIdAndUpdate(idEvent, {
+            $push: { likeEvent: _id },
           });
 
           return res.status(200).json({
             action: "like",
-            user: await User.findById(_category).populate("eventsFav"),
-            event: await Event.findByCategory(categoryEvent).populate("likes"),
+            user: await User.findById(_id).populate("eventsFav"),
+            events: await Events.findById(idEvent).populate("likeEvent"),
           });
         } catch (error) {
           return res.status(404).json({
-            error: "no update Event - likes",
+            error: "no update Event - likeEvent",
             message: error.message,
           });
         }
       } catch (error) {
         return res.status(404).json({
-          error: "no update user-  eventFav",
+          error: "no update user-  eventsFav",
           message: error.message,
         });
       }
@@ -228,64 +227,62 @@ const toggleLikeEvent = async (req, res, next) => {
 
 const toggleFollowEvent = async (req, res, next) => {
   try {
-    const { categoryEvent } = req.params;
-    //* vamos a tener el middleware de auth por lo cual se crea req.user
+    const { idEvent } = req.params;
     const { _id } = req.user;
 
-    if (req.user.eventFav.includes(categoryEvent)) {
+    if (req.user.eventsFollow.includes(idEvent)) {
       try {
-        await User.findByIdAndUpdateEvent(_id, {
-          $pull: { eventFav: categoryEvent },
+        await User.findByIdAndUpdate(_id, {
+          $pull: { eventsFollow: idEvent },
         });
 
         try {
-          await Event.findByCategoryAndUpdateEvent(categoryEvent, {
-            $pull: { likes: _id },
+          await Events.findByIdAndUpdate(idEvent, {
+            $pull: { eventFollowers: _id },
           });
 
           return res.status(200).json({
             action: "unfollow",
-            user: await User.findById(_id).populate("eventFav"),
-            event: await Event.findById(idEvent).populate("likes"),
+            user: await User.findById(_id).populate("eventsFollow"),
+            events: await Events.findById(idEvent).populate("eventFollowers"),
           });
         } catch (error) {
           return res.status(404).json({
-            error: "no update Event - likes",
+            error: "no update Event - eventFollowers",
             message: error.message,
           });
         }
       } catch (error) {
         return res.status(404).json({
-          error: "no update user-  EventFav",
+          error: "no update user-  eventsFollow",
           message: error.message,
         });
       }
     } else {
       try {
-        await User.findByIdAndUpdateEvent(_category, {
-          $push: { eventFav: categoryEvent },
+        await User.findByIdAndUpdate(_id, {
+          $push: { eventsFollow: idEvent },
         });
 
         try {
-          await Event.findByIdAndUpdate(categoryEvent, {
-            //*categoryEventEvent
-            $push: { likes: _type },
+          await Events.findByIdAndUpdate(idEvent, {
+            $push: { eventFollowers: _id },
           });
 
           return res.status(200).json({
-            action: "like",
-            user: await User.findById(_category).populate("eventsFav"),
-            event: await Event.findByCategory(categoryEvent).populate("likes"),
+            action: "follow",
+            user: await User.findById(_id).populate("eventsFollow"),
+            events: await Events.findById(idEvent).populate("eventFollowers"),
           });
         } catch (error) {
           return res.status(404).json({
-            error: "no update Event - likes",
+            error: "no update Event - eventFollowers",
             message: error.message,
           });
         }
       } catch (error) {
         return res.status(404).json({
-          error: "no update user-  eventFav",
+          error: "no update user-  eventsFollow",
           message: error.message,
         });
       }
@@ -295,14 +292,14 @@ const toggleFollowEvent = async (req, res, next) => {
   }
 };
 
-//? ----------------------------toggle events-----add o delete un events  --------------
+//? ----------------------------toggle city-----add o delete un events  --------------
 
-const toggleEvent = async (req, res, next) => {
+const toggleCity = async (req, res, next) => {
   try {
     const { idCity, idEvent } = req.params;
     // Obtener los objetos City y Event por sus IDs
     const city = await City.findById(idCity);
-    const event = await Event.findById(idEvent);
+    const event = await Events.findById(idEvent);
 
     if (!city || !event) {
       return res.status(404).json({ error: "Ciudad o evento no encontrado" });
@@ -312,7 +309,7 @@ const toggleEvent = async (req, res, next) => {
     if (event.cities.includes(idCity)) {
       try {
         // Actualizar el evento y eliminar la ciudad
-        await Event.findByIdAndUpdate(idEvent, { $pull: { cities: idCity } });
+        await Events.findByIdAndUpdate(idEvent, { $pull: { cities: idCity } });
         console.log("borrado el evento");
 
         try {
@@ -321,7 +318,7 @@ const toggleEvent = async (req, res, next) => {
           console.log("borrada la ciudad");
           return res.status(200).json({
             action: "delete",
-            cities: await Event.findById(idEvent).populate("cities"),
+            cities: await Events.findById(idEvent).populate("cities"),
             events: await City.findById(idCity).populate("events"),
           });
         } catch (error) {
@@ -339,7 +336,7 @@ const toggleEvent = async (req, res, next) => {
     } else {
       try {
         // Actualizar el evento y agregar la ciudad
-        await Event.findByIdAndUpdate(idEvent, { $push: { cities: idCity } });
+        await Events.findByIdAndUpdate(idEvent, { $push: { cities: idCity } });
         console.log("actualizado el evento");
 
         try {
@@ -348,7 +345,7 @@ const toggleEvent = async (req, res, next) => {
           console.log("actualizada la ciudad");
           return res.status(200).json({
             action: "events",
-            cities: await Event.findById(idEvent).populate("cities"),
+            cities: await Events.findById(idEvent).populate("cities"),
             events: await City.findById(idCity).populate("events"),
           });
         } catch (error) {
@@ -375,9 +372,9 @@ const updateEvent = async (req, res, next) => {
   let catchImg = req.file?.path;
 
   try {
-    await Event.syncIndexes();
+    await Events.syncIndexes();
     const { idEvent } = req.params;
-    const event = await Event.findById(idEvent);
+    const event = await Events.findById(idEvent);
     if (event) {
       //*eventByTypeByType//
       const oldImg = event.image;
@@ -385,6 +382,9 @@ const updateEvent = async (req, res, next) => {
       const customBody = {
         _category: event._category,
         image: req.file?.path ? catchImg : oldImg,
+        description: req.body?.description
+          ? req.body?.description
+          : event.description,
         name: req.body?.name ? req.body?.name : event.name,
         date: req.body?.date ? req.body?.date : event.date,
       };
@@ -398,7 +398,7 @@ const updateEvent = async (req, res, next) => {
       }
 
       try {
-        await Event.findByIdAndUpdate(idEvent, customBody);
+        await Events.findByIdAndUpdate(idEvent, customBody);
         if (req.file?.path) {
           deleteImgCloudinary(oldImg);
         }
@@ -421,10 +421,6 @@ const updateEvent = async (req, res, next) => {
         /** vamos a recorrer las claves del body y vamos a crear un objeto con los test */
 
         elementUpdateEvent.forEach((item) => {
-          console.log("el item", item);
-          console.log("req.body", req.body[item]);
-          console.log("event[item]", event[item]);
-
           if (req.body[item] === event[item]) {
             test[item] = false;
           } else {
@@ -474,27 +470,29 @@ const updateEvent = async (req, res, next) => {
 
 const deleteEvent = async (req, res, next) => {
   try {
-    const { type } = req.params;
-    const event = await Event.findByTypeAndDelete(type);
+    const { id } = req.params;
+    const event = await Events.findById(id);
     if (event) {
       // lo buscamos para vr si sigue existiendo o no
-      const findByTypeEvent = await Event.findByType(type);
+      const findByTypeEvent = await Events.findById(id);
 
       try {
         const test = await Experience.updateMany(
-          { event: type },
-          { $pull: { event: type } }
+          { event: id },
+          { $pull: { event: id } }
         );
         console.log(test);
 
         try {
           await User.updateMany(
-            { eventFav: type },
-            { $pull: { eventFav: type } }
+            { eventsFav: id },
+            { $pull: { eventsFav: id } }
           );
 
-          return res.status(findByTypeEvent ? 404 : 200).json({
-            deleteTest: findByTypeEvent ? false : true,
+          await Events.findByIdAndDelete(id);
+
+          return res.status(200).json({
+            deleteTest: true,
           });
         } catch (error) {
           return res.status(404).json({
@@ -523,5 +521,5 @@ module.exports = {
   deleteEvent,
   toggleLikeEvent,
   toggleFollowEvent,
-  toggleEvent,
+  toggleCity,
 };

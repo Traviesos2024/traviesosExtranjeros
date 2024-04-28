@@ -60,7 +60,7 @@ const UserSchema = new mongoose.Schema(
     experiencesOwner: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Experience" },
     ], // array de las experiencias que hemos creado
-
+    eventsFollow: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
     eventsFav: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
     experiencesFav: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Experience" },

@@ -141,57 +141,57 @@ const toggleEvent = async (req, res, next) => {
 //? ----------------TOGGLECOUNTRY add o delete un country  --------------
 //! ---------------------------------------------------------------------
 
-// const toggleCountry = async (req, res, next) => {
-//   try {
-//     const { idCity, idCountry } = req.params;
+const toggleCountry = async (req, res, next) => {
+  try {
+    const { idCity, idCountry } = req.params;
 
-//     // Obtener los objetos City y Country por sus IDs
-//     const city = await City.findById(idCity);
-//     const country = await Country.findById(idCountry);
+    // Obtener los objetos City y Country por sus IDs
+    const city = await City.findById(idCity);
+    const country = await Country.findById(idCountry);
 
-//     if (!city || !country) {
-//       return res.status(404).json({ error: "Ciudad o pais no encontrado" });
-//     }
+    if (!city || !country) {
+      return res.status(404).json({ error: "Ciudad o pais no encontrado" });
+    }
 
-//     if (country.cities.includes(idCity)) {
-//       try {
-//         // Actualizar el pais y eliminar la ciudad
-//         await Country.findByIdAndUpdate(idCountry, {
-//           $pull: { cities: idCity },
-//         });
+    if (country.cities.includes(idCity)) {
+      try {
+        // Actualizar el pais y eliminar la ciudad
+        await Country.findByIdAndUpdate(idCountry, {
+          $pull: { cities: idCity },
+        });
 
-//         return res.status(200).json({
-//           action: "delete",
-//           cities: await Country.findById(idCountry).populate("cities"),
-//         });
-//       } catch (error) {
-//         return res.status(404).json({
-//           error: "No se ha actualizado el pais - cities",
-//           message: error.message,
-//         });
-//       }
-//     } else {
-//       try {
-//         // Actualizar el evento y agregar la ciudad
-//         await Country.findByIdAndUpdate(idCountry, {
-//           $push: { cities: idCity },
-//         });
+        return res.status(200).json({
+          action: "delete",
+          cities: await Country.findById(idCountry).populate("cities"),
+        });
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado el pais - cities",
+          message: error.message,
+        });
+      }
+    } else {
+      try {
+        // Actualizar el evento y agregar la ciudad
+        await Country.findByIdAndUpdate(idCountry, {
+          $push: { cities: idCity },
+        });
 
-//         return res.status(200).json({
-//           action: "country",
-//           cities: await Country.findById(idCountry).populate("cities"),
-//         });
-//       } catch (error) {
-//         return res.status(404).json({
-//           error: "No se ha actualizado country - cities",
-//           message: error.message,
-//         });
-//       }
-//     }
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// };
+        return res.status(200).json({
+          action: "country",
+          cities: await Country.findById(idCountry).populate("cities"),
+        });
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado country - cities",
+          message: error.message,
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
 
 //! ---------------------------------------------------------------------
 //? ----------------UPDATE image y número de habitantes------------------
