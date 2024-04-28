@@ -12,7 +12,12 @@ const { upload } = require("../../middleware/files.middleware");
 const ExperienceRoutes = express.Router();
 
 ExperienceRoutes.patch("/like/:idExperience", [isAuth], toggleLikeExperience);
-ExperienceRoutes.patch("/addEvent/:idExperience", [isAuth], toggleEvent);
+// ExperienceRoutes.patch("/addEvent/:idExperience", [isAuth], toggleEvent);
+ExperienceRoutes.patch(
+  "/experience/:idExperience/events/:idEvent",
+  [isAuth],
+  toggleEvent
+);
 ExperienceRoutes.post(
   "/create",
   [isAuth],

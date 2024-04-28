@@ -138,105 +138,87 @@ const toggleLikeExperience = async (req, res, next) => {
 //!-----------------------A FALTA DE PROBAR CUANDO ESTÉ EN EVENT-----------------------
 //! -------------add/delete event que ha hecho la experience ----------------
 
+//! ---------------------------------------------------------------------
+//? -------------------TOGLEEVENT add o delete un events  ---------------
+//! ---------------------------------------------------------------------
+
 const toggleEvent = async (req, res, next) => {
   try {
-    /** este es el id de la experiencia que queremos actualizar */
-    const { idExperience } = req.params;
-    //req.body; No sé si el user va por el req.user o se metería por el body
-    //! const { _id } = req.user; // -----> idDeLosUser, tienes que estar logado para añadirte como que la has hecho
-    const { events } = req.body;
+    const { idExperience, idEvent } = req.params;
 
-    /** Buscamos la experiencia por su id primero para saber si existe */
-    const experienceById = await Experience.findById(idExperience);
+    // Obtener los objetos experience y Event por sus IDs
+    const experience = await Experience.findById(idExperience);
+    const event = await Events.findById(idEvent);
 
-    if (experienceById) {
-      /** cogemos el string que traemos del body y lo convertimos en un array
-       * separando las posiciones donde en el string habia una coma
-       * se hace mediante el metodo del split
-       */
+    if (!experience || !event) {
+      return res
+        .status(404)
+        .json({ error: "Experiencia o evento no encontrado" });
+    }
 
-      //!const arrayIdUser = _id.split(",");
-      const arrayIdEvent = events.split(",");
-
-      /** recorremos este array que hemos creado y vemos si tenemos que:
-       * 1) ----> sacar el user si ya lo tenemos en el back
-       * 2) ----> meterlo en caso de que no lo tengamos metido en el back
-       */
-
-      Promise.all(
-        arrayIdEvent.map(async (event, index) => {
-          if (experienceById.events.includes(event)) {
-            //! arrayIdUser.map(async (_id, index) => {
-            //! if (experienceById._id.includes(_id)) {
-            //*************************************************************************** */
-
-            //________ BORRAR DEL ARRAY DE USER EL USER DENTRO DE LA EXPERIENCE
-
-            //*************************************************************************** */
-
-            try {
-              await Experience.findByIdAndUpdate(idExperience, {
-                // dentro de la clavee users me vas a sacar el id del elemento que estoy recorriendo
-                // !$pull: { user: _id },
-                $pull: { events: event },
-              });
-
-              try {
-                await Events.findByIdAndUpdate(event, {
-                  $pull: { events: idExperience },
-                });
-              } catch (error) {
-                res.status(404).json({
-                  error: "error update user",
-                  message: error.message,
-                }) && next(error);
-              }
-            } catch (error) {
-              res.status(404).json({
-                error: "error update experience",
-                message: error.message,
-              }) && next(error);
-            }
-          } else {
-            //*************************************************************************** */
-            //________ METER EL user EN EL ARRAY DE user DE LA experience
-            //*************************************************************************** */
-            /** si no lo incluye lo tenemos que meter -------> $push */
-
-            try {
-              await Experience.findByIdAndUpdate(idExperience, {
-                $push: { events: event },
-              });
-              try {
-                await Events.findByIdAndUpdate(event, {
-                  $push: { events: idExperience },
-                });
-              } catch (error) {
-                res.status(404).json({
-                  error: "error update user",
-                  message: error.message,
-                }) && next(error);
-              }
-            } catch (error) {
-              res.status(404).json({
-                error: "error update experience",
-                message: error.message,
-              }) && next(error);
-            }
-          }
-        })
-      )
-        .catch((error) => res.status(404).json(error.message))
-        .then(async () => {
-          return res.status(200).json({
-            dataUpdate: await Experience.findById(idExperience).populate(
-              "users"
-            ),
-          });
+    if (event.experience.includes(idExperience)) {
+      try {
+        // Actualizar el evento y eliminar la experiencia
+        await Events.findByIdAndUpdate(idEvent, {
+          $pull: { experience: idExperience },
         });
+
+        try {
+          // Actualizar la experiencia y eliminar el evento
+          await Experience.findByIdAndUpdate(idExperience, {
+            $pull: { events: idEvent },
+          });
+
+          return res.status(200).json({
+            action: "delete",
+            experience: await Events.findById(idEvent).populate("experience"),
+            events: await Experience.findById(idExperience).populate("events"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la experiencia - events",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado el evento - experience",
+          message: error.message,
+        });
+      }
+    } else {
+      try {
+        // Actualizar el evento y agregar la ciudad
+        await Events.findByIdAndUpdate(idEvent, {
+          $push: { experience: idExperience },
+        });
+
+        try {
+          // Actualizar la ciudad y agregar el evento
+          await Experience.findByIdAndUpdate(idExperience, {
+            $push: { events: idEvent },
+          });
+
+          return res.status(200).json({
+            action: "events",
+            experience: await Events.findById(idEvent).populate("experience"),
+            events: await Experience.findById(idExperience).populate("events"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la experience - events",
+            message: error.message,
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "No se ha actualizado el evento - experience",
+          message: error.message,
+        });
+      }
     }
   } catch (error) {
-    return res.status(404).json(error.message);
+    return res.status(500).json({ error: error.message });
   }
 };
 

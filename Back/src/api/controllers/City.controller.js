@@ -3,6 +3,7 @@ const Events = require("../models/Events.model");
 const City = require("../models/City.models");
 const User = require("../models/User.model");
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
+const Country = require("../models/Country.models");
 
 //! -------------create new city ----------------
 
@@ -63,7 +64,7 @@ const cityById = async (req, res, next) => {
 };
 
 //! ---------------------------------------------------------------------
-//? ----------------------------add o delete un events  --------------
+//? -------------------TOGLEEVENT add o delete un events  ---------------
 //! ---------------------------------------------------------------------
 
 const toggleEvent = async (req, res, next) => {
@@ -137,9 +138,61 @@ const toggleEvent = async (req, res, next) => {
 };
 
 //! ---------------------------------------------------------------------
-//? ----------------------------add o delete un country  --------------
+//? ----------------TOGGLECOUNTRY add o delete un country  --------------
 //! ---------------------------------------------------------------------
 
+// const toggleCountry = async (req, res, next) => {
+//   try {
+//     const { idCity, idCountry } = req.params;
+
+//     // Obtener los objetos City y Country por sus IDs
+//     const city = await City.findById(idCity);
+//     const country = await Country.findById(idCountry);
+
+//     if (!city || !country) {
+//       return res.status(404).json({ error: "Ciudad o pais no encontrado" });
+//     }
+
+//     if (country.cities.includes(idCity)) {
+//       try {
+//         // Actualizar el pais y eliminar la ciudad
+//         await Country.findByIdAndUpdate(idCountry, {
+//           $pull: { cities: idCity },
+//         });
+
+//         return res.status(200).json({
+//           action: "delete",
+//           cities: await Country.findById(idCountry).populate("cities"),
+//         });
+//       } catch (error) {
+//         return res.status(404).json({
+//           error: "No se ha actualizado el pais - cities",
+//           message: error.message,
+//         });
+//       }
+//     } else {
+//       try {
+//         // Actualizar el evento y agregar la ciudad
+//         await Country.findByIdAndUpdate(idCountry, {
+//           $push: { cities: idCity },
+//         });
+
+//         return res.status(200).json({
+//           action: "country",
+//           cities: await Country.findById(idCountry).populate("cities"),
+//         });
+//       } catch (error) {
+//         return res.status(404).json({
+//           error: "No se ha actualizado country - cities",
+//           message: error.message,
+//         });
+//       }
+//     }
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// };
+//! ----------NO FUNCIONA----------------------
 const toggleCountry = async (req, res, next) => {
   try {
     const { idCity, idCountry } = req.params;
@@ -149,40 +202,66 @@ const toggleCountry = async (req, res, next) => {
     const country = await Country.findById(idCountry);
 
     if (!city || !country) {
-      return res.status(404).json({ error: "Ciudad o pais no encontrado" });
+      return res.status(404).json({ error: "Ciudad o country no encontrado" });
     }
 
     if (country.cities.includes(idCity)) {
       try {
-        // Actualizar el pais y eliminar la ciudad
+        // Actualizar el evento y eliminar la ciudad
         await Country.findByIdAndUpdate(idCountry, {
           $pull: { cities: idCity },
         });
 
-        return res.status(200).json({
-          action: "delete",
-          cities: await Country.findById(idCountry).populate("cities"),
-        });
+        try {
+          // Actualizar la ciudad y eliminar el evento
+          await City.findByIdAndUpdate(idCity, {
+            $pull: { country: idCountry },
+          });
+
+          return res.status(200).json({
+            action: "delete",
+            cities: await Country.findById(idCountry).populate("cities"),
+            country: await City.findById(idCity).populate("country"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la ciudad - country",
+            message: error.message,
+          });
+        }
       } catch (error) {
         return res.status(404).json({
-          error: "No se ha actualizado el pais - cities",
+          error: "No se ha actualizado el country - cities",
           message: error.message,
         });
       }
     } else {
       try {
-        // Actualizar el evento y agregar la ciudad
+        // Actualizar el country y agregar la ciudad
         await Country.findByIdAndUpdate(idCountry, {
           $push: { cities: idCity },
         });
 
-        return res.status(200).json({
-          action: "country",
-          cities: await Country.findById(idCountry).populate("cities"),
-        });
+        try {
+          // Actualizar la ciudad y agregar el country
+          await City.findByIdAndUpdate(idCity, {
+            $push: { country: idCountry },
+          });
+
+          return res.status(200).json({
+            action: "country",
+            cities: await Country.findById(idCountry).populate("cities"),
+            country: await City.findById(idCity).populate("country"),
+          });
+        } catch (error) {
+          return res.status(404).json({
+            error: "No se ha actualizado la ciudad - country",
+            message: error.message,
+          });
+        }
       } catch (error) {
         return res.status(404).json({
-          error: "No se ha actualizado el evento - cities",
+          error: "No se ha actualizado el country - cities",
           message: error.message,
         });
       }
@@ -193,7 +272,7 @@ const toggleCountry = async (req, res, next) => {
 };
 
 //! ---------------------------------------------------------------------
-//? -------------------------------UPDATE -------------------------------
+//? ----------------UPDATE image y número de habitantes------------------
 //! ---------------------------------------------------------------------
 
 const updateCity = async (req, res, next) => {

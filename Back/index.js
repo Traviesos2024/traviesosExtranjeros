@@ -22,7 +22,7 @@ configCloudinary();
 
 const PORT = process.env.PORT;
 
-//!- ----------------CORS -------------------------------
+//!- ----------------CORS --------------------------------
 
 // libreria para configurar el acceso a la api, hay que traer la librería (lo tengo en la línea 3)
 app.use(cors()); // Para utilizar la librería
@@ -57,6 +57,7 @@ app.use("/api/v1/country/", CountryRoutes);
 
 const ChatRoutes = require("./src/api/routes/Chat.routes");
 app.use("/api/v1/chat/", ChatRoutes);
+
 //! --------------- generamos un error de cuando no se encuentre la ruta--
 
 app.use("*", (req, res, next) => {
