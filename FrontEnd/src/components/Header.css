@@ -1,0 +1,14 @@
+header {
+  min-height: 20vh;
+  background-color: rgba(212, 201, 201, 0.081);
+  justify-content: center;
+  align-items: center ;
+  text-align: center;
+  & h1{
+  font-size: 3.2em;
+  line-height: 1.1;
+  padding: 20px;
+}
+}
+
+
