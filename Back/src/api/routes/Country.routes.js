@@ -10,7 +10,12 @@ const CountryRoutes = express.Router();
 const { isAuth, isAuthSuper } = require("../../middleware/auth.middleware");
 const { upload } = require("../../middleware/files.middleware");
 
-CountryRoutes.post("/create", [isAuth], upload.single("image"), createCountry);
+CountryRoutes.post(
+  "/create",
+  [isAuthSuper],
+  upload.single("image"),
+  createCountry
+);
 CountryRoutes.get("/finById/:idCountry", countryById);
 CountryRoutes.patch(
   "/update/:idCountry",

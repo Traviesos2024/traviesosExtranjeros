@@ -1,12 +1,13 @@
 import { APITraviesos } from "./serviceApi.config";
 
-//! --HAY QUE METER EL TOKEN A los que tengan marca roja---
-
 // ----------------createEvent ------------------------
-//! SUPER ADMIN
+
 export const createEvent = async (formData) => {
   return APITraviesos.post(`/event/createEvent`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);
@@ -45,13 +46,16 @@ export const getByCity = async (city) => {
 };
 
 // ----------------toggleCity ------------------------
-//! TOKEN
+
 export const toggleCity = async (idCity, idEvent, formData) => {
   return APITraviesos.patch(
     `/event/cities/${idCity}/events/${idEvent}`,
     formData,
     {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${updateToken()}`,
+      },
     }
   )
     .then((res) => res)
@@ -59,38 +63,51 @@ export const toggleCity = async (idCity, idEvent, formData) => {
 };
 
 // ----------------updateEvent ------------------------
-//! TOKEN
+
 export const updateEvent = async (idEvent, formData) => {
   return APITraviesos.patch(`/event/${idEvent}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);
 };
 
 // ----------------deleteEvent ------------------------
-//! TOKEN
+
 export const deleteEvent = async (id) => {
-  return APITraviesos.delete(`/event/${id}`)
+  return APITraviesos.delete(`/event/${id}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };
 
 // ----------------toggleLikeEvent ------------------------
-//! TOKEN
+
 export const toggleLikeEvent = async (idEvent, formData) => {
   return APITraviesos.patch(`/event/like/${idEvent}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);
 };
 
 // ----------------toggleFollowEvent ------------------------
-//! TOKEN
+
 export const toggleFollowEvent = async (idEvent, formData) => {
   return APITraviesos.patch(`/event/follow/${idEvent}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);

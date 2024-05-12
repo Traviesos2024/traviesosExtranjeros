@@ -1,18 +1,19 @@
 import { APITraviesos } from "./serviceApi.config";
 
-//! --HAY QUE METER EL TOKEN A los que tengan marca roja---
-
 // ----------------createCountry ------------------------
 //! SUPER ADMIN
 export const createCountry = async (formData) => {
   return APITraviesos.post(`/country/create`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);
 };
 
-// ----------------get By Id ------------------------
+// ----------------gcountryById ------------------------
 
 export const countryById = async (idCountry) => {
   return APITraviesos.get(`/country/finById/${idCountry}`)
@@ -21,19 +22,26 @@ export const countryById = async (idCountry) => {
 };
 
 // ----------------update ------------------------
-//! TOKEN
+
 export const update = async (idCountry, formData) => {
   return APITraviesos.patch(`/country/update/${idCountry}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);
 };
 
 // ----------------deleteCity ------------------------
-//! TOKEN
+//! SUPER ADMIN
 export const deleteCity = async (idCountry) => {
-  return APITraviesos.delete(`/country/${idCountry}`)
+  return APITraviesos.delete(`/country/${idCountry}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };

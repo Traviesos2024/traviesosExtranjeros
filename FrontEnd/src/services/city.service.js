@@ -6,7 +6,10 @@ import { APITraviesos } from "./serviceApi.config";
 //! SUPER ADMIN
 export const createCity = async (formData) => {
   return APITraviesos.post(`/city/create`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);
@@ -21,13 +24,16 @@ export const cityById = async (idCity) => {
 };
 
 // ----------------toggleEvent ------------------------
-//! TOKEN
+
 export const toggleEvent = async (idCity, idEvent, formData) => {
   return APITraviesos.patch(
     `/city/cities/${idCity}/events/${idEvent}`,
     formData,
     {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${updateToken()}`,
+      },
     }
   )
     .then((res) => res)
@@ -35,13 +41,16 @@ export const toggleEvent = async (idCity, idEvent, formData) => {
 };
 
 // ----------------toggleCountry ------------------------
-//! TOKEN
+
 export const toggleCountry = async (idCity, idCountry, formData) => {
   return APITraviesos.patch(
     `/city/cities/${idCity}/country/${idCountry}`,
     formData,
     {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${updateToken()}`,
+      },
     }
   )
     .then((res) => res)
@@ -49,19 +58,26 @@ export const toggleCountry = async (idCity, idCountry, formData) => {
 };
 
 // ----------------updateCity ------------------------
-//! TOKEN
+
 export const updateCity = async (idCity, formData) => {
   return APITraviesos.patch(`/city/update/${idCity}`, formData, {
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
   })
     .then((res) => res)
     .catch((error) => error);
 };
 
 // ----------------deleteCity ------------------------
-//! TOKEN
+//! SUPER ADMIN
 export const deleteCity = async (idCity) => {
-  return APITraviesos.delete(`/city/${idCity}`)
+  return APITraviesos.delete(`/city/${idCity}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };

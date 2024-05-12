@@ -22,6 +22,6 @@ CityRoutes.patch(
   upload.single("image"),
   updateCity
 );
-CityRoutes.delete("/:idCity", [isAuth], deleteCity);
+CityRoutes.delete("/:idCity", [isAuthSuper], deleteCity);
 
 module.exports = CityRoutes;

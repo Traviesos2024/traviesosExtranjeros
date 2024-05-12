@@ -1,10 +1,13 @@
 import { APITraviesos } from "./serviceApi.config";
 
-//! -------HAY QUE METER EL TOKEN A TODOS-----------
 // ----------------get All ------------------------
 
 export const getAllChats = async () => {
-  return APITraviesos.get(`/chat/get/all`)
+  return APITraviesos.get(`/chat/get/all`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };
@@ -12,7 +15,11 @@ export const getAllChats = async () => {
 // ----------------get By Id ------------------------
 
 export const getChatById = async (id) => {
-  return APITraviesos.get(`/chat/get/id/${id}`)
+  return APITraviesos.get(`/chat/get/id/${id}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };
@@ -20,7 +27,11 @@ export const getChatById = async (id) => {
 // ----------------get By User ------------------------
 
 export const getChatByUser = async (id) => {
-  return APITraviesos.get(`/chat/get/${id}`)
+  return APITraviesos.get(`/chat/get/${id}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };
@@ -28,7 +39,11 @@ export const getChatByUser = async (id) => {
 // ----------------Delete chat ------------------------
 
 export const deleteChat = async (id) => {
-  return APITraviesos.delete(`/chat/${id}`)
+  return APITraviesos.delete(`/chat/${id}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };
