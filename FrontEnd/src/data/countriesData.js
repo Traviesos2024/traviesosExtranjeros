@@ -17,4 +17,22 @@ export const countriesData = [
       { name: "Lyon", path: "/country/lyon" },
     ],
   },
+  {
+    name: "Portugal",
+    image: "portugal.jpg", //Buscar imágen
+    cities: [
+      { name: "Oporto", path: "/country/oporto" },
+      { name: "Lisboa", path: "/country/lisboa" },
+      { name: "Coimbra", path: "/country/coimbra" },
+    ],
+  },
+  {
+    name: "Italia",
+    image: "italia.jpg", //Buscar imágen
+    cities: [
+      { name: "Florencia", path: "/country/florencia" },
+      { name: "Roma", path: "/country/roma" },
+      { name: "Venecia", path: "/country/venecia" },
+    ],
+  },
 ];
