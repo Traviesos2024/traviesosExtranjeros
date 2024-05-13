@@ -1,17 +1,17 @@
 import { NavLink, Outlet } from "react-router-dom";
 import "./Country.css";
+import CountryCard from "../components/CountryCard";
+import { countriesData } from "../data/countriesData";
 
 export const Country = () => {
   return (
     <div id="containerCountry">
-      {/* Añadir aqui tarjetas de cada country, tengo el estilo creado en CSS  */}
-
-      <NavLink to="/country/city">
-        <button>Cities</button>
-      </NavLink>
-      <p>
-        Estoy el la pagina de country y dentro de esta página tengo las citys
-      </p>
+      <h1>Países</h1>
+      <div className="country-grid">
+        {countriesData.map((country, index) => (
+          <CountryCard key={index} country={country} />
+        ))}
+      </div>
       <Outlet />
     </div>
   );
