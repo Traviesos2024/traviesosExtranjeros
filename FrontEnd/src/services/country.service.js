@@ -1,3 +1,4 @@
+import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
 
 // ----------------createCountry ------------------------
@@ -13,7 +14,7 @@ export const createCountry = async (formData) => {
     .catch((error) => error);
 };
 
-// ----------------gcountryById ------------------------
+// ----------------countryById ------------------------
 
 export const countryById = async (idCountry) => {
   return APITraviesos.get(`/country/finById/${idCountry}`)

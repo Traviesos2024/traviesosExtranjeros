@@ -1,6 +1,5 @@
+import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
-
-//! --HAY QUE METER EL TOKEN A los que tengan marca roja---
 
 // ----------------createCity ------------------------
 //! SUPER ADMIN
@@ -42,17 +41,13 @@ export const toggleEvent = async (idCity, idEvent, formData) => {
 
 // ----------------toggleCountry ------------------------
 
-export const toggleCountry = async (idCity, idCountry, formData) => {
-  return APITraviesos.patch(
-    `/city/cities/${idCity}/country/${idCountry}`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${updateToken()}`,
-      },
-    }
-  )
+export const toggleCountry = async (idCity, idCountry) => {
+  return APITraviesos.patch(`/city/cities/${idCity}/country/${idCountry}`, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };

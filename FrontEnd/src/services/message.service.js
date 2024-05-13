@@ -1,11 +1,11 @@
+import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
 
 // ----------------createMessage ------------------------
-//! no sé si es multipart o json
+
 export const createMessage = async (idRecipient, formData) => {
   return APITraviesos.post(`/messages/${idRecipient}`, formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${updateToken()}`,
     },
   })
@@ -26,11 +26,10 @@ export const deleteMessage = async (id) => {
 };
 
 // ----------------updateMessage ------------------------
-//!-- no sé si es multipart o json
+
 export const updateMessage = async (id, formData) => {
   return APITraviesos.patch(`/messages/${id}`, formData, {
     headers: {
-      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${updateToken()}`,
     },
   })

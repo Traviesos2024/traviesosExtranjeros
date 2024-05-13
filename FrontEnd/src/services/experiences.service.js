@@ -1,3 +1,4 @@
+import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
 
 // ----------------createExperience ------------------------
@@ -38,7 +39,6 @@ export const toggleLikeExperience = async (idExperience) => {
 export const toggleEvent = async (idExperience, idEvent) => {
   return APITraviesos.patch(
     `/experiences/experience/${idExperience}/events/${idEvent}`,
-    formData,
     {
       headers: {
         Authorization: `Bearer ${updateToken()}`,

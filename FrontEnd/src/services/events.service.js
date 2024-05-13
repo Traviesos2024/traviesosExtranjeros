@@ -1,3 +1,4 @@
+import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
 
 // ----------------createEvent ------------------------
@@ -47,17 +48,12 @@ export const getByCity = async (city) => {
 
 // ----------------toggleCity ------------------------
 
-export const toggleCity = async (idCity, idEvent, formData) => {
-  return APITraviesos.patch(
-    `/event/cities/${idCity}/events/${idEvent}`,
-    formData,
-    {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${updateToken()}`,
-      },
-    }
-  )
+export const toggleCity = async (idCity, idEvent) => {
+  return APITraviesos.patch(`/event/cities/${idCity}/events/${idEvent}`, {
+    headers: {
+      Authorization: `Bearer ${updateToken()}`,
+    },
+  })
     .then((res) => res)
     .catch((error) => error);
 };
@@ -89,10 +85,9 @@ export const deleteEvent = async (id) => {
 
 // ----------------toggleLikeEvent ------------------------
 
-export const toggleLikeEvent = async (idEvent, formData) => {
-  return APITraviesos.patch(`/event/like/${idEvent}`, formData, {
+export const toggleLikeEvent = async (idEvent) => {
+  return APITraviesos.patch(`/event/like/${idEvent}`, {
     headers: {
-      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${updateToken()}`,
     },
   })
@@ -102,10 +97,9 @@ export const toggleLikeEvent = async (idEvent, formData) => {
 
 // ----------------toggleFollowEvent ------------------------
 
-export const toggleFollowEvent = async (idEvent, formData) => {
-  return APITraviesos.patch(`/event/follow/${idEvent}`, formData, {
+export const toggleFollowEvent = async (idEvent) => {
+  return APITraviesos.patch(`/event/follow/${idEvent}`, {
     headers: {
-      "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${updateToken()}`,
     },
   })
