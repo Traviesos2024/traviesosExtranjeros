@@ -6,6 +6,9 @@ import {
   Experiencespages,
   Homepages,
   NotFound,
+  Login,
+  Register,
+  CheckCode,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";

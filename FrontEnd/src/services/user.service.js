@@ -1,9 +1,9 @@
 import { updateToken } from "../utils";
-import { APIUser } from "./service.config";
+import { APITraviesos } from "./serviceApi.config";
 
 //* ---------------------- REGISTER (registerWithRedirect)----------------------
 export const registerUser = async (formData) => {
-  return APIUser.post("/users/register", formData, {
+  return APITraviesos.post("/users/register", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   })
     .then((res) => res)
@@ -13,7 +13,7 @@ export const registerUser = async (formData) => {
 //* ------------------------------- SEND MAIL REDIRECT -------------------------
 //!no estoy segura si lleva o no formData, creo que no
 export const sendMailRedirect = async (id) => {
-  return APIUser.post(`/users/register/sendMail/${id}`)
+  return APITraviesos.post(`/users/register/sendMail/${id}`)
     .then((res) => res)
     .catch((error) => error);
 };
@@ -21,7 +21,7 @@ export const sendMailRedirect = async (id) => {
 //*  ------------------------------- RESEND CODE -------------------------------
 
 export const resendCodeConfirmationUser = async (formData) => {
-  return APIUser.post("/users/resend", formData)
+  return APITraviesos.post("/users/resend", formData)
     .then((res) => res)
     .catch((error) => error);
 };
@@ -29,7 +29,7 @@ export const resendCodeConfirmationUser = async (formData) => {
 //* ------------------------------- CHECK CODE ---------------------------------
 
 export const checkCodeConfirmationUser = async (formData) => {
-  return APIUser.post("/users/check", formData)
+  return APITraviesos.post("/users/check", formData)
     .then((res) => res)
     .catch((error) => error);
 };
@@ -37,7 +37,7 @@ export const checkCodeConfirmationUser = async (formData) => {
 //* -------------------------------- LOGIN -------------------------------------
 
 export const loginUserService = async (formData) => {
-  return APIUser.post("/users/login", formData)
+  return APITraviesos.post("/users/login", formData)
     .then((res) => res)
     .catch((error) => error);
 };
@@ -45,7 +45,7 @@ export const loginUserService = async (formData) => {
 //* -------------------------------- AUTOLOGIN ----------------------------------
 
 export const autologinUser = async (formData) => {
-  return APIUser.post("/users/login/autologin", formData)
+  return APITraviesos.post("/users/login/autologin", formData)
     .then((res) => res)
     .catch((error) => error);
 };
@@ -53,7 +53,7 @@ export const autologinUser = async (formData) => {
 //* ----------------CAMBIO CONTRASEÑA SIN TOKEN (changePassword)--------
 
 export const forgotPasswordUser = async (formData) => {
-  return APIUser.patch("/users/forgotpassword", formData)
+  return APITraviesos.patch("/users/forgotpassword", formData)
     .then((res) => res)
     .catch((error) => error);
 };
@@ -61,7 +61,7 @@ export const forgotPasswordUser = async (formData) => {
 //* ------------------------------- SEND PASSWORD -------------------------
 //!no estoy segura si lleva o no formData, creo que no
 export const sendPassword = async (id) => {
-  return APIUser.patch(`/users/sendPassword/${id}`)
+  return APITraviesos.patch(`/users/sendPassword/${id}`)
     .then((res) => res)
     .catch((error) => error);
 };
@@ -69,7 +69,7 @@ export const sendPassword = async (id) => {
 //* -------------CAMBIO CONTRASEÑA CUANDO ESTAS LOGUEADO (modifyPassword)----
 
 export const changePasswordUserToken = async (formData) => {
-  return APIUser.patch("/users/changepassword", formData, {
+  return APITraviesos.patch("/users/changepassword", formData, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
     },
@@ -81,7 +81,7 @@ export const changePasswordUserToken = async (formData) => {
 //* ------------------------------ UPDATE USER -----------------------
 
 export const updateUser = async (formData) => {
-  return APIUser.patch("/users/update/update", formData, {
+  return APITraviesos.patch("/users/update/update", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: `Bearer ${updateToken()}`,
@@ -126,7 +126,7 @@ export const byGender = async (gender) => {
 //* ------------------------------followUserToggle------------------
 
 export const followUserToggle = async (idUserSeQuiereSeguir) => {
-  return APIUser.patch(`/users/follow/${idUserSeQuiereSeguir}`, {
+  return APITraviesos.patch(`/users/follow/${idUserSeQuiereSeguir}`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
     },
@@ -146,7 +146,7 @@ export const deleteMessageDeleteUser = async (arrayIdMessages) => {
 //* ------------------------------------BORRADO DEL USUARIO----------------------
 
 export const deleteUserService = async () => {
-  return APIUser.delete("/users/", {
+  return APITraviesos.delete("/users/", {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
     },
