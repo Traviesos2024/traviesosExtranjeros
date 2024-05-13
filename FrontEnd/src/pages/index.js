@@ -4,3 +4,6 @@ export * from "./Homepages";
 export * from "./Country";
 export * from "./CountryCity";
 export * from "./NotFound";
+export * from "./Register";
+export * from "./Login";
+export * from "./CheckCode";
