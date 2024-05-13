@@ -47,7 +47,7 @@ export const router = createBrowserRouter([
         element: <Country />,
         children: [
           {
-            path: "/country/city",
+            path: "/country/:city", //!---- Pregunta, Como poner ciudades dinámicas?????????????
             element: <CountryCity />,
           },
         ],
