@@ -106,7 +106,6 @@ export const Register = () => {
             </label>
           </div>
 
-<<<<<<< HEAD
           <div className="age_container form-group">
             <input
               className="input_user"
@@ -154,30 +153,6 @@ export const Register = () => {
             </label>
           </div>
           <div>
-=======
-            <div className="sexo">
-              <input
-                type="radio"
-                name="sexo"
-                id="hombre"
-                value="hombre"
-                {...register("gender")}
-              />
-              <label htmlFor="hombre" className="label-radio hombre">
-                Hombre
-              </label>
-              <input
-                type="radio"
-                name="sexo"
-                id="mujer"
-                value="mujer"
-                {...register("gender")}
-              />
-              <label htmlFor="mujer" className="label-radio mujer">
-                Mujer
-              </label>
-            </div>
->>>>>>> 7122d35eb3ec7e1e4824555359d6e37dc1e70765
             <Uploadfile />
           </div>
 
