@@ -1,4 +1,4 @@
-export * from "./EventsPages";
+export * from "./Eventspages";
 export * from "./Experiencespages";
 export * from "./Homepages";
 export * from "./Country";

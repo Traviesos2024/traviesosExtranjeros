@@ -1,21 +1,24 @@
+import Logout from "./Logout";
 import "./Nav.css";
 import { NavLink } from "react-router-dom";
 export const Nav = () => {
   return (
-    <nav className="navPrincipal">
-      <NavLink to="/">
-        <button>Home</button>
-      </NavLink>
-      <NavLink to="/experiences">
-        <button>Experiences</button>
-      </NavLink>
-      <NavLink to="/events">
-        <button>Events</button>
-      </NavLink>
-      <NavLink to="/country">
-        <button>Country</button>
-      </NavLink>
-    </nav>
+    <>
+      <nav className="navPrincipal">
+        <NavLink to="/">
+          <button>Home</button>
+        </NavLink>
+        <NavLink to="/experiences">
+          <button>Experiences</button>
+        </NavLink>
+        <NavLink to="/events">
+          <button>Events</button>
+        </NavLink>
+        <NavLink to="/country">
+          <button>Country</button>
+        </NavLink>
+      </nav>
+    </>
   );
 };
 
