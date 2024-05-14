@@ -8,3 +8,4 @@ export * from "./Login";
 export * from "./CheckCode";
 export * from "./Eventspages";
 export * from "./ProfilePage";
+export * from "./UserChat";

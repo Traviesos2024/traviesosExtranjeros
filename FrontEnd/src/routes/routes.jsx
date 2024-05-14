@@ -9,6 +9,7 @@ import {
   Register,
   CheckCode,
   Eventspages,
+  UserChat,
 } from "../pages";
 
 import { ExperiencesPage } from "../pages/ExperiencesPage";
@@ -75,6 +76,10 @@ export const router = createBrowserRouter([
             <CountryCity />
           </Protected>
         ),
+      },
+      {
+        path: "/chat",
+        element: <UserChat />,
       },
       {
         path: "*",
