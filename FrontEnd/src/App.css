@@ -1,10 +1,9 @@
-
 .main {
   min-height: 70vh;
   text-align: center;
 }
 
-.navGeneral{
+.navGeneral {
   display: flex;
   min-width: 30vh;
   height: 100px;
@@ -12,20 +11,18 @@
   justify-content: center;
   gap: 2rem;
   & a {
-  font-weight: 500;
-  color: #258f45;
-  text-decoration: inherit;
+    font-weight: 500;
+    color: #258f45;
+    text-decoration: inherit;
+  }
+  & a:hover {
+    color: #126748;
+  }
 }
-& a:hover {
-  color: #126748;
-}
-}
-
 
 #root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 200;
-    color: #213547;
-    background-color: #b2a6a6a2;
+  color: #213547;
+  background-color: #b2a6a6a2;
 }
-

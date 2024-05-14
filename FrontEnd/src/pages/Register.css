@@ -7,6 +7,7 @@
 }
 
 body {
+  min-height: 60vh;
   font-family: "Raleway", sans-serif;
   background: #000000;
   color: #fff;
@@ -26,8 +27,9 @@ a {
 }
 
 .form-wrap {
-  margin: 2rem 0 2rem 0;
-  background: #f7fffa;
+  max-width: 800px;
+  margin: 2rem auto;
+  background: #f7fffe;
   padding: 15px 25px 30px;
   color: #333;
   border-radius: 5px;
@@ -43,7 +45,7 @@ a {
 }
 
 .form-wrap .form-group label {
-  color: #2f7a67;
+  color: #2f767a;
   font-weight: normal;
 }
 
@@ -54,8 +56,8 @@ a {
   border-radius: 5px;
   font-family: inherit;
   font-size: inherit;
-  caret-color: #2f7a67;
-  border: solid 2px #49c1a371;
+  caret-color: #2f667a;
+  border: solid 2px #49abc171;
 }
 
 .form-wrap .form-group input:focus {
@@ -64,9 +66,10 @@ a {
 
 .form-wrap .btn {
   width: 100%;
+
   padding: 10px;
   margin-top: 25px;
-  background: #2f7a67;
+  background: #2f797a;
   color: #fff;
   cursor: pointer;
   border: #2f7a67 1px solid;

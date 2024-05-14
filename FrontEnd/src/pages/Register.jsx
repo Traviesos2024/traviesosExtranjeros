@@ -73,6 +73,7 @@ export const Register = () => {
               id="name"
               name="name"
               autoComplete="false"
+              placeholder="Cristina"
               {...register("name", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
@@ -86,6 +87,7 @@ export const Register = () => {
               id="password"
               name="password"
               autoComplete="false"
+              placeholder="Cristina321*"
               {...register("password", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
@@ -99,6 +101,7 @@ export const Register = () => {
               id="email"
               name="email"
               autoComplete="false"
+              placeholder="traviesos@gmail.com"
               {...register("email", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
@@ -113,6 +116,7 @@ export const Register = () => {
               id="age"
               name="age"
               autoComplete="false"
+              placeholder="25"
               {...register("age", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
@@ -167,11 +171,11 @@ export const Register = () => {
             </button>
           </div>
         </form>
-      </div>
-      <div className="footerForm">
-        <p className="parrafoLogin">
-          Already have an account? <Link to="/login">Login Here</Link>
-        </p>
+        <div className="footerForm">
+          <p className="parrafoLogin">
+            Already have an account? <Link to="/login">Login Here</Link>
+          </p>
+        </div>
       </div>
     </>
   );

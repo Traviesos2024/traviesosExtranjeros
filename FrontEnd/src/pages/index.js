@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 export * from "./Eventspages";
->>>>>>> 7122d35eb3ec7e1e4824555359d6e37dc1e70765
 export * from "./Experiencespages";
 export * from "./Homepages";
 export * from "./Country";
