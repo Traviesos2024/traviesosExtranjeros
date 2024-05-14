@@ -2,7 +2,7 @@
 //import { citiesData } from "../data/citiesData";
 import { eventsData } from "../data/eventsData";
 import "./EventsPages.css";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const EventsPages = () => {
   const { event } = useParams();
