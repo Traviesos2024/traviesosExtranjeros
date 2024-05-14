@@ -1,4 +1,3 @@
-export * from "./EventsPages";
 export * from "./Experiencespages";
 export * from "./Homepages";
 export * from "./Country";
@@ -7,3 +6,4 @@ export * from "./NotFound";
 export * from "./Register";
 export * from "./Login";
 export * from "./CheckCode";
+export * from "./Eventspages";

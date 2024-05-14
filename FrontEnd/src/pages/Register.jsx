@@ -26,7 +26,6 @@ export const Register = () => {
       // si es diferente a 0 es que hay algo dentro de files
       const customFormData = {
         ...formData,
-        age: 25,
         image: inputFile[0],
       };
       //llamada al backend
@@ -37,7 +36,6 @@ export const Register = () => {
       // si no hay imagen solo hago una copia del formData
       const customFormData = {
         ...formData,
-        age: 25,
       };
       //llamada al backend
       setSend(true);
@@ -94,7 +92,6 @@ export const Register = () => {
               password
             </label>
           </div>
-
           <div className="email_container form-group">
             <input
               className="input_user"
@@ -107,39 +104,55 @@ export const Register = () => {
             <label htmlFor="custom-input" className="custom-placeholder">
               email
             </label>
+          </div>
 
-            <div className="sexo">
-              <input
-                type="radio"
-                name="sexo"
-                id="hombre"
-                value="hombre"
-                {...register("gender")}
-              />
-              <label htmlFor="hombre" className="label-radio hombre">
-                Hombre
-              </label>
-              <input
-                type="radio"
-                name="sexo"
-                id="mujer"
-                value="mujer"
-                {...register("gender")}
-              />
-              <label htmlFor="mujer" className="label-radio mujer">
-                Mujer
-              </label>
-              <input
-                type="radio"
-                name="sexo"
-                id="otros"
-                value="otros"
-                {...register("gender")}
-              />
-              <label htmlFor="otros" className="label-radio otros">
-                Otros
-              </label>
-            </div>
+          <div className="age_container form-group">
+            <input
+              className="input_user"
+              type="number"
+              id="age"
+              name="age"
+              autoComplete="false"
+              {...register("age", { required: true })}
+            />
+            <label htmlFor="custom-input" className="custom-placeholder">
+              age
+            </label>
+          </div>
+
+          <div className="sexo">
+            <input
+              type="radio"
+              name="sexo"
+              id="hombre"
+              value="hombre"
+              {...register("gender")}
+            />
+            <label htmlFor="hombre" className="label-radio hombre">
+              Hombre
+            </label>
+            <input
+              type="radio"
+              name="sexo"
+              id="mujer"
+              value="mujer"
+              {...register("gender")}
+            />
+            <label htmlFor="mujer" className="label-radio mujer">
+              Mujer
+            </label>
+            <input
+              type="radio"
+              name="sexo"
+              id="otros"
+              value="otros"
+              {...register("gender")}
+            />
+            <label htmlFor="otros" className="label-radio otros">
+              Otros
+            </label>
+          </div>
+          <div>
             <Uploadfile />
           </div>
 
