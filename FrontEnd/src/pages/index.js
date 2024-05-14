@@ -1,5 +1,5 @@
 export * from "./Eventspages";
-export * from "./Experiencespages";
+export * from "./ExperiencesPage";
 export * from "./Homepages";
 export * from "./Country";
 export * from "./CountryCity";

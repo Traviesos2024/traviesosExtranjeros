@@ -3,9 +3,10 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { BrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import "./index.css";
-import { EventsPages, Experiencespages, Homepages } from "./pages";
+import { EventsPages, Homepages } from "./pages";
 import { router } from "./routes/routes.jsx";
 import { AuthContextProvider } from "./context/authContext.jsx";
+import "./pages/ExperiencesPage.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -21,7 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 //   <Routes>
 //     <Route path="/" element={<App />}>
 //       <Route index element={<Homepages />} />
-//       <Route path="experiences" element={<Experiencespages />} />
+//       <Route path="experiences" element={<ExperiencesPage />} />
 //       <Route path="events" element={<EventsPages />} />
 //       {/* <Route path="events" element={} /> */}
 //       <Route

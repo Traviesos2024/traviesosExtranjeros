@@ -4,7 +4,6 @@ import {
   Country,
   CountryCity,
   EventsPages,
-  Experiencespages,
   Homepages,
   NotFound,
   Login,
@@ -12,6 +11,7 @@ import {
   CheckCode,
 } from "../pages";
 
+import ExperiencesPage from "../pages/ExperiencesPage";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
         path: "/experiences",
         element: (
           <Protected>
-            <Experiencespages />
+            <ExperiencesPage />
           </Protected>
         ),
       },
