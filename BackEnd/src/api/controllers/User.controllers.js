@@ -134,8 +134,8 @@ const registerWithRedirect = async (req, res, next) => {
         if (userSave) {
           // si hay usuario hacemos el redirech
           return res.redirect(
-            303,
-            `http://localhost:8080/api/v1/users/register/sendMail/${userSave._id}`
+            307,
+            `http://localhost:8081/api/v1/users/register/sendMail/${userSave._id}`
           );
         }
       } catch (error) {
