@@ -1,4 +1,5 @@
 import App from "../App";
+import { Protected } from "../components";
 import {
   Country,
   CountryCity,
@@ -36,21 +37,35 @@ export const router = createBrowserRouter([
       },
       {
         path: "/experiences",
-        element: <Experiencespages />,
+        element: (
+          <Protected>
+            <Experiencespages />
+          </Protected>
+        ),
       },
       {
         path: "/events",
-        element: <EventsPages />,
+        element: (
+          <Protected>
+            <EventsPages />
+          </Protected>
+        ),
       },
       {
-        path: "/country",
-        element: <Country />,
-        children: [
-          {
-            path: ":city", //!---- Pregunta, Como poner ciudades dinámicas?????????????
-            element: <CountryCity />,
-          },
-        ],
+        path: "/:country",
+        element: (
+          <Protected>
+            <Country />
+          </Protected>
+        ),
+      },
+      {
+        path: "/:city",
+        element: (
+          <Protected>
+            <CountryCity />
+          </Protected>
+        ),
       },
       {
         path: "*",

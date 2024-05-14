@@ -9,7 +9,7 @@ const apiHeaders = {
 };
 
 export const APITraviesos = axios.create({
-  baseURL: "http://localhost:8081//api/v1",
+  baseURL: "http://localhost:8081/api/v1",
   headers: apiHeaders,
   timeout: 60000,
 });
