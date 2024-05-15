@@ -74,80 +74,78 @@ export const ExperiencesPage = () => {
   };
 
   return (
-    <>
-      <div>
-        <h2>Experiences</h2>
-        <p>Discover and share experiences with others living abroad!</p>
-        <div className="form-wrap">
-          <button className="btn" onClick={toggleFormVisibility}>
-            Crear experiencia
-          </button>
-          {showForm && (
-            <div>
-              <h1>Create experience</h1>
-              <form onSubmit={handleSubmit(formSubmit)}>
-                <div className="user_container form-group">
-                  <input
-                    className="input_user"
-                    type="text"
-                    id="name"
-                    name="name"
-                    autoComplete="false"
-                    placeholder="Vinos"
-                    {...register("name", { required: true })}
-                  />
-                  <label htmlFor="custom-input" className="custom-placeholder">
-                    Title
-                  </label>
-                </div>
-                <div className="description_container form-group">
-                  <input
-                    className="input_user"
-                    type="texto"
-                    id="description"
-                    name="description"
-                    autoComplete="false"
-                    placeholder="Fuimos de vinos a Honolulu"
-                    {...register("description", { required: true })}
-                  />
-                  <label htmlFor="custom-input" className="custom-placeholder">
-                    Description
-                  </label>
-                </div>
+    <div>
+      <h2>Experiences</h2>
+      <p>Discover and share experiences with others living abroad!</p>
+      <div className="form-wrap">
+        <button className="btn" onClick={toggleFormVisibility}>
+          Crear experiencia
+        </button>
+        {showForm && (
+          <div>
+            <h1>Create experience</h1>
+            <form onSubmit={handleSubmit(formSubmit)}>
+              <div className="user_container form-group">
+                <input
+                  className="input_user"
+                  type="text"
+                  id="name"
+                  name="name"
+                  autoComplete="false"
+                  placeholder="Vinos"
+                  {...register("name", { required: true })}
+                />
+                <label htmlFor="custom-input" className="custom-placeholder">
+                  Title
+                </label>
+              </div>
+              <div className="description_container form-group">
+                <input
+                  className="input_user"
+                  type="texto"
+                  id="description"
+                  name="description"
+                  autoComplete="false"
+                  placeholder="Fuimos de vinos a Honolulu"
+                  {...register("description", { required: true })}
+                />
+                <label htmlFor="custom-input" className="custom-placeholder">
+                  Description
+                </label>
+              </div>
 
-                <div>
-                  <Uploadfile required />
-                </div>
+              <div>
+                <Uploadfile required />
+              </div>
 
-                <div className="btn_container">
-                  <button
-                    className="btn"
-                    type="submit"
-                    disabled={send}
-                    style={{ background: send ? "#49c1a388" : "#2f7a67" }}
-                  >
-                    {send ? "Cargando..." : "New experience"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-        </div>
-        <ul>
-          {experiences.map((experience) => (
-            <li key={experience._id}>
-              <h3>{experience.name}</h3>
-              <img
-                src={experience.image}
-                alt={experience.name}
-                style={{ maxWidth: "200px" }}
-              />
-              <p>{experience.description}</p>
-              <p>Created by: {experience.createdBy}</p>
-            </li>
-          ))}
-        </ul>
+              <div className="btn_container">
+                <button
+                  className="btn"
+                  type="submit"
+                  disabled={send}
+                  style={{ background: send ? "#49c1a388" : "#2f7a67" }}
+                >
+                  {send ? "Cargando..." : "New experience"}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
-    </>
+      <ul>
+        {experiences.map((experience) => (
+          <li key={experience._id}>
+            <h3>{experience.name}</h3>
+            <img
+              src={experience.image}
+              alt={experience.name}
+              style={{ maxWidth: "200px" }}
+            />
+            <p>{experience.description}</p>
+            <p>Created by: {experience.createdBy}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
