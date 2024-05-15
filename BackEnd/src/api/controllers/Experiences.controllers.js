@@ -17,7 +17,9 @@ const createExperience = async (req, res, next) => {
       image: req.file?.path,
     };
     const newExperiencie = new Experience(customBody);
+    console.log(newExperiencie);
     const savedExperience = await newExperiencie.save();
+
     // Obtener el ID de la experiencia creada
     const idExperience = savedExperience._id;
 

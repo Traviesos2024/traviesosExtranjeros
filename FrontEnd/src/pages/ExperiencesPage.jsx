@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./Register.css";
-
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
-// import { Link, Navigate } from "react-router-dom";
 import { Uploadfile } from "../components";
 import { createExperience } from "../services/experiences.service";
 import { Navigate } from "react-router-dom";
 
 export const ExperiencesPage = () => {
   //! 1) crear los estados
+
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
   const [ok, setOk] = useState(false);
@@ -19,9 +18,11 @@ export const ExperiencesPage = () => {
   const [showForm, setShowForm] = useState(false);
 
   //! 2) llamada al hook de react hook form
+
   const { register, handleSubmit, setValue } = useForm();
 
   //! 3) la funcion que gestiona los datos del formulario
+
   const formSubmit = async (formData) => {
     const inputFile = document.getElementById("file-upload").files;
 
@@ -49,6 +50,7 @@ export const ExperiencesPage = () => {
   };
 
   //! 4) useEffects que gestionan la repuesta y manejan los errores
+
   useEffect(() => {
     useErrorRegister(res, setRes, setOk);
     // si la res es ok llamamos a la funcion puente del contexto y le pasamos el parámetro ALLUSER
@@ -63,6 +65,7 @@ export const ExperiencesPage = () => {
   }, [allUser]);
 
   //! 5) estados de navegacion
+
   if (ok) {
     return <Navigate to="/experiences" />;
   }
@@ -113,7 +116,7 @@ export const ExperiencesPage = () => {
                 </div>
 
                 <div>
-                  <Uploadfile />
+                  <Uploadfile required />
                 </div>
 
                 <div className="btn_container">
@@ -132,11 +135,11 @@ export const ExperiencesPage = () => {
         </div>
         <ul>
           {experiences.map((experience) => (
-            <li key={experience.id}>
-              <h3>{experience.title}</h3>
+            <li key={experience._id}>
+              <h3>{experience.name}</h3>
               <img
                 src={experience.image}
-                alt={experience.title}
+                alt={experience.name}
                 style={{ maxWidth: "200px" }}
               />
               <p>{experience.description}</p>
