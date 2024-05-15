@@ -3,16 +3,18 @@ import { Protected } from "../components";
 import {
   Country,
   CountryCity,
-  EventsPages,
   Homepages,
   NotFound,
   Login,
   Register,
   CheckCode,
-  ExperiencesPage,
 } from "../pages";
 
+import Event from "../components/Event"
+
+import { ExperiencesPage } from "../pages/ExperiencesPage";
 import { createBrowserRouter } from "react-router-dom";
+
 
 export const router = createBrowserRouter([
   {
@@ -47,7 +49,7 @@ export const router = createBrowserRouter([
         path: "/events",
         element: (
           <Protected>
-            <EventsPages />
+            <Event />
           </Protected>
         ),
       },

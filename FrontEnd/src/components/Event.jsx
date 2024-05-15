@@ -1,33 +1,27 @@
-import { useState } from "react";
-import "./Event.css";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { eventsData } from '../data/eventsData';
 
-const Event = ({ event }) => {
-  const [expanded, setExpanded] = useState(false); // Estado para ampliar la tarjeta de país
+export const Event = () => {
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  
   return (
-    <div
-      className={`event ${expanded ? "expanded" : ""}`}
-      onClick={handleExpandClick}
-    >
-      <h2>{event.name}</h2>
-      <img src={event.image} />
-      {expanded && (
-        <div className="event-list">
-          <h3> Eventos </h3>
-          <ul>
-            {event.cities.map((city, index) => (
-              <ul key={index}>
-                <Link to={city.path}>{city.name}</Link>
-              </ul>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div>
+      <h1>Eventos</h1>
+      <ul>
+        {eventsData.map((event, index) => (
+          <li key={index}>
+            <Link to={event.path}>
+              <img src={`/images/${event.image}`} alt={event.name} width="200" />
+              <h2>{event.name}</h2>
+              <p>{event.city}</p>
+              <p>{event.category}</p>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
+
 export default Event;

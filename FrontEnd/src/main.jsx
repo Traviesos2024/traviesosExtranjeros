@@ -3,15 +3,17 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import { BrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
 import "./index.css";
-import { EventsPages, Homepages } from "./pages";
+import {  Homepages } from "./pages";
 import { router } from "./routes/routes.jsx";
 import { AuthContextProvider } from "./context/authContext.jsx";
 import "./pages/ExperiencesPage.jsx";
+import "./pages/Eventspages.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthContextProvider>
       <RouterProvider router={router} />
+      
     </AuthContextProvider>
   </React.StrictMode>
 );
@@ -41,3 +43,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 // <React.StrictMode>
 //   <RouterProvider router={router} />;
 // </React.StrictMode>;
+
