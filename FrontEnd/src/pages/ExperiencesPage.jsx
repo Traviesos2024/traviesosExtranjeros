@@ -1,90 +1,150 @@
-import React, { useState } from 'react';
-import "./ExperiencesPage.css";
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import "./Register.css";
 
-const ExperiencesPage = () => {
-  // Supongamos que tienes un array de experiencias
-  const [experiences, setExperiences] = useState([
-    { id: 1, title: 'Cena internacional', description: 'Una cena donde cada invitado prepara un plato típico de su país.', image: 'https://via.placeholder.com/150', createdBy: 'Usuario1' },
-    { id: 2, title: 'Tour por la ciudad', description: 'Recorrido por los lugares más emblemáticos de la ciudad.', image: 'https://via.placeholder.com/150', createdBy: 'Usuario2' },
-    { id: 3, title: 'Clases de idiomas', description: 'Intercambio de idiomas entre personas de diferentes nacionalidades.', image: 'https://via.placeholder.com/150', createdBy: 'Usuario3' }
-  ]);
+import { useErrorRegister } from "../hooks";
+import { useAuth } from "../context/authContext";
+// import { Link, Navigate } from "react-router-dom";
+import { Uploadfile } from "../components";
+import { createExperience } from "../services/experiences.service";
+import { Navigate } from "react-router-dom";
 
-  const [newExperience, setNewExperience] = useState({
-    title: '',
-    description: '',
-    image: '',
-    createdBy: 'Usuario Nuevo' // Supongamos que inicialmente el usuario es "Usuario Nuevo"
-  });
+export const ExperiencesPage = () => {
+  //! 1) crear los estados
+  const [res, setRes] = useState({});
+  const [send, setSend] = useState(false);
+  const [ok, setOk] = useState(false);
+  const { allUser, setAllUser, bridgeData } = useAuth();
+  const [experiences, setExperiences] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
-  /* // Función para manejar el cambio en los campos del formulario */
-  const handleChange = (e) => {
-    if (e.target.name === 'image') {
-      /* // Si el campo es para la imagen, obtenemos la URL de la imagen subida */
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewExperience({
-          ...newExperience,
-          image: reader.result // Almacena la URL de la imagen como base64
-        });
+  //! 2) llamada al hook de react hook form
+  const { register, handleSubmit, setValue } = useForm();
+
+  //! 3) la funcion que gestiona los datos del formulario
+  const formSubmit = async (formData) => {
+    const inputFile = document.getElementById("file-upload").files;
+
+    //* condicional para enviar los datos del formulario al backend tanto si hay subida imagen como si no
+    if (inputFile.lenght != 0) {
+      // si es diferente a 0 es que hay algo dentro de files
+      const customFormData = {
+        ...formData,
+        image: inputFile[0],
       };
-      if (file) {
-        reader.readAsDataURL(file);
-      }
+      //llamada al backend
+      setSend(true);
+      setRes(await createExperience(customFormData));
+      setSend(false);
     } else {
-      /* // Si el campo no es para la imagen, actualizamos el estado normalmente */
-      setNewExperience({
-        ...newExperience,
-        [e.target.name]: e.target.value
-      });
+      // si no hay imagen solo hago una copia del formData
+      const customFormData = {
+        ...formData,
+      };
+      //llamada al backend
+      setSend(true);
+      setRes(await createExperience(customFormData));
+      setSend(false);
     }
   };
-/* // Función para manejar el envío del formulario */
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (newExperience.title.trim() !== '' && newExperience.description.trim() !== '') {
-      setExperiences([...experiences, { ...newExperience, id: experiences.length + 1 }]);
-      setNewExperience({
-        title: '',
-        description: '',
-        image: '',
-        createdBy: 'Usuario Nuevo'
-      });
+
+  //! 4) useEffects que gestionan la repuesta y manejan los errores
+  useEffect(() => {
+    useErrorRegister(res, setRes, setOk);
+    // si la res es ok llamamos a la funcion puente del contexto y le pasamos el parámetro ALLUSER
+    if (res?.status == 200) {
+      setExperiences([...experiences, response.data]);
+      bridgeData("ALLUSER");
     }
+  }, [res]);
+
+  useEffect(() => {
+    console.log("allUser 🤡", allUser);
+  }, [allUser]);
+
+  //! 5) estados de navegacion
+  if (ok) {
+    return <Navigate to="/experiences" />;
+  }
+  const toggleFormVisibility = () => {
+    setShowForm(!showForm); // Cambia el estado de visibilidad del formulario
   };
 
   return (
-    <div>
-      <h2>Experiences</h2>
-      <p>Discover and share experiences with others living abroad!</p>
+    <>
+      <div>
+        <h2>Experiences</h2>
+        <p>Discover and share experiences with others living abroad!</p>
+        <div className="form-wrap">
+          <button className="btn" onClick={toggleFormVisibility}>
+            Crear experiencia
+          </button>
+          {showForm && (
+            <div>
+              <h1>Create experience</h1>
+              <form onSubmit={handleSubmit(formSubmit)}>
+                <div className="user_container form-group">
+                  <input
+                    className="input_user"
+                    type="text"
+                    id="name"
+                    name="name"
+                    autoComplete="false"
+                    placeholder="Vinos"
+                    {...register("name", { required: true })}
+                  />
+                  <label htmlFor="custom-input" className="custom-placeholder">
+                    Title
+                  </label>
+                </div>
+                <div className="description_container form-group">
+                  <input
+                    className="input_user"
+                    type="texto"
+                    id="description"
+                    name="description"
+                    autoComplete="false"
+                    placeholder="Fuimos de vinos a Honolulu"
+                    {...register("description", { required: true })}
+                  />
+                  <label htmlFor="custom-input" className="custom-placeholder">
+                    Description
+                  </label>
+                </div>
 
-      {/* Formulario para crear una nueva experiencia / */}
-      <form id="formularios" onSubmit={handleSubmit}>
-        <label htmlFor="title">Title:</label>
-        <input type="text" id="title" name="title" value={newExperience.title} onChange={handleChange} required />
+                <div>
+                  <Uploadfile />
+                </div>
 
-        <label htmlFor="description">Description:</label>
-        <textarea id="description" name="description" value={newExperience.description} onChange={handleChange} required />
-
-        <label htmlFor="image">Image:</label>
-        <input type="file" id="image" name="image" accept="image/" onChange={handleChange} required />
-
-        <button type="submit">Share Experience</button>
-      </form>
-
-       {/* Lista de experiencias */}
-      <ul>
-        {experiences.map(experience => (
-          <li key={experience.id}>
-            <h3>{experience.title}</h3>
-            <img src={experience.image} alt={experience.title} style={{ maxWidth: '200px' }} />
-            <p>{experience.description}</p>
-            <p>Created by: {experience.createdBy}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
+                <div className="btn_container">
+                  <button
+                    className="btn"
+                    type="submit"
+                    disabled={send}
+                    style={{ background: send ? "#49c1a388" : "#2f7a67" }}
+                  >
+                    {send ? "Cargando..." : "New experience"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+        </div>
+        <ul>
+          {experiences.map((experience) => (
+            <li key={experience.id}>
+              <h3>{experience.title}</h3>
+              <img
+                src={experience.image}
+                alt={experience.title}
+                style={{ maxWidth: "200px" }}
+              />
+              <p>{experience.description}</p>
+              <p>Created by: {experience.createdBy}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
-}
-
-export default ExperiencesPage;
+};

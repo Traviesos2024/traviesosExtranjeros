@@ -9,9 +9,9 @@ import {
   Login,
   Register,
   CheckCode,
+  ExperiencesPage,
 } from "../pages";
 
-import ExperiencesPage from "../pages/ExperiencesPage";
 import { createBrowserRouter } from "react-router-dom";
 
 export const router = createBrowserRouter([
