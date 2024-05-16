@@ -17,6 +17,9 @@ export const Nav = () => {
         <NavLink to="/country">
           <button>Country</button>
         </NavLink>
+        <NavLink to="/chats">
+          <button>Chats</button>
+        </NavLink>
       </nav>
     </>
   );

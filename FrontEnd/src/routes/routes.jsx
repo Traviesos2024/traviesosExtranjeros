@@ -9,7 +9,8 @@ import {
   Register,
   CheckCode,
   Eventspages,
-  UserChat,
+  ChatListPage,
+  ChatPage,
 } from "../pages";
 
 import { ExperiencesPage } from "../pages/ExperiencesPage";
@@ -78,8 +79,20 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/chat",
-        element: <UserChat />,
+        path: "/chats",
+        element: (
+          <Protected>
+            <ChatListPage />
+          </Protected>
+        ),
+      },
+      {
+        path: "/chat/:chatId",
+        element: (
+          <Protected>
+            <ChatPage />
+          </Protected>
+        ),
       },
       {
         path: "*",

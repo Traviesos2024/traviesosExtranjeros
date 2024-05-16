@@ -108,7 +108,9 @@ const deleteChat = async (req, res, next) => {
 const getChatById = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const chatById = await Chat.findById(id).populate("messages");
+    const chatById = await Chat.findById(id)
+      .populate("messages")
+      .populate("userTwo");
     if (chatById) {
       return res.status(200).json(chatById);
     } else {
@@ -135,6 +137,7 @@ const getChatByUser = async (req, res, next) => {
     const chatByUser = await Chat.find({
       $or: [{ userOne: idUserQuery }, { userTwo: idUserQuery }],
     }).populate("messages");
+
     if (chatByUser) {
       return res.status(200).json(chatByUser);
     } else {

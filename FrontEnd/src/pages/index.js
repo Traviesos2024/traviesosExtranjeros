@@ -9,3 +9,5 @@ export * from "./CheckCode";
 export * from "./Eventspages";
 export * from "./ProfilePage";
 export * from "./UserChat";
+export * from "./ChatList";
+export * from "./Chat";
