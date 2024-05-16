@@ -14,6 +14,7 @@ export const Header = () => {
   return (
     <header>
       <h1>Traviesos Extranjeros 🌎</h1>
+      <Nav />
       <div className="Botonesuser">
         <div>
           {Login ? (
@@ -26,7 +27,6 @@ export const Header = () => {
         </div>
         <ProfileButton />
       </div>
-      <Nav />
     </header>
   );
 };

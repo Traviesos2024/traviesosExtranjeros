@@ -1,38 +1,54 @@
+
 header {
-  min-height: 20vh;
-  background-color: rgb(255, 255, 255);
-  justify-content: center;
+  background-color: #6d71e5ff; 
+  color: #ffffffff; 
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  text-align: center;
-  & h1 {
-    font-size: 3.2em;
-    line-height: 1.1;
-    padding: 20px;
+  & h1{
+  font-size: 24px;
+  color:bisque
   }
 }
 
+
 .Botonesuser {
   display: flex;
-  flex-direction: row-reverse;
-  align-items: normal;
-  & button {
-    background-color: #555;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin: 0 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  & button:hover {
-    background-color: #777;
-  }
+  align-items: center;
+}
 
-  & button.active {
-    background-color: #ccc;
-    color: #333;
-  }
+.Botonesuser button {
+  background-color: #e7cb57ff; /* Arylide yellow */
+  color: #ffffffff; /* White */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin-right: 10px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.Botonesuser button:hover {
+  background-color: #b0d8d6ff; /* Light blue */
+}
+
+.Botonesuser a {
+  text-decoration: none;
+  color: #ffffffff; /* White */
+}
+
+.Nav {
+  display: flex;
+  align-items: center;
+}
+
+.Nav a {
+  margin-right: 20px;
+  color: #ffffffff; /* White */
+  text-decoration: none;
+}
+
+.Nav a:hover {
+  color: #e7cb57ff; /* Arylide yellow */
 }

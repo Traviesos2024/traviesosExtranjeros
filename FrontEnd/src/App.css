@@ -3,28 +3,15 @@
   text-align: center;
 }
 
-.navGeneral {
-  display: flex;
-  min-width: 30vh;
-  height: 100px;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  & a {
-    font-weight: 500;
-    color: #258f45;
-    text-decoration: inherit;
-  }
-  & a:hover {
-    color: #126748;
-  }
+main{
+  min-height: 30vw;
 }
 
 #root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 200;
   color: #6d71e5ff;
-  background-color: #b2a6a6a2;
+  background-color: #ffffff;
    --light-blue: #b0d8d6ff;
   --arylide-yellow: #e7cb57ff;
   --medium-slate-blue: #6d71e5ff;

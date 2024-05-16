@@ -1,5 +1,9 @@
 import "./Footer.css";
 
 export const Footer = () => {
-  return <footer>Hecho con amor 💜</footer>;
+  return (
+    <footer>
+      <p>Hecho con amor 💜</p>
+    </footer>
+  );
 };

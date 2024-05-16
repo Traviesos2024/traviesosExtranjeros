@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { updateUser } from "../services/user.service";
+import { byId, updateUser } from "../services/user.service";
 
 const ProfileButton = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -7,7 +7,7 @@ const ProfileButton = () => {
   useEffect(() => {
     const fetchLoggedInUser = async () => {
       try {
-        updateUser;
+        byId;
 
         if (!response.ok) {
           throw new Error("Error al obtener el usuario logado");

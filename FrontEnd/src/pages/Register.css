@@ -45,7 +45,7 @@ a {
 }
 
 .form-wrap .form-group label {
-  color: #2f767a;
+  color: #e7cb57ff;
   font-weight: normal;
 }
 
@@ -57,33 +57,33 @@ a {
   font-family: inherit;
   font-size: inherit;
   caret-color: #2f667a;
-  border: solid 2px #49abc171;
+  border: solid 2px #e7cb57ff;
 }
 
 .form-wrap .form-group input:focus {
-  outline-color: #49c1a2;
+  outline-color: #e7cb57ff;
 }
 
 .form-wrap .btn {
   width: 100%;
   padding: 10px;
   margin-top: 25px;
-  background: #2f797a;
+  background: #e7cb57ff;
   color: #fff;
   cursor: pointer;
-  border: #2f7a67 1px solid;
+  border: #e7cb57ff 1px solid;
   border-radius: 5px;
   font-family: inherit;
   font-size: inherit;
 }
 
 .form-wrap .btn:hover {
-  background: #37a08e;
+  background: #e7cb57ff;
   color: #f4f4f4;
 }
 
 .form-wrap .btn:focus {
-  outline-color: #37a08e;
+  outline-color: #e7cb57ff;
 }
 
 .form-wrap .bottom-text {
@@ -152,9 +152,9 @@ input[type="radio"]:checked + .label-radio {
 }
 
 a {
-  color: #49c1a2;
+  color: #e7cb57ff;
 }
 
 .anchorCustom {
-  color: #276052;
+  color: #e7cb57ff;
 }

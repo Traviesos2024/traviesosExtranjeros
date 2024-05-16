@@ -1,6 +1,8 @@
 footer{
   min-height: 10vh;
-  background-color: rgba(0, 0, 0, 0.081);
+  background-color: #6d71e5ff; 
   text-align: center;
-
+& p{
+  color:azure
+}
 }
