@@ -7,6 +7,7 @@ export * from "./Register";
 export * from "./Login";
 export * from "./CheckCode";
 export * from "./Eventspages";
+export * from "./EventsForm";
 export * from "./ProfilePage";
 export * from "./ChatList";
 export * from "./Chat";

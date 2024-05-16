@@ -11,7 +11,9 @@ import {
   Eventspages,
   ChatListPage,
   ChatPage,
+  EventsForm,
 } from "../pages";
+
 
 import { ExperiencesPage } from "../pages/ExperiencesPage";
 import { createBrowserRouter } from "react-router-dom";
@@ -51,6 +53,14 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <Eventspages />
+          </Protected>
+        ),
+      },
+      {
+        path: "/EventsForm",
+        element: (
+          <Protected>
+            <EventsForm />
           </Protected>
         ),
       },
