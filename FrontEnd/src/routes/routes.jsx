@@ -13,6 +13,7 @@ import {
 
 import { ExperiencesPage } from "../pages/ExperiencesPage";
 import { createBrowserRouter } from "react-router-dom";
+import ProfilePage from "../pages/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,14 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <Eventspages />
+          </Protected>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <Protected>
+            <ProfilePage />
           </Protected>
         ),
       },

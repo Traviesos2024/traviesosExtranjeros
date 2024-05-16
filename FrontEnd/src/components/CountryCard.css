@@ -1,21 +1,20 @@
-/* Estilos para las tarjetas de los países */
 .country-card {
-  background-color: #f9f9f9; 
-  border-radius: 8px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-  padding: 20px; 
-  width: 250px; 
+  background-color:rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  width: calc(50% - 20px); /* Calcula el ancho para mostrar dos elementos por fila */
   margin: 10px;
-  text-align: center; 
+  text-align: center;
+  display: inline-block; /* Cambio necesario para distribuir los elementos en filas */
 }
 
 .country-card img {
   width: 100%;
-  border-radius: 8px; 
-  width: 150px; 
-  height: 150px; 
-  
-  object-fit: cover; 
+  border-radius: 8px;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
   margin-bottom: 10px;
 }
 
@@ -25,28 +24,28 @@
 }
 
 .country-card p {
-  color: #666; 
+  color: #8a7e72ff;
 }
 
 .city-list {
   margin-top: 10px;
+}
 
-  & h3{
-     font-size: 1.2rem;
-  }
-  & ul{
-      list-style: none;
+.city-list h3 {
+  font-size: 1.2rem;
+}
+
+.city-list ul {
+  list-style: none;
   padding: 0;
-  }
-  & a{
-      text-decoration: none;
-  color: #1a3e8b;
+}
+
+.city-list a {
+  text-decoration: none;
+  color:#6d71e5ff;
   transition: color 0.3s ease;
-  }
-  & a:hover {
-     
-  color: #101834; 
-}
 }
 
-
+.city-list a:hover {
+  color: #101834;
+}

@@ -23,6 +23,12 @@
 #root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 200;
-  color: #213547;
+  color: #6d71e5ff;
   background-color: #b2a6a6a2;
+   --light-blue: #b0d8d6ff;
+  --arylide-yellow: #e7cb57ff;
+  --medium-slate-blue: #6d71e5ff;
+  --white: #ffffffff;
+  --battleship-gray: #8a7e72ff;
+
 }

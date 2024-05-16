@@ -5,6 +5,7 @@ const {
   countryById,
   update,
   deleteCountry,
+  getAll,
 } = require("../controllers/Country.controllers");
 const CountryRoutes = express.Router();
 const { isAuth, isAuthSuper } = require("../../middleware/auth.middleware");
@@ -24,5 +25,6 @@ CountryRoutes.patch(
   update
 );
 CountryRoutes.delete("/:idCountry", [isAuthSuper], deleteCountry);
+CountryRoutes.get("/getAll", getAll);
 
 module.exports = CountryRoutes;

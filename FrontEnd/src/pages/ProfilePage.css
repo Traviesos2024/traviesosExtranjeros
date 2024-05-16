@@ -1,0 +1,77 @@
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: var(--medium-slate-blue);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+button {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+input[type="file"] {
+    margin-top: 5px;
+}
+
+button {
+    background-color: var(--arylide-yellow);
+    color: var(--medium-slate-blue);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #d9b94dff; /* Ajuste de color para el efecto hover */
+}
+
+/* Estilos adicionales para mejorar la apariencia del formulario */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="file"],
+button {
+    width: 100%;
+}
+
+input[type="file"] {
+    padding: 6px;
+}
+
+/* Estilos para el cuerpo y el fondo de la página */
+body {
+    background-color: var(--light-blue);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+

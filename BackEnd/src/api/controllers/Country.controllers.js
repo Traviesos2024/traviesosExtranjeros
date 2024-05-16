@@ -1,4 +1,4 @@
-const {deleteImgCloudinary} = require("../../middleware/files.middleware");
+const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const User = require("../models/User.model");
 const Country = require("../models/Country.models");
 const City = require("../models/City.models");
@@ -46,7 +46,6 @@ const createCountry = async (req, res, next) => {
   }
 };
 
-
 //! -----------------------------------------------------------------------------
 //? ---------------------------------findById------------------------------------
 //! -----------------------------------------------------------------------------
@@ -69,6 +68,21 @@ const countryById = async (req, res, next) => {
   }
 };
 
+//? -------------------------------get all------------------------------
+
+const getAll = async (req, res, next) => {
+  try {
+    const allCountry = await Country.find();
+    /** el find nos devuelve un array */
+    if (allCountry.length > 0) {
+      return res.status(200).json(allCountry);
+    } else {
+      return res.status(404).json("no se han encontrado country");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
 
 //! -----------------------------------------------------------------------------
 //? ---------------------------------findById------------------------------------
@@ -76,7 +90,7 @@ const countryById = async (req, res, next) => {
 
 // const byId = async (req, res, next) => {
 //   try {
-//     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
+//     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id.
 //     El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
 //     const { idCountry } = req.params;
 //     const countryById = await Country.findById(idCountry);
@@ -129,7 +143,6 @@ const update = async (req, res, next) => {
   }
 };
 
-
 //! ---------------------------------------------------------------------
 //? -------------------------------DELETE -------------------------------
 //! ---------------------------------------------------------------------
@@ -143,45 +156,44 @@ const deleteCountry = async (req, res, next) => {
       return res.status(404).json({ error: "Country no encontrado" });
     }
 
-      try {
-        await City.updateMany(
-          //borra la ciudad donde estuviera el pais
-          { country: idCountry },
-          { $pull: { country: idCountry } }
-        );
-        console.log(test);
-      } catch (error) {
-        return res
-          .status(500)
-          .json({ error: "Error al actualizar cities", message: error.message });
-      }
+    try {
+      await City.updateMany(
+        //borra la ciudad donde estuviera el pais
+        { country: idCountry },
+        { $pull: { country: idCountry } }
+      );
+      console.log(test);
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ error: "Error al actualizar cities", message: error.message });
+    }
 
-        try {
-          await User.updateMany(
-            //borra el usuario que tenía el country
-            { country: idCountry }, 
-            { $pull: { country: idCountry } }
-          );
+    try {
+      await User.updateMany(
+        //borra el usuario que tenía el country
+        { country: idCountry },
+        { $pull: { country: idCountry } }
+      );
 
-          return res.status(200).json({ deletedCountryId: idCountry });
-        } catch (error) {
-          return res.status(500).json({
-            error: "Error al actualizar usuarios",
-            message: error.message,
-          });
-        }
-      } catch (error) {
-        return res
-          .status(500)
-          .json({ error: "Error al eliminar país", message: error.message });
-      }
-    };
-  
-    
+      return res.status(200).json({ deletedCountryId: idCountry });
+    } catch (error) {
+      return res.status(500).json({
+        error: "Error al actualizar usuarios",
+        message: error.message,
+      });
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: "Error al eliminar país", message: error.message });
+  }
+};
 
 module.exports = {
   createCountry,
   countryById,
   update,
   deleteCountry,
+  getAll,
 };
