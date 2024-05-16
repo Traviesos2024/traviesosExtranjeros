@@ -22,6 +22,14 @@ export const cityById = async (idCity) => {
     .catch((error) => error);
 };
 
+// ----------------getAll------------------------
+
+export const getAllCity = async () => {
+  return APITraviesos.get(`city`)
+    .then((res) => res)
+    .catch((error) => error);
+};
+
 // ----------------toggleEvent ------------------------
 
 export const toggleEvent = async (idCity, idEvent, formData) => {

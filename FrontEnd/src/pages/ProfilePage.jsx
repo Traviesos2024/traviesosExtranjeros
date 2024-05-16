@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import "./ProfilePage.css";
 const ProfilePage = () => {
   const [userData, setUserData] = useState({
     name: "",
@@ -16,7 +16,9 @@ const ProfilePage = () => {
     // Función asincrónica para obtener los datos del usuario desde el backend
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("/user-profile"); // Ruta para obtener los datos del perfil del usuario
+        const response = await axios.get(
+          "http://localhost:8081/api/v1/users/finById/:id"
+        ); // Ruta para obtener los datos del perfil del usuario
         if (response.status === 200) {
           setUserData(response.data); // Establecer los datos del usuario en el estado
         }
@@ -27,7 +29,7 @@ const ProfilePage = () => {
     };
 
     fetchUserData(); // Llamar a la función para obtener los datos del usuario cuando el componente se monte
-  }, []); // El segundo argumento del useEffect ([]) asegura que la función se ejecute solo una vez, equivalente a componentDidMount
+  }, []); //
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,7 +62,7 @@ const ProfilePage = () => {
 
   return (
     <div className="container">
-      <h1>User Profile</h1>
+      <h1>Tu perfil</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
         <input

@@ -22,6 +22,14 @@ export const countryById = async (idCountry) => {
     .catch((error) => error);
 };
 
+// ----------------getAll------------------------
+
+export const getAllCountry = async () => {
+  return APITraviesos.get(`country`)
+    .then((res) => res)
+    .catch((error) => error);
+};
+
 // ----------------update ------------------------
 
 export const update = async (idCountry, formData) => {

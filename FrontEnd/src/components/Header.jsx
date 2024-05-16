@@ -3,6 +3,7 @@ import "./Header.css";
 import { Nav } from "./Nav";
 import { Link } from "react-router-dom";
 import Logout from "./Logout";
+import ProfileButton from "./ProfileButton";
 
 export const Header = () => {
   const [Login, setLogin] = useState(true); // Estado de si el usuario está logado o no. Esta en true inicialmente porque tiene que estar logado para hacer logout
@@ -23,6 +24,7 @@ export const Header = () => {
             </button>
           )}
         </div>
+        <ProfileButton />
       </div>
       <Nav />
     </header>
