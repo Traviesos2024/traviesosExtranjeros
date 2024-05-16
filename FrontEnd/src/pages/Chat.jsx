@@ -1,5 +1,5 @@
 import { useState, useEffect, componentDidMount } from "react";
-import "./Register.css";
+import "./Chat.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
 import { getChatById } from "../services/chats.service";
@@ -68,18 +68,30 @@ export const ChatPage = () => {
 
   return (
     <>
-      <div>
-        <h2>Chat</h2>
-        <p>These are the chats you have with others living abroad!</p>
+      <div className="chat-wrapper">
+        <div className="chat-header-wrapper">
+          <img src={chat.userTwo.image} alt="user" />
+          <h3>{chat.userTwo.name}</h3>
+        </div>
         {chat && chat.messages ? (
-          <ul>
-            <h3>{chat.userTwo.name}</h3>
+          <div className="text-div">
             {chat.messages.map((message) => (
-              <li key={message._id}>
-                <h3>{message.content}</h3>
-              </li>
+              <div
+                class={
+                  user._id == message.owner
+                    ? "my-text-wrapper"
+                    : "friend-text-wrapper"
+                }
+              >
+                <div
+                  class={user._id == message.owner ? "my-text" : "friend-text"}
+                  key={message._id}
+                >
+                  {message.content}
+                </div>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <h3>You have no messages</h3>
         )}
@@ -87,6 +99,7 @@ export const ChatPage = () => {
           <label htmlFor="content">Escribe tu mensaje:</label>
           <textarea
             id="content"
+            className="textarea-message"
             name="content"
             {...register("content", { required: true })}
             required

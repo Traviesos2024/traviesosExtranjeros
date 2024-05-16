@@ -136,7 +136,9 @@ const getChatByUser = async (req, res, next) => {
     }
     const chatByUser = await Chat.find({
       $or: [{ userOne: idUserQuery }, { userTwo: idUserQuery }],
-    }).populate("messages");
+    })
+      .populate("messages")
+      .populate("userTwo");
 
     if (chatByUser) {
       return res.status(200).json(chatByUser);

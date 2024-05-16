@@ -47,21 +47,17 @@ export const ChatListPage = () => {
   if (isLoading) {
     return <h1>cargando...</h1>;
   }
-  const goToChat = (chatId) => {
-    // return <Navigate to=`/chat/` />;
-    // Navegar a Chat
-  };
 
   return (
     <>
       <div>
         <h2>Chats</h2>
         <p>These are the chats you have with others living abroad!</p>
-        {chats.length > 0 ? (
+        {chats && chats.length > 0 ? (
           <ul>
             {chats.map((chat) => (
               <li key={chat._id} onClick={() => navigate(`/chat/${chat._id}`)}>
-                <h3>{chat._id}</h3>
+                <h3>{chat.userTwo.name}</h3>
               </li>
             ))}
           </ul>
