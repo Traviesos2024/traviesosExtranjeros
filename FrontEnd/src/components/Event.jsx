@@ -1,27 +1,17 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { eventsData } from '../data/eventsData';
+import "./Event.css";
 
-export const Event = () => {
+export const Event = ({ name, src, category, cities, date, description }) => {
 
   
+
   return (
-    <div>
-      <h1>Eventos</h1>
-      <ul>
-        {eventsData.map((event, index) => (
-          <li key={index}>
-            <Link to={event.path}>
-              <img src={`/images/${event.image}`} alt={event.name} width="200" />
-              <h2>{event.name}</h2>
-              <p>{event.city}</p>
-              <p>{event.category}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <figure>
+      <img src={src} alt={name} width={350} height={200} />
+      <p>{name}</p>
+      <p>{category}</p>
+      <p>{date}</p>
+      <p>{description}</p>
+      <p>{cities}</p>
+    </figure>
   );
 };
-
-export default Event;
