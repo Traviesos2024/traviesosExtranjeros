@@ -15,6 +15,9 @@ export const ChatPage = () => {
   const [res, setRes] = useState({});
   const user = JSON.parse(localStorage.getItem("user"));
   const [isLoading, setIsLoading] = useState(true);
+
+  const { register, handleSubmit, setValue } = useForm();
+
   //! 4) useEffects que gestionan la repuesta y manejan los errores
 
   useEffect(() => {
@@ -25,10 +28,10 @@ export const ChatPage = () => {
         try {
           // await async "fetchChat()" function
           const chatResponse = await getChatById(chatId);
-          console.log(chatResponse.data);
+
           await setChat(chatResponse.data);
           setIsLoading(false);
-          console.log(chat);
+
           bridgeData("ALLUSER");
         } catch (err) {
           console.log("Error occured when fetching chat");
@@ -47,8 +50,15 @@ export const ChatPage = () => {
   if (isLoading) {
     return <h1>cargando...</h1>;
   }
-  const goToChat = () => {
-    // Navegar a Chat
+
+  const formSubmit = async (formData) => {
+    const customFormData = {
+      ...formData,
+    };
+    //llamada al backend
+    setSend(true);
+    setRes(await createExperience(customFormData));
+    setSend(false);
   };
 
   return (
@@ -68,6 +78,18 @@ export const ChatPage = () => {
         ) : (
           <h3>You have no messages</h3>
         )}
+        <form id="formularios" onSubmit={handleSubmit(formSubmit)}>
+          <label htmlFor="description">Description:</label>
+          <textarea
+            id="description"
+            name="description"
+            value={newExperience.description}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit">Post Message</button>
+        </form>
       </div>
     </>
   );

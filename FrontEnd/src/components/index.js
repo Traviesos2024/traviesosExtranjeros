@@ -6,4 +6,3 @@ export * from "./CityCard";
 export * from "./Uploadfile";
 export * from "./Protected";
 export * from "./Logout";
-export * from "./UserChatMessage";
