@@ -1,0 +1,9 @@
+.botonLike{
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--arylide-yellow); /* Color de fondo */
+    color: #fff; /* Color del texto */
+    border-radius: 30px; /* Bordes redondeados */
+    text-align: center; /* Centra el texto */
+    text-decoration: none; 
+ }
