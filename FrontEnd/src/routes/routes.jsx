@@ -13,7 +13,14 @@ import {
   ChatPage,
   EventsForm,
   ExperiencesForm,
+<<<<<<< HEAD
   ExperiencesPage,
+=======
+  Dashboard,
+  ForgotPassword,
+  ChangePassword
+  
+>>>>>>> 7902d715c6ba98f1ae0dbd7260043737f6e5f2ea
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -31,6 +38,18 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         element: <Login />,
+      },
+      {
+        path: "/dashboard",
+        element: (
+          <Protected>
+            <Dashboard />
+          </Protected>
+        ),
+      },
+      {
+        path: "/forgotPassword",
+        element: <ForgotPassword />,
       },
       {
         path: "/verifyCode",
@@ -79,6 +98,24 @@ export const router = createBrowserRouter([
             <ProfilePage />
           </Protected>
         ),
+        children: [
+          {
+            path: "/profile/changePassword",
+            element: (
+              <Protected>
+                <ChangePassword />
+              </Protected>
+            ),
+          },
+          {
+            path: "/profile/",
+            element: (
+              <Protected>
+                <FormProfile />
+              </Protected>
+            ),
+          },
+        ],
       },
       {
         path: "/:country",
