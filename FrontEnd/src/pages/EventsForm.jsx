@@ -84,36 +84,86 @@ export const EventsForm = () => {
         </button>
         {showForm && (
           <div>
-            <h1>Create evento</h1>
+            <h1>Crear evento</h1>
             <form onSubmit={handleSubmit(formSubmit)}>
               <div className="user_container form-group">
+                <label htmlFor="custom-input" className="custom-placeholder">
+                  Evento
+                </label>
                 <input
                   className="input_user"
                   type="text"
                   id="name"
                   name="name"
                   autoComplete="false"
-                  placeholder="Vinos"
+                  placeholder="Añadir evento"
                   {...register("name", { required: true })}
-                />
-                <label htmlFor="custom-input" className="custom-placeholder">
-                  Title
-                </label>
+                />  
               </div>
               <div className="description_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                  Descripción
+                </label>
                 <input
                   className="input_user"
                   type="texto"
                   id="description"
                   name="description"
                   autoComplete="false"
-                  placeholder="Fuimos de vinos a Honolulu"
+                  placeholder=""
                   {...register("description", { required: true })}
-                />
-                <label htmlFor="custom-input" className="custom-placeholder">
-                  Description
-                </label>
+                />              
               </div>
+
+              {/* <div className="category_container form-group">
+              <label htmlFor="category" className="custom-placeholder">Category</label>
+              <input
+                  className="input_user"
+                  type="text"
+                  id="category"
+                  name="category"
+                  autoComplete="off"
+                  placeholder="Selecciona una categoría"
+                  list="category-options"
+                  {...register("category", { required: true })}
+                />
+                  <datalist id="category-options">
+                    <option value="Música" />
+                    <option value="Gastronomía" />
+                    <option value="Deportes" />
+                    <option value="Otros..." />
+                  </datalist>
+                </div> */}
+
+                <div className="city_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                  Ciudad
+                </label>
+                <input
+                  className="input_user"
+                  type="texto"
+                  id="city"
+                  name="city"
+                  autoComplete="false"
+                  placeholder="Añadir una ciudad"
+                  {...register("city", { required: true })}
+                />            
+              </div>
+              {/* <div className="date_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                  Date
+                </label>
+                <input
+                  className="input_user"
+                  type="date"
+                  id="date"
+                  name="date"
+                  autoComplete="false"
+                  placeholder="DD-MM-AAAA"
+                  {...register("date", { required: true })}
+                />            
+              </div> */}
+
 
               <div>
                 <Uploadfile required />
@@ -126,7 +176,7 @@ export const EventsForm = () => {
                   disabled={send}
                   style={{ background: send ? "#49c1a388" : "#2f7a67" }}
                 >
-                  {send ? "Cargando..." : "New events"}
+                  {send ? "Cargando..." : "Nuevos eventos"}
                 </button>
               </div>
             </form>
