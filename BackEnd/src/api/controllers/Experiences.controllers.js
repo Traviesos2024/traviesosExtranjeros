@@ -62,7 +62,7 @@ const createExperience = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const allExperience = await Experience.find().populate("experience");
+    const allExperience = await Experience.find().populate("events");
     /** el find nos devuelve un array */
     if (allExperience.length > 0) {
       return res.status(200).json(allExperience);
