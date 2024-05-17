@@ -3,6 +3,7 @@ import "./EventsPages.css";
 import { Event } from "../components";
 import { getAll} from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
+import { useNavigate } from "react-router-dom";
 
 
 export const Eventspages = () => {
@@ -23,10 +24,10 @@ export const Eventspages = () => {
     console.log(events);
   }, [events]);
 
-  // const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    history.push('/eventsForm');
+    navigate('/EventsForm');
   };
 
   return (
