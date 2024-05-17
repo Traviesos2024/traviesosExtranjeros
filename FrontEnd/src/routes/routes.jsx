@@ -13,16 +13,9 @@ import {
   ChatPage,
   EventsForm,
   ExperiencesForm,
-<<<<<<< HEAD
-  ForgotPassword,
-  ChangePassword,
-  
-=======
   ExperiencesPage,
-  Dashboard,
   ForgotPassword,
   ChangePassword,
->>>>>>> 1968eb5fb3c886a66cd8f7d9bd631e023208d380
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
