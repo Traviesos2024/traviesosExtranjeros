@@ -13,14 +13,10 @@ import {
   ChatPage,
   EventsForm,
   ExperiencesForm,
-<<<<<<< HEAD
   ExperiencesPage,
-=======
   Dashboard,
   ForgotPassword,
-  ChangePassword
-  
->>>>>>> 7902d715c6ba98f1ae0dbd7260043737f6e5f2ea
+  ChangePassword,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
