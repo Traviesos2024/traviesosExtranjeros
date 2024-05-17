@@ -3,8 +3,8 @@
   text-align: center;
 }
 
-main{
-  min-height: 30vw;
+main {
+  min-height: 50vh;
 }
 
 #root {
@@ -12,10 +12,9 @@ main{
   font-weight: 200;
   color: #6d71e5ff;
   background-color: #ffffff;
-   --light-blue: #b0d8d6ff;
+  --light-blue: #b0d8d6ff;
   --arylide-yellow: #e7cb57ff;
   --medium-slate-blue: #6d71e5ff;
   --white: #ffffffff;
   --battleship-gray: #8a7e72ff;
-
 }
