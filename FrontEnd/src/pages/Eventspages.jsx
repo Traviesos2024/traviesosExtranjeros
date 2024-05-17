@@ -4,7 +4,10 @@ import { Event } from "../components";
 import { getAll } from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 500f13336af25badde9937483f2eb68e066d6f46
 
 export const Eventspages = () => {
   const [events, setEvents] = useState([]);
@@ -28,7 +31,10 @@ export const Eventspages = () => {
 
   const handleClick = () => {
     navigate("/EventsForm");
+<<<<<<< HEAD
     navigate('/EventsForm');
+=======
+>>>>>>> 500f13336af25badde9937483f2eb68e066d6f46
   };
 
   return (
