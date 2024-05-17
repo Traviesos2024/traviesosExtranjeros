@@ -13,9 +13,9 @@ import {
   ChatPage,
   EventsForm,
   ExperiencesForm,
+  ExperiencesPage,
 } from "../pages";
 
-import { ExperiencesPage } from "../pages/ExperiencesPage";
 import { createBrowserRouter } from "react-router-dom";
 import ProfilePage from "../pages/ProfilePage";
 
