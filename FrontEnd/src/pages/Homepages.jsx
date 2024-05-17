@@ -1,3 +1,4 @@
+import "./Homepages.css";
 export const Homepages = () => {
-  return <></>;
+  return <>HomePage</>;
 };

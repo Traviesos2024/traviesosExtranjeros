@@ -12,3 +12,7 @@ export * from "./ProfilePage";
 export * from "./ChatList";
 export * from "./Chat";
 export * from "./ExperiencesForm";
+export * from "./ChangePassword";
+export * from "./ForgotPassword";
+
+

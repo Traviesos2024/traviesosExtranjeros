@@ -13,9 +13,8 @@ import {
   ChatPage,
   EventsForm,
   ExperiencesForm,
-  Dashboard,
   ForgotPassword,
-  ChangePassword
+  ChangePassword,
   
 } from "../pages";
 
@@ -36,14 +35,7 @@ export const router = createBrowserRouter([
         path: "/login",
         element: <Login />,
       },
-      {
-        path: "/dashboard",
-        element: (
-          <Protected>
-            <Dashboard />
-          </Protected>
-        ),
-      },
+      
       {
         path: "/forgotPassword",
         element: <ForgotPassword />,
@@ -104,14 +96,14 @@ export const router = createBrowserRouter([
               </Protected>
             ),
           },
-          {
-            path: "/profile/",
-            element: (
-              <Protected>
-                <FormProfile />
-              </Protected>
-            ),
-          },
+          // {
+          //   path: "/profile/",
+          //   element: (
+          //     <Protected>
+          //       <FormProfile />
+          //     </Protected>
+          //   ),
+          // },
         ],
       },
       {
