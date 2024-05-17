@@ -14,6 +14,14 @@ export const createExperience = async (formData) => {
     .catch((error) => error);
 };
 
+// ----------------getAll------------------------
+
+export const getAll = async () => {
+  return APITraviesos.get(`/experiences/getAll`)
+    .then((res) => res)
+    .catch((error) => error);
+};
+
 // ----------------byId------------------------
 
 export const byId = async (idExperience) => {

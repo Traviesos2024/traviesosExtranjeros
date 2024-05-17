@@ -3,7 +3,7 @@ import "./CountryCard.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-const CountryCard = ({ country }) => {
+export const CountryCard = ({ country }) => {
   const [expanded, setExpanded] = useState(false); // Estado para ampliar la tarjeta del país
 
   const handleExpandClick = () => {
@@ -16,7 +16,7 @@ const CountryCard = ({ country }) => {
     >
       <h2>{country.name}</h2>
       <img src={country.image} alt={country.name} />
-      {expanded && (
+      {/* {expanded && (
         <div className="city-list">
           <h3>Ciudades disponibles:</h3>
           <ul>
@@ -24,17 +24,16 @@ const CountryCard = ({ country }) => {
               <ul key={index}>
                 <Link to={city.path}>{city.name}</Link>
               </ul>
-            ))}
-          </ul>
+            ))} */}
+      {/* </ul>
         </div>
-      )}
+      )} */}
+      {console.log(country)}
     </div>
   );
 };
 
 //!--- FALTARIA AÑADIR TODOS LOS DATOS DE LA COUNTRY QUE INCLUIMOS EN EL MODELO DE COUNTRY (NEKY)
-
-export default CountryCard;
 
 // const CountryCard = ({ country }) => {
 //   const [cities, setCities] = useState([]);

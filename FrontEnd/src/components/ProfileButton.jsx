@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { byId, updateUser } from "../services/user.service";
 
 const ProfileButton = () => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(false);
 
   useEffect(() => {
     const fetchLoggedInUser = async () => {

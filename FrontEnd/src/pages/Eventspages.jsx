@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import "./EventsPages.css";
 import { Event } from "../components";
-import { getAll} from "../services/events.service";
+import { getAll } from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
-
+import { useNavigate } from "react-router-dom";
 
 export const Eventspages = () => {
   const [events, setEvents] = useState([]);
@@ -23,29 +23,29 @@ export const Eventspages = () => {
     console.log(events);
   }, [events]);
 
-  // const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    history.push('/eventsForm');
+    navigate("/EventsForm");
   };
 
   return (
     <div id="containerEvent">
       <button onClick={handleClick}> ✒️ CREAR EVENTO </button>
-      <hr/>
+      <hr />
       <br></br>
       {events.length > 0 &&
         events
           .slice(0, 1000)
           .map((item) => (
-            <Event 
-            src={item?.image} 
-            name={item?.name} 
-            key={item.name}
-            category={item?.category}
-            date={item?.date}
-            description={item?.description}
-            cities={item?.cities}
+            <Event
+              src={item?.image}
+              name={item?.name}
+              key={item.name}
+              category={item?.category}
+              date={item?.date}
+              description={item?.description}
+              cities={item?.cities}
             />
           ))}
     </div>

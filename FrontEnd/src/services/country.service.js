@@ -25,7 +25,7 @@ export const countryById = async (idCountry) => {
 // ----------------getAll------------------------
 
 export const getAllCountry = async () => {
-  return APITraviesos.get(`country`)
+  return APITraviesos.get(`/country/getAll`)
     .then((res) => res)
     .catch((error) => error);
 };

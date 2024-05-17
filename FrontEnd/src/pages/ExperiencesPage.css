@@ -1,35 +1,15 @@
-button[type="submit"]{
+/* #containerEventsPages{
+    width: 100vw;
+    min-height: 100vh;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
-    width: 15vw;
-    margin: 3rem 0 1rem 0;
-}
+    gap: 2rem;
 
-/* input[type="file"]{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    width: 15vw;
-    margin: 3rem 0 1rem 0; 
-} */
-/* #image{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    width: 15vw;
-    margin: 3rem 0 1rem 0;
-} */
-/* 
+    & p{
+        text-align: center;
+    }
 
-.buttonFilter {
-    width: 6rem;
-    height: 2rem;
-    border-radius: 5px;
+   
 } */

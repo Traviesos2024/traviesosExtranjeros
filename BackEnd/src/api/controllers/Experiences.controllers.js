@@ -58,6 +58,24 @@ const createExperience = async (req, res, next) => {
     });
   }
 };
+//! -------------------get all------------------------------
+
+const getAll = async (req, res, next) => {
+  try {
+    const allExperience = await Experience.find().populate("experience");
+    /** el find nos devuelve un array */
+    if (allExperience.length > 0) {
+      return res.status(200).json(allExperience);
+    } else {
+      return res.status(404).json("no se han encontrado characters");
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: "error al buscar - lanzado en el catch",
+      message: error.message,
+    });
+  }
+};
 
 //! -------------like experiencie ----------------
 
@@ -334,4 +352,5 @@ module.exports = {
   byId,
   update,
   deleteExperience,
+  getAll,
 };
