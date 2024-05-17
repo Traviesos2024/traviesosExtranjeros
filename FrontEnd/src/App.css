@@ -4,11 +4,16 @@
   
 }
 
+<<<<<<< HEAD
 main{
   min-height: 35vw;
   display: flex;
   justify-content: center; /* Centra el contenido horizontalmente si es necesario */
   align-items: center; 
+=======
+main {
+  min-height: 50vh;
+>>>>>>> c78df8097ff29a59392b0fb65776d32874208b6f
 }
 
 #root {
@@ -21,7 +26,6 @@ main{
   --medium-slate-blue: #6d71e5ff;
   --white: #ffffffff;
   --battleship-gray: #8a7e72ff;
-
 }
 
 .homePage {

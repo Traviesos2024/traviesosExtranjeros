@@ -1,0 +1,28 @@
+.chats-list-wrapper {
+  max-width: 35vw;
+  padding: 15px 30px;
+  border-right: 3px solid lightblue;
+  height: 100%;
+  min-height: 100vh;
+  margin-block: 20px;
+}
+
+.chat-list-wrapper {
+  display: flex;
+  gap: 7px;
+  justify-content: left;
+  border-bottom: 2px solid rgba(89, 116, 219, 1) 92%;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  height: 5rem;
+  background-color: #fff;
+}
+
+.chat-list-image {
+  width: 65px;
+}
+
+.chat-time {
+  margin-left: auto;
+  margin-top: auto;
+  padding: 5px;
+}

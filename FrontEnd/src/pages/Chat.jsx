@@ -17,7 +17,7 @@ export const ChatPage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [isLoading, setIsLoading] = useState(true);
 
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, reset } = useForm();
 
   //! 4) useEffects que gestionan la repuesta y manejan los errores
 
@@ -64,6 +64,7 @@ export const ChatPage = () => {
     setChat(chat);
     setRes(newMessage.data);
     setSend(false);
+    reset();
   };
 
   return (
@@ -77,15 +78,19 @@ export const ChatPage = () => {
           <div className="text-div">
             {chat.messages.map((message) => (
               <div
-                class={
-                  user._id == message.owner
+                key={message._id}
+                className={
+                  user._id == message.owner || user._id == message.owner._id
                     ? "my-text-wrapper"
                     : "friend-text-wrapper"
                 }
               >
                 <div
-                  class={user._id == message.owner ? "my-text" : "friend-text"}
-                  key={message._id}
+                  className={
+                    user._id == message.owner || user._id == message.owner._id
+                      ? "my-text"
+                      : "friend-text"
+                  }
                 >
                   {message.content}
                 </div>

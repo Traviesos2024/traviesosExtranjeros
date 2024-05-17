@@ -1,5 +1,6 @@
 import { useState, useEffect, componentDidMount } from "react";
-import "./Register.css";
+
+import "./ChatList.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
 import { getChatByUser } from "../services/chats.service";
@@ -50,17 +51,39 @@ export const ChatListPage = () => {
 
   return (
     <>
-      <div>
+      <div className="chats-list-wrapper">
         <h2>Chats</h2>
-        <p>These are the chats you have with others living abroad!</p>
         {chats && chats.length > 0 ? (
-          <ul>
+          <div>
             {chats.map((chat) => (
-              <li key={chat._id} onClick={() => navigate(`/chat/${chat._id}`)}>
-                <h3>{chat.userTwo.name}</h3>
-              </li>
+              <div
+                className="chat-list-wrapper"
+                key={chat._id}
+                onClick={() => navigate(`/chat/${chat._id}`)}
+              >
+                <img
+                  className="chat-list-image"
+                  src={chat.userTwo.image}
+                  alt="user"
+                />
+                <div>
+                  <h3>{chat.userTwo.name}</h3>
+                  <p>{chat.messages.at(-1).content}</p>
+                </div>
+                <small className="chat-time">
+                  {(new Date(chat.messages.at(-1).createdAt).getHours() < 10
+                    ? "0"
+                    : "") +
+                    new Date(chat.messages.at(-1).createdAt).getHours() +
+                    ":" +
+                    (new Date(chat.messages.at(-1).createdAt).getMinutes() < 10
+                      ? "0"
+                      : "") +
+                    new Date(chat.messages.at(-1).createdAt).getMinutes()}
+                </small>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <h3>You have no chats</h3>
         )}
