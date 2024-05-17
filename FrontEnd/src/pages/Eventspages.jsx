@@ -27,7 +27,10 @@ export const Eventspages = () => {
 
   const handleClick = () => {
     navigate("/EventsForm");
+<<<<<<< HEAD
     navigate('/EventsForm');
+=======
+>>>>>>> 1968eb5fb3c886a66cd8f7d9bd631e023208d380
   };
 
   return (
