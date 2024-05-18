@@ -620,6 +620,18 @@ const update = async (req, res, next) => {
     patchUser.email = req.user.email;
     patchUser.check = req.user.check;
     patchUser.gender = req.user.gender;
+    patchUser.eventsOwner = req.user.eventsOwner;
+    patchUser.experiencesOwner = req.user.experiencesOwner;
+    patchUser.eventsFollow = req.user.eventsFollow;
+    patchUser.eventsFav = req.user.eventsFav;
+    patchUser.experiencesFav = req.user.experiencesFav;
+    patchUser.followers = req.user.followers;
+    patchUser.followed = req.user.followed;
+    patchUser.chats = req.user.chats;
+    patchUser.banned = req.user.banned;
+    patchUser.commentsPublicByOther = req.user.commentsPublicByOther;
+    patchUser.postedMessages = req.user.postedMessages;
+    patchUser.messagesFav = req.user.messagesFav;
 
     try {
       /** hacemos una actualizacion NO HACER CON EL SAVE
