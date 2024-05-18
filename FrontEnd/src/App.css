@@ -10,9 +10,9 @@ main{
   justify-content: center; /* Centra el contenido horizontalmente si es necesario */
   align-items: center; 
 }
-main {
+/* main {
   min-height: 50vh;
-}
+} */
 
 #root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

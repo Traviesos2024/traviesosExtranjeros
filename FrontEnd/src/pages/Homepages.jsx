@@ -1,19 +1,33 @@
 import { useState, useEffect } from "react";
-import { CountryCard } from "../components/CountryCard";
 import "./Homepages.css";
+import { useErrorCountry } from "../hooks/useErrorCountry";
+import { useNavigate } from "react-router-dom";
 
 export const Homepages = () => {
-  const [countries, setCountries] = useState([]);
+  const [country, setCountries] = useState([]);
+  const [res, setRes] = useState ({});
 
   useEffect(() => {
-    fetch("http://localhost:8081/api/v1/getAll")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setCountries(data);
-      })
-      .catch((error) => console.error("Error fetching countries:", error));
+    (async () => {
+      setRes(await country());
+    })();
   }, []);
+
+  useEffect(() => {
+    useErrorCountry(res, setRes, setCountries)
+  }, [res]);
+
+  useEffect(() => {
+    console.log(country);
+  }, [country]);
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/Country");
+    navigate('/Country');
+
+  };
 
   return (
     <main>
@@ -27,16 +41,20 @@ export const Homepages = () => {
           voluptas, nam quam voluptatum neque iure expedita iste consequatur harum
           corporis dignissimos?
         </p>
-        <div className="country-cards-container">
-          {countries.map((country, index) => (
-            <CountryCard
-              key={index}
-              name={country.name}
-              image={country.image}
-              cities={country.cities}
-            />
-          ))}
-        </div>
+        <div id="containerHome">
+        <button onClick={handleClick}>
+            <img src="https://res.cloudinary.com/dqiudrruv/image/upload/v1715956882/traviesosExtrajeros/t1gwnw8ztndp9o8ovlqi.jpg" alt="Portugal" />
+        </button>
+        <button  onClick={handleClick}>
+            <img src="https://res.cloudinary.com/dqiudrruv/image/upload/v1715956992/traviesosExtrajeros/shq2unoqbgcjqzrwegfe.jpg" alt="Francia" />
+        </button>
+        <button  onClick={handleClick}>
+            <img src="https://res.cloudinary.com/dqiudrruv/image/upload/v1715867057/Countries/Italia_Roma_njwygm.jpg" alt="Italia" />
+        </button>
+        <button  onClick={handleClick}>
+            <img src="https://res.cloudinary.com/dqiudrruv/image/upload/v1715867046/Countries/Inglaterra-1-e1579225431994_lpcuiq.jpg" alt="Inglaterra" />
+        </button >
+    </div>
       </div>
     </main>
   );
