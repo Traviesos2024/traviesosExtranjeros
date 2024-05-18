@@ -6,7 +6,8 @@ const City = require("../models/City.models");
 const createCountry = async (req, res, next) => {
   try {
     await Country.syncIndexes();
-
+    let city = req.body?.cities.split(",");
+    console.log(":cohete: ~ createCountry ~ city:", city);
     // Creamos una instancia del modelo Country
     const customBody = {
       name: req.body?.name,
@@ -14,29 +15,22 @@ const createCountry = async (req, res, next) => {
       image: req.file?.path,
       tipicalFood: req.body?.tipicalFood,
       traditions: req.body?.traditions,
+      cities: city,
     };
     const newCountry = new Country(customBody);
     const savedCountry = await newCountry.save();
     const idCountry = savedCountry._id;
-
     // Verificamos si hay un usuario autenticado
     if (!req.user) {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
-
     // Obtenemos el ID de la ciudad del cuerpo de la solicitud
-    const cityId = req.body.cityId;
-
-    // Actualizamos la clave country de la ciudad con el ID del país
-    await City.findByIdAndUpdate(cityId, {
-      $push: { country: idCountry },
+    city.forEach(async (item) => {
+      await City.findByIdAndUpdate(item, { $push: { country: item } });
     });
-
     // Devolvemos el usuario actualizado
-    const updatedCity = await City.findById(cityId).populate("country");
     return res.status(200).json({
-      action: "update",
-      cities: updatedCity,
+      country: await Country.findById(newCountry._id).populate("cities"),
     });
   } catch (error) {
     return res.status(404).json({

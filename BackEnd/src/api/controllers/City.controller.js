@@ -10,14 +10,15 @@ const Country = require("../models/Country.models");
 const createCity = async (req, res, next) => {
   try {
     await City.syncIndexes();
-
+    let country = req.body?.country;
+    console.log(":cohete: ~ createCountry ~ city:", country);
     // hacemos una instancia del modelo, por el body tengo el name, la descripción, la imagen y el número de habitantes/;
     const customBody = {
       name: req.body?.name,
       description: req.body?.description,
       image: req.file?.path,
       numHab: req.body?.numHab,
-      country: req.body?.country,
+      country: country,
     };
     const newCity = new City(customBody);
     const savedCity = await newCity.save();
@@ -28,11 +29,18 @@ const createCity = async (req, res, next) => {
     if (!req.user) {
       return res.status(401).json({ error: "No eres superAdmin" });
     }
+    // Obtenemos el ID de la ciudad del cuerpo de la solicitud
+    await Country.findByIdAndUpdate(country, { $push: { cities: idCity } });
+
+    // Devolvemos el usuario actualizado
+    return res.status(200).json({
+      cities: await City.findById(newCity._id).populate("country"),
+    });
 
     // test en el runtime
-    return res
-      .status(savedCity ? 200 : 404) //200 si se ha guardado y 404 si no se ha guardado
-      .json(savedCity ? savedCity : "error al crear nueva ciudad ❌");
+    // return res
+    //   .status(savedCity ? 200 : 404) //200 si se ha guardado y 404 si no se ha guardado
+    //   .json(savedCity ? savedCity : "error al crear nueva ciudad ❌");
   } catch (error) {
     return res.status(404).json({
       error: "error catch create city",
