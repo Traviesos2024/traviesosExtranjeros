@@ -10,14 +10,12 @@ main{
   justify-content: center; /* Centra el contenido horizontalmente si es necesario */
   align-items: center; 
 }
-/* main {
-  min-height: 50vh;
-} */
+
 
 #root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   font-weight: 200;
-  color: #6d71e5ff;
+  color: rgb(0, 0, 0);
   background-color: #ffffff;
   --light-blue: #b0d8d6ff;
   --arylide-yellow: #e7cb57ff;
@@ -26,33 +24,25 @@ main{
   --battleship-gray: #8a7e72ff;
 }
 
-.homePage {
-  display: flex;
-  flex-direction: column; /* Coloca los elementos uno debajo del otro */
-  align-items: center; /* Alinea horizontalmente al centro */
-  text-align: center; /* Alinea el texto al centro */
-  width: 100%; /* Hace que .homePage ocupe todo el ancho de main */
-  min-height: inherit; /* Hereda el min-height de main */
-}
-
-.boton-like, .botonLike {
-  /* Estilos de los encabezados */
-  padding: 10px 20px;
-  background-color: var(--light-blue);
+button {
+  background-color: #6d71e5ff; 
+  border: none;
   color: white;
-  border: 1px solid var(--color-primario);
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 0 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
   border-radius: 30px;
-  cursor: pointer;
-  margin: 1rem 1rem 1rem 1rem; /* Espacio entre elementos */
 }
 
-.p{
-  line-height: 1.3;
+button:hover {
+  background-color: rgb(76, 80, 179)
 }
 
-.country-card {
-  width: 200px; /* Ancho de cada carta de país, ajustar según sea necesario */
-  margin: 10px; /* Margen entre las cartas de país */
-  border-radius: 10px; /* Bordes redondeados */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra para resaltar las cartas */
+button.active {
+  background-color: #f7fffe; 
+  color: #333; 
 }
