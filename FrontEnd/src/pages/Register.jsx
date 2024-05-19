@@ -112,7 +112,7 @@ export const Register = () => {
           <div className="age_container form-group">
             <input
               className="input_user"
-              type="number"
+              type="date"
               id="age"
               name="age"
               autoComplete="false"
