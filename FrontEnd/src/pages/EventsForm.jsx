@@ -8,6 +8,7 @@ import { Uploadfile } from "../components";
 import { Navigate } from "react-router-dom";
 import { createEvent } from "../services/events.service";
 
+
 export const EventsForm = () => {
   //! 1) crear los estados
 
@@ -17,6 +18,7 @@ export const EventsForm = () => {
   const { allUser, setAllUser, bridgeData } = useAuth();
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  
 
   //! 2) llamada al hook de react hook form
 
@@ -28,7 +30,7 @@ export const EventsForm = () => {
     const inputFile = document.getElementById("file-upload").files;
 
     //* condicional para enviar los datos del formulario al backend tanto si hay subida imagen como si no
-    if (inputFile.lenght != 0) {
+    if (inputFile.length != 0) {
       // si es diferente a 0 es que hay algo dentro de files
       const customFormData = {
         ...formData,
@@ -68,7 +70,7 @@ export const EventsForm = () => {
   //! 5) estados de navegacion
 
   if (ok) {
-    return <Navigate to="/events" />;
+    return <Navigate to="/Events" />;
   }
   const toggleFormVisibility = () => {
     setShowForm(!showForm); // Cambia el estado de visibilidad del formulario
@@ -115,8 +117,8 @@ export const EventsForm = () => {
                 />              
               </div>
 
-              {/* <div className="category_container form-group">
-              <label htmlFor="category" className="custom-placeholder">Category</label>
+              <div className="category_container form-group">
+              <label htmlFor="category" className="custom-placeholder">Categoria</label>
               <input
                   className="input_user"
                   type="text"
@@ -133,7 +135,7 @@ export const EventsForm = () => {
                     <option value="Deportes" />
                     <option value="Otros..." />
                   </datalist>
-                </div> */}
+                </div>
 
                 <div className="city_container form-group">
               <label htmlFor="custom-input" className="custom-placeholder">
@@ -147,22 +149,23 @@ export const EventsForm = () => {
                   autoComplete="false"
                   placeholder="Añadir una ciudad"
                   {...register("city", { required: true })}
-                />            
+                />
+
               </div>
-              {/* <div className="date_container form-group">
+              <div className="date_container form-group">
               <label htmlFor="custom-input" className="custom-placeholder">
-                  Date
+                  Fecha y Hora
                 </label>
                 <input
                   className="input_user"
-                  type="date"
+                  type="datetime-local"
                   id="date"
-                  name="date"
+                  name="daytime"
                   autoComplete="false"
                   placeholder="DD-MM-AAAA"
                   {...register("date", { required: true })}
                 />            
-              </div> */}
+              </div> 
 
 
               <div>

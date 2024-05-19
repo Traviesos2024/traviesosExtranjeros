@@ -118,7 +118,7 @@ const getByCity = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const allEvent = await Events.find().populate("experience");
+    const allEvent = await Events.find().populate("experience").populate("cities");
     /** el find nos devuelve un array */
     if (allEvent.length > 0) {
       return res.status(200).json(allEvent);

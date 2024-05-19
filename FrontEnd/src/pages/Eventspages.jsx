@@ -4,14 +4,15 @@ import { Event } from "../components";
 import { getAll} from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { useNavigate } from "react-router-dom";
+import { cityById } from "../services/city.service";
 
 export const Eventspages = () => {
   const [events, setEvents] = useState([]);
   const [res, setRes] = useState({});
-  const [searchCity, setSearchCity] = useState("");//Busqueda
+  const [searchCities, setSearchCities] = useState("");//Busqueda
 
   useEffect(() => {
-    (async () => {
+   (async () => {
       setRes(await getAll());
     })();
   }, []);
@@ -24,6 +25,17 @@ export const Eventspages = () => {
     console.log(events);
   }, [events]);
 
+  // useEffect(() => {
+  //   for(let item of events){
+  //     for(let city of item.cities){
+  //         (async () =>{
+  //          let {data} = await cityById(city);
+  //          console.log(data);
+  //       })();      
+  //     }     
+  //   }
+  // }, [events]);
+
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -32,13 +44,14 @@ export const Eventspages = () => {
 
     // Cambios en la barra de búsqueda
   const handleSearchChange = (e) => {
-    setSearchCity(e.target.value.toLowerCase());
+    setSearchCities(e.target.value.toLowerCase());
   };
 
   // Filtrar los eventos por ciudad
-  const filteredEvents = events.filter(event =>
-    event.cities?.some(city => city.toLowerCase().includes(searchCity))
-  );
+  // const filteredEvents = events.filter(event =>
+  //   event.cities?.some(cities => cities.toLowerCase().includes(searchCities))   
+  // );
+
 
   //Style del boton de crear evento
   const buttonStyle = {
@@ -58,7 +71,7 @@ export const Eventspages = () => {
 
   // Style al buscador
   const inputStyle = {
-    width: '15%',
+    width: '50%',
     padding: '12px 20px',
     margin: '8px 30px',
     boxSizing: 'border-box',
@@ -80,7 +93,7 @@ export const Eventspages = () => {
     <div id="containerEvent">
       <button
       style={buttonStyle}
-      onMouseOver={(e) => e.currentTarget.style.backgroundColor = hoverStyle.backgroundColor}
+      // onMouseOver={(e) => e.currentTarget.style.backgroundColor = hoverStyle.backgroundColor}-------------------------->>>>>>>> BORRAR
       onMouseOut={(e) => e.currentTarget.style.backgroundColor = buttonStyle.backgroundColor}
       onClick={handleClick}
        > ✒️ CREAR EVENTO </button>
@@ -89,7 +102,7 @@ export const Eventspages = () => {
       type="search"
       style={inputStyle}
       placeholder="Buscar por Ciudad..."
-      value={searchCity}
+      value={searchCities}
       onChange={handleSearchChange}
       onFocus={(e) => e.currentTarget.style.borderColor = focusStyle.borderColor}
       onBlur={(e) => e.currentTarget.style.borderColor = inputStyle.border}
@@ -107,7 +120,7 @@ export const Eventspages = () => {
             category={item?.category}
             date={item?.date}
             description={item?.description}
-            cities={item?.cities}
+            // cities={item?.cities?.name}
             />
           ))}
     </div>
