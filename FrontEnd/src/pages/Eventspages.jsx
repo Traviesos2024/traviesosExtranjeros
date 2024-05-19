@@ -120,7 +120,7 @@ export const Eventspages = () => {
             category={item?.category}
             date={item?.date}
             description={item?.description}
-            // cities={item?.cities?.name}
+            cities={item?.cities?.name}
             />
           ))}
     </div>

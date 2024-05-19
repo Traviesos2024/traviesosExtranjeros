@@ -50,6 +50,7 @@ export const Register = () => {
       setCountries(countriesData);
     };
     loadCountries();
+    console.log(loadCountries);
   }, []);
 
   //! 6) cargar ciudades cuando se seleccione un país
