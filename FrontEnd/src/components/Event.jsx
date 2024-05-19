@@ -1,8 +1,22 @@
 import "./Event.css";
+import { Comments } from "./index";
+import { useState } from "react";
 
-export const Event = ({ name, src, category, cities, date, description }) => {
+export const Event = ({
+  name,
+  src,
+  category,
+  cities,
+  date,
+  description,
+  eventId,
+}) => {
+  const [open, setOpen] = useState(false);
 
-  
+  const onToggle = (event) => {
+    event.preventDefault();
+    setOpen(!open);
+  };
 
   return (
     <figure>
@@ -12,6 +26,11 @@ export const Event = ({ name, src, category, cities, date, description }) => {
       <p>Fecha: {date}</p>
       <p>Descripccion: {description}</p>
       <p>Ciudad: {cities}</p>
+
+      {/* <div>
+        <h4 onClick={onToggle}>Comments</h4>
+        {open ? <Comments selectedRecipient={eventId} /> : ""}
+      </div> */}
     </figure>
   );
 };

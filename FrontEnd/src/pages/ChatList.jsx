@@ -1,5 +1,5 @@
-import { useState, useEffect, componentDidMount } from "react";
-
+import { useState, useEffect } from "react";
+import { ChatPage } from "./index";
 import "./ChatList.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
@@ -16,6 +16,8 @@ export const ChatListPage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  const [selectedChat, setSelectedChat] = useState(undefined);
+
   //! 4) useEffects que gestionan la repuesta y manejan los errores
 
   useEffect(() => {
@@ -49,43 +51,64 @@ export const ChatListPage = () => {
     return <h1>cargando...</h1>;
   }
 
+  function getChatLastMessageHour(lastMessageDate) {
+    const lastMessageHour =
+      (new Date(lastMessageDate).getHours() < 10 ? "0" : "") +
+      new Date(lastMessageDate).getHours() +
+      ":" +
+      (new Date(lastMessageDate).getMinutes() < 10 ? "0" : "") +
+      new Date(lastMessageDate).getMinutes();
+    return lastMessageHour;
+  }
+  function selectChat(chat) {
+    if (window.innerWidth > 760) {
+      setSelectedChat(chat._id);
+    } else {
+      navigate(`/chat/${chat._id}`);
+    }
+  }
   return (
     <>
-      <div className="chats-list-wrapper">
-        <h2>Chats</h2>
-        {chats && chats.length > 0 ? (
-          <div>
-            {chats.map((chat) => (
-              <div
-                className="chat-list-wrapper"
-                key={chat._id}
-                onClick={() => navigate(`/chat/${chat._id}`)}
-              >
-                <img
-                  className="chat-list-image"
-                  src={chat.userTwo.image}
-                  alt="user"
-                />
-                <div>
-                  <h3>{chat.userTwo.name}</h3>
-                  <p>{chat.messages.at(-1).content}</p>
+      <div className="chat-page-container">
+        <div className="chats-list-wrapper">
+          <h2>Chats</h2>
+          {chats && chats.length > 0 ? (
+            <div>
+              {chats.map((chat) => (
+                <div
+                  className={
+                    selectedChat && chat._id == selectedChat
+                      ? "chat-list-wrapper selected"
+                      : "chat-list-wrapper"
+                  }
+                  key={chat._id}
+                  onClick={() => selectChat(chat)}
+                >
+                  <img
+                    className="chat-list-image"
+                    src={chat.userTwo.image}
+                    alt="user"
+                  />
+                  <div>
+                    <h3>{chat.userTwo.name}</h3>
+                    <p>{chat.messages.at(-1).content}</p>
+                  </div>
+                  <small className="chat-time">
+                    {getChatLastMessageHour(chat.messages.at(-1).createdAt)}
+                  </small>
                 </div>
-                <small className="chat-time">
-                  {(new Date(chat.messages.at(-1).createdAt).getHours() < 10
-                    ? "0"
-                    : "") +
-                    new Date(chat.messages.at(-1).createdAt).getHours() +
-                    ":" +
-                    (new Date(chat.messages.at(-1).createdAt).getMinutes() < 10
-                      ? "0"
-                      : "") +
-                    new Date(chat.messages.at(-1).createdAt).getMinutes()}
-                </small>
-              </div>
-            ))}
+              ))}
+            </div>
+          ) : (
+            <h3>You have no chats</h3>
+          )}
+        </div>
+        {selectedChat ? (
+          <div className="chatPage-wrapper">
+            <ChatPage selectedChat={selectedChat} />
           </div>
         ) : (
-          <h3>You have no chats</h3>
+          ""
         )}
       </div>
     </>

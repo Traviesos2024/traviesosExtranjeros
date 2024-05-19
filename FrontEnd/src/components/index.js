@@ -9,3 +9,4 @@ export * from "./Logout";
 export * from "./Event";
 export * from "./Loader";
 export * from "./Experience";
+export * from "./Comments";
