@@ -297,6 +297,42 @@ const deleteCity = async (req, res, next) => {
   }
 };
 
+//? -------------------------------get all------------------------------
+
+const getAll = async (req, res, next) => {
+  try {
+    const allCity = await City.find();
+    /** el find nos devuelve un array */
+    if (allCity.length > 0) {
+      return res.status(200).json(allCity);
+    } else {
+      return res.status(404).json("no se han encontrado country");
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
+//!------------------- ruta getCountry -------------------------
+
+const getCountry = async (req, res) => {
+  try {
+    const { countryId } = req.params;
+    const country = await Country.findById(countryId).populate('cities');
+    if (!country) {
+      return res.status(404).json({ message: 'Country not found' });
+    }
+    res.json(country.cities);
+  } catch (error) {
+    res.status(500).json({ message: 'Error retrieving cities', error });
+  }
+};
+
+
+
+
+
+
 module.exports = {
   createCity,
   cityById,
@@ -304,4 +340,7 @@ module.exports = {
   updateCity,
   deleteCity,
   toggleCountry,
+  getAll,
+  getCountry,
+  
 };

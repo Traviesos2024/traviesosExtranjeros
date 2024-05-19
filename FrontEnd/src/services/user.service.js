@@ -1,5 +1,7 @@
 import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
+import axios from "axios";
+
 
 //* ---------------------- REGISTER (registerWithRedirect)----------------------
 export const registerUser = async (formData) => {
@@ -153,4 +155,27 @@ export const deleteUserService = async () => {
   })
     .then((res) => res)
     .catch((error) => error);
+};
+
+
+//*-------------------------fetchCountries y fetchCities -------------------------
+
+export const fetchCountries = async () => {
+  try {
+    const response = await axios.get("http://localhost:8081/api/v1/country/getAll"); // Ajusta la URL según tu configuración
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching countries:", error);
+    return [];
+  }
+};
+
+export const fetchCities = async (countryId) => {
+  try {
+    const response = await axios.get(`http://localhost:8081/api/v1/city/cities/${countryId}`); // Ajusta la URL según tu configuración
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cities:", error);
+    return [];
+  }
 };
