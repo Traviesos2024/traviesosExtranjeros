@@ -11,8 +11,7 @@ export const Event = ({ name, src, category, cities, date, description }) => {
       <p>Categoria: {category}</p>
       <p>Fecha: {date}</p>
       <p>Descripccion: {description}</p>
-      {/* <p>{cities}</p> */}
-      <p>Ciudad: {cities?.join(", ")}</p>
+      <p>Ciudad: {cities}</p>
     </figure>
   );
 };

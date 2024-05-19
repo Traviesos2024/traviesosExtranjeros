@@ -110,19 +110,19 @@ export const Eventspages = () => {
       <hr/>
       <br></br>
       {events.length > 0 &&
-        events
-          .slice(0, 1000)
-          .map((item) => (
-            <Event 
-            src={item?.image} 
-            name={item?.name} 
-            key={item.name}
-            category={item?.category}
-            date={item?.date}
-            description={item?.description}
-            cities={item?.cities?.name}
-            />
-          ))}
+  events
+    .slice(0, 1000)
+    .map((item) => (
+      <Event 
+        src={item?.image} 
+        name={item?.name} 
+        key={item.name}
+        category={item?.category}
+        date={item?.date}
+        description={item?.description}
+        cities={item?.cities?.map(city => city.name)}
+      />
+    ))}
     </div>
   );
 };
