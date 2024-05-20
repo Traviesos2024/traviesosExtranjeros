@@ -1,4 +1,5 @@
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
+import "./UpdateUserProfile.css";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useUpdateError } from "../hooks";
