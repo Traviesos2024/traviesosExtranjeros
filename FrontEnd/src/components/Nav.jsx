@@ -35,6 +35,7 @@ export const Nav = () => {
     </>
   );
 };
+
 //! Este funciona es el que teníamos antes, estoy haciend prueba de que cambie la nav si estás logado.
 
 //   return (
