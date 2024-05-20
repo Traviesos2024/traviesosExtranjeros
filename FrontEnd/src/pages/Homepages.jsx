@@ -25,7 +25,7 @@ export const Homepages = () => {
 
   const handleClick = () => {
     navigate("/Country");
-    navigate("/Country");
+    
   };
 
   return (
