@@ -10,3 +10,4 @@ export * from "./Event";
 export * from "./Loader";
 export * from "./Experience";
 export * from "./Comments";
+export * from "./FigureUser";
