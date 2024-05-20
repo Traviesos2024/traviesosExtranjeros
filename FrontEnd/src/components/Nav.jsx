@@ -10,7 +10,7 @@ export const Nav = () => {
           {user ? (
             <>
               <li>
-                <a href="/profile">Tu perfil</a>
+                <a href="/profile">Se borra el código NO TOCAR ☠️☠️☠️🚧🏗️</a>
               </li>
               <li>
                 <a href="/" onClick={logout}>
@@ -35,7 +35,6 @@ export const Nav = () => {
     </>
   );
 };
-
 //! Este funciona es el que teníamos antes, estoy haciend prueba de que cambie la nav si estás logado.
 
 //   return (
