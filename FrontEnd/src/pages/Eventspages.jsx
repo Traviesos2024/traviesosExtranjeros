@@ -54,7 +54,7 @@ export const Eventspages = () => {
 
   // Style al buscador
   const inputStyle = {
-    width: "50%",
+    width: "70%",
     padding: "12px 20px",
     margin: "8px 30px",
     boxSizing: "border-box",

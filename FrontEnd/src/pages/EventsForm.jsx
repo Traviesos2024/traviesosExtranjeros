@@ -147,7 +147,7 @@ export const EventsForm = () => {
                 />              
               </div>
 
-              {/* <div className="category_container form-group">
+              <div className="category_container form-group">
               <label htmlFor="category" className="custom-placeholder">Categoria</label>
               <input
                   className="input_user"
@@ -165,10 +165,10 @@ export const EventsForm = () => {
                     <option value="Deportes" />
                     <option value="Otros..." />
                   </datalist>
-                </div> */}
+                </div>
 
 
-                <div className="category_container form-group">
+                {/* <div className="category_container form-group">
               <label htmlFor="category" className="custom-placeholder">Categoria </label>
               <select
                  className="input_user"
@@ -184,7 +184,7 @@ export const EventsForm = () => {
               <option value="Deportes">Deportes</option>
                <option value="Otros...">Otros...</option>
               </select>
-              </div>
+              </div> */}
 
                 
 
