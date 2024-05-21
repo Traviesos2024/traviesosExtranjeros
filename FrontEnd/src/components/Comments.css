@@ -112,3 +112,7 @@ label {
   display: flex;
   gap: 10px;
 }
+
+.like {
+  color: red;
+}

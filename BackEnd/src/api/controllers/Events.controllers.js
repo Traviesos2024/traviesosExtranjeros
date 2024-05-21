@@ -5,8 +5,6 @@ const User = require("../models/User.model");
 const City = require("../models/City.models");
 const Experience = require("../models/Experience.model");
 
-
-
 //! -------------create new Events ----------------
 //? -------------------------------POST create --------------------------
 const createEvent = async (req, res, next) => {
@@ -125,9 +123,7 @@ const getAll = async (req, res, next) => {
       .populate("cities")
       .populate({
         path: "comments",
-        populate: {
-          path: "owner",
-        },
+        populate: [{ path: "owner" }, { path: "likes" }],
       });
     /** el find nos devuelve un array */
     if (allEvent.length > 0) {

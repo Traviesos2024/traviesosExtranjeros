@@ -282,9 +282,10 @@ const createMessage = async (req, res, next) => {
                 userOwner: await User.findById(req.user._id).populate(
                   "postedMessages"
                 ),
-                recipient: await Event.findById(findEvent._id).populate(
-                  "comments"
-                ),
+                recipient: await Event.findById(findEvent._id).populate({
+                  path: "comments",
+                  populate: [{ path: "owner" }, { path: "likes" }],
+                }),
               });
             } catch (error) {
               return res.status(404).json({
@@ -333,7 +334,10 @@ const createMessage = async (req, res, next) => {
                 ),
                 recipient: await Experience.findById(
                   findExperience._id
-                ).populate("comments"),
+                ).populate({
+                  path: "comments",
+                  populate: [{ path: "owner" }, { path: "likes" }],
+                }),
               });
             } catch (error) {
               return res.status(404).json({
@@ -591,7 +595,9 @@ const toggleLikeMessage = async (req, res, next) => {
           return res.status(200).json({
             action: "disliked",
             user: await User.findById(_id).populate("messagesFav"),
-            message: await Message.findById(idMessage).populate("likes"),
+            message: await Message.findById(idMessage)
+              .populate("likes")
+              .populate("owner"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -619,7 +625,9 @@ const toggleLikeMessage = async (req, res, next) => {
           return res.status(200).json({
             action: "like",
             user: await User.findById(_id).populate("messagesFav"),
-            message: await Message.findById(idMessage).populate("likes"),
+            message: await Message.findById(idMessage)
+              .populate("likes")
+              .populate("owner"),
           });
         } catch (error) {
           return res.status(404).json({

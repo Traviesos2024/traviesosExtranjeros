@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import "./Comments.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
-import { createMessage } from "../services/message.service";
+import { createMessage, toggleLikeMessage } from "../services/message.service";
 import { getChatLastMessageHour } from "../utils";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,11 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
   const messagesEndRef = useRef();
   const navigate = useNavigate();
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView();
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "center",
+    });
   };
 
   const { register, handleSubmit, setValue, reset } = useForm();
@@ -76,11 +80,21 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
   };
 
   function onClickUserName(commentOwnerId) {
-    console.log("CLICK");
     navigate({
       pathname: "/chats",
       search: `?commentOwnerId=${commentOwnerId}`,
     });
+  }
+  async function onToggleLike(comment) {
+    const updatedMessage = await toggleLikeMessage(comment._id);
+
+    let commentsToUpdate = [...comments];
+    const indexOfMessageToReplace = commentsToUpdate.findIndex(
+      (message) => message._id == updatedMessage.data.message._id
+    );
+    commentsToUpdate[indexOfMessageToReplace] = updatedMessage.data.message;
+
+    setComments(commentsToUpdate);
   }
   return (
     <>
@@ -106,6 +120,17 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                   <h5 onClick={() => onClickUserName(comment.owner._id)}>
                     {comment.owner.name}:
                   </h5>
+                  <span
+                    className={
+                      comment.likes.find((userFav) => userFav._id == user._id)
+                        ? "material-symbols-outlined like"
+                        : "material-symbols-outlined"
+                    }
+                    onClick={() => onToggleLike(comment)}
+                  >
+                    favorite
+                  </span>
+
                   <div className="comment-and-hour">
                     <p> {comment.content}</p>
                     <small className="chat-time">
@@ -119,6 +144,7 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
         ) : (
           <h3>No comments</h3>
         )}
+        <div ref={messagesEndRef} />
         <form id="formularios" onSubmit={handleSubmit(formSubmit)}>
           <label htmlFor="content">Escribe tu mensaje:</label>
           <textarea
@@ -140,7 +166,6 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
             </button>
           </div>
         </form>
-        <div ref={messagesEndRef} />
       </div>
     </>
   );
