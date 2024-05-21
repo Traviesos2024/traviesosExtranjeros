@@ -7,6 +7,9 @@ import { useAuth } from "../context/authContext";
 import { Uploadfile } from "../components";
 import { Navigate } from "react-router-dom";
 import { createEvent } from "../services/events.service";
+import { getAllCity } from "../services/city.service";
+import { useErrorEvent } from "../hooks/useErrorEvent";
+import Select from "react-select";
 
 
 export const EventsForm = () => {
@@ -18,6 +21,9 @@ export const EventsForm = () => {
   const { allUser, setAllUser, bridgeData } = useAuth();
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
+   const [ cities, setCities ] = useState([]);
+  const [resCity, setResCity] = useState({});
+  const [city,setCity] = useState('');
   
 
   //! 2) llamada al hook de react hook form
@@ -35,6 +41,7 @@ export const EventsForm = () => {
       const customFormData = {
         ...formData,
         image: inputFile[0],
+        cities: city
       };
       //llamada al backend
       setSend(true);
@@ -66,6 +73,20 @@ export const EventsForm = () => {
   useEffect(() => {
     console.log("allUser 🤡", allUser);
   }, [allUser]);
+
+  useEffect(() => {
+    (async () => {
+      setCities(await getAllCity());
+    })();
+  }, []);
+
+  useEffect(() => {
+    useErrorEvent(resCity, setResCity , setCities);
+  }, [resCity]);
+
+  useEffect(() => {
+    console.log(cities);
+  }, [cities]);
 
   //! 5) estados de navegacion
 
@@ -137,21 +158,19 @@ export const EventsForm = () => {
                   </datalist>
                 </div>
 
-                <div className="city_container form-group">
+                {/* <div className="cities_container form-group">
               <label htmlFor="custom-input" className="custom-placeholder">
                   Ciudad
                 </label>
-                <input
-                  className="input_user"
-                  type="texto"
-                  id="city"
-                  name="city"
-                  autoComplete="false"
-                  placeholder="Añadir una ciudad"
-                  {...register("city", { required: true })}
+                <Select
+                name="cities"
+                id="cities"
+                placeholder="Selecciona una ciudad" 
+                options={cities.data.map((city,index)=>{return{label:city.name,value:city._id,key:index}})}
+                onChange={({value})=> setCity(value)}
                 />
-
-              </div>
+              </div> */}
+              
               <div className="date_container form-group">
               <label htmlFor="custom-input" className="custom-placeholder">
                   Fecha y Hora
