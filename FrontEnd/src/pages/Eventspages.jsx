@@ -52,7 +52,6 @@ export const Eventspages = () => {
   //   event.cities?.some(cities => cities.toLowerCase().includes(searchCities))
   // );
 
-
   // Style al buscador
   const inputStyle = {
     width: "50%",
@@ -103,6 +102,7 @@ export const Eventspages = () => {
               cities={item?.cities?.map((city) => city.name)}
               // cities={item?.city}
               eventId={item?._id}
+              comments={item?.comments}
             />
           ))}
     </div>

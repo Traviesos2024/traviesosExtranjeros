@@ -47,6 +47,7 @@ export const ExperiencesPage = () => {
               likes={item?.likes}
               comments={item?.comments}
               events={item?.events}
+              experienceId={item?._id}
             />
           ))}
     </div>

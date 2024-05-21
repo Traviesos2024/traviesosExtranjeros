@@ -13,6 +13,9 @@ import Select from "react-select";
 
 
 
+
+
+
 export const EventsForm = () => {
   //! 1) crear los estados
 
@@ -22,7 +25,10 @@ export const EventsForm = () => {
   const { allUser, setAllUser, bridgeData } = useAuth();
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
+
   const [ cities, setCities ] = useState([]);
+
+
   const [resCity, setResCity] = useState({});
   const [city,setCity] = useState('');
   
@@ -161,6 +167,7 @@ export const EventsForm = () => {
                   </datalist>
                 </div> */}
 
+
                 <div className="category_container form-group">
               <label htmlFor="category" className="custom-placeholder">Categoria </label>
               <select
@@ -179,7 +186,10 @@ export const EventsForm = () => {
               </select>
               </div>
 
+                
+
                 <div className="cities_container form-group">
+
               <label htmlFor="custom-input" className="custom-placeholder">
                   Ciudad
                 </label>
@@ -191,6 +201,10 @@ export const EventsForm = () => {
                 onChange={({value})=> setCity(value)}
                 />
               </div>
+
+
+              
+              
 
               <div className="date_container form-group">
               <label htmlFor="custom-input" className="custom-placeholder">

@@ -10,6 +10,7 @@ export const Event = ({
   date,
   description,
   eventId,
+  comments,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -27,10 +28,14 @@ export const Event = ({
       <p>Descripccion: {description}</p>
       <p>Ciudad: {cities}</p>
 
-      {/* <div>
+      <div>
         <h4 onClick={onToggle}>Comments</h4>
-        {open ? <Comments selectedRecipient={eventId} /> : ""}
-      </div> */}
+        {open ? (
+          <Comments selectedRecipient={eventId} commentsProps={comments} />
+        ) : (
+          ""
+        )}
+      </div>
     </figure>
   );
 };

@@ -5,6 +5,78 @@ const Experience = require("../models/Experience.model");
 const User = require("../models/User.model");
 
 //! ---------------------------------------------------------------------
+//? -------------------------------CREATE EMPTY CHAT -------------------------------
+//! ---------------------------------------------------------------------
+
+const createEmptyChat = async (req, res, next) => {
+  try {
+    const { idRecipient } = req.params; // -----> id del objetivo del comentario
+    /**
+     * idRecipient puede ser el id de : experience, user
+     */
+
+    const findUser = await User.findById(idRecipient);
+
+    /**
+     * cuando no lo encuentre devuelve un null y el que encuentre va a devolver el objeto encontrado
+     *
+     */
+
+    if (findUser) {
+      //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      // ---------------------------- CREAR CHAT PORQUE NO EXISTE NINGUNO ---------------------------------------
+      //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+      /// crear un chat con el comentario que hemos creado
+
+      const newChat = new Chat({
+        userOne: req.user._id,
+        userTwo: findUser._id,
+      });
+
+      try {
+        await newChat.save();
+
+        try {
+          await User.findByIdAndUpdate(req.user._id, {
+            $push: {
+              chats: newChat._id,
+            },
+          });
+
+          try {
+            await User.findByIdAndUpdate(idRecipient, {
+              $push: {
+                chats: newChat._id,
+              },
+            });
+
+            return res.status(200).json({
+              chat: await Chat.findById(newChat._id).populate(
+                "messages  userOne  userTwo"
+              ),
+            });
+          } catch (error) {
+            return res.status(404).json({
+              error: "no hemos actualizado el segundo user del chat",
+            });
+          }
+        } catch (error) {
+          return res.status(404).json({
+            error: "no hemos actualizado el user dueño del chat",
+          });
+        }
+      } catch (error) {
+        return res.status(404).json({
+          error: "no se ha creado el chat",
+        });
+      }
+    }
+  } catch (error) {
+    return res.status(404).json(error.message);
+  }
+};
+
+//! ---------------------------------------------------------------------
 //? -------------------------------DELETE MESSAGE -------------------------------
 //! ---------------------------------------------------------------------
 const deleteChat = async (req, res, next) => {
@@ -176,4 +248,5 @@ module.exports = {
   getChatById,
   getChatByUser,
   getAllChats,
+  createEmptyChat,
 };

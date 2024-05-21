@@ -46,7 +46,7 @@ export const AuthContextProvider = ({ children }) => {
     //! funciones login y logout
     const login = (data) => {
         localStorage.setItem('user', data);
-        const parseUser = JSON.stringify(data);
+        const parseUser = JSON.parse(data);
         setUser(parseUser)
     }
 

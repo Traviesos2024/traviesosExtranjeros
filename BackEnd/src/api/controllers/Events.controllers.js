@@ -5,7 +5,9 @@ const User = require("../models/User.model");
 const City = require("../models/City.models");
 const Experience = require("../models/Experience.model");
 
-//! -------------create new Event ----------------
+
+
+//! -------------create new Events ----------------
 //? -------------------------------POST create --------------------------
 const createEvent = async (req, res, next) => {
   //*Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
@@ -118,7 +120,15 @@ const getByCity = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const allEvent = await Events.find().populate("experience").populate("cities");
+    const allEvent = await Events.find()
+      .populate("experience")
+      .populate("cities")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "owner",
+        },
+      });
     /** el find nos devuelve un array */
     if (allEvent.length > 0) {
       return res.status(200).json(allEvent);

@@ -3,9 +3,9 @@ import { ChatPage } from "./index";
 import "./ChatList.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
-import { getChatByUser } from "../services/chats.service";
-import { useNavigate } from "react-router-dom";
-
+import { getChatByUser, createEmptyChat } from "../services/chats.service";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getChatLastMessageHour } from "../utils";
 export const ChatListPage = () => {
   //! 1) crear los estados
 
@@ -17,7 +17,8 @@ export const ChatListPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const [selectedChat, setSelectedChat] = useState(undefined);
-
+  let [searchParams, setSearchParams] = useSearchParams();
+  let commentOwnerId = searchParams.get("commentOwnerId");
   //! 4) useEffects que gestionan la repuesta y manejan los errores
 
   useEffect(() => {
@@ -31,7 +32,22 @@ export const ChatListPage = () => {
           console.log(chatsResponse.data);
           await setChats(chatsResponse.data);
           setIsLoading(false);
-          console.log(chats);
+          console.log(commentOwnerId);
+          let chatFilteredByCommentOwnerId = chatsResponse.data.filter(
+            (chat) =>
+              chat.userTwo._id == commentOwnerId ||
+              chat.userOne._id == commentOwnerId
+          );
+          if (commentOwnerId) {
+            if (chatFilteredByCommentOwnerId.length > 0) {
+              selectChat(chatFilteredByCommentOwnerId[0]?._id);
+            } else {
+              const newChat = await createEmptyChat(commentOwnerId);
+              await setChats([...chats, newChat.data.chat]);
+              selectChat(newChat.data.chat?._id);
+            }
+          }
+
           bridgeData("ALLUSER");
         } catch (err) {
           console.log("Error occured when fetching chats");
@@ -51,20 +67,14 @@ export const ChatListPage = () => {
     return <h1>cargando...</h1>;
   }
 
-  function getChatLastMessageHour(lastMessageDate) {
-    const lastMessageHour =
-      (new Date(lastMessageDate).getHours() < 10 ? "0" : "") +
-      new Date(lastMessageDate).getHours() +
-      ":" +
-      (new Date(lastMessageDate).getMinutes() < 10 ? "0" : "") +
-      new Date(lastMessageDate).getMinutes();
-    return lastMessageHour;
-  }
   function selectChat(chat) {
-    if (window.innerWidth > 760) {
-      setSelectedChat(chat._id);
-    } else {
-      navigate(`/chat/${chat._id}`);
+    console.log(chat);
+    if (chat) {
+      if (window.innerWidth > 760) {
+        setSelectedChat(chat._id);
+      } else {
+        navigate(`/chat/${chat._id}`);
+      }
     }
   }
   return (
@@ -91,10 +101,10 @@ export const ChatListPage = () => {
                   />
                   <div>
                     <h3>{chat.userTwo.name}</h3>
-                    <p>{chat.messages.at(-1).content}</p>
+                    <p>{chat.messages.at(-1)?.content}</p>
                   </div>
                   <small className="chat-time">
-                    {getChatLastMessageHour(chat.messages.at(-1).createdAt)}
+                    {getChatLastMessageHour(chat.messages.at(-1)?.createdAt)}
                   </small>
                 </div>
               ))}

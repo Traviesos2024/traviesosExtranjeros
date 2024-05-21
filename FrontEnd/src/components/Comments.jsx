@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import "./Comments.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
-import {
-  createMessage,
-  getMessageByUserOwner,
-} from "../services/message.service";
+import { createMessage } from "../services/message.service";
+import { getChatLastMessageHour } from "../utils";
+import { useNavigate } from "react-router-dom";
+
 import { useForm } from "react-hook-form";
 
-export const Comments = ({ selectedRecipient }) => {
+export const Comments = ({ selectedRecipient, commentsProps }) => {
   //! 1) crear los estados
 
   const [send, setSend] = useState(false);
@@ -19,6 +19,7 @@ export const Comments = ({ selectedRecipient }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef();
+  const navigate = useNavigate();
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView();
   };
@@ -32,11 +33,8 @@ export const Comments = ({ selectedRecipient }) => {
     if (user && isLoading && selectedRecipient) {
       async function fetchComments() {
         try {
-          var commentsResponse = await getMessageByUserOwner(selectedRecipient);
-
           // await async "fetchComments()" function
-
-          await setComments(commentsResponse.data);
+          await setComments(commentsProps);
           setIsLoading(false);
 
           bridgeData("ALLUSER");
@@ -70,12 +68,20 @@ export const Comments = ({ selectedRecipient }) => {
     setSend(true);
 
     const newComment = await createMessage(selectedRecipient, customFormData);
-    setComments([...comments, newComment.data]);
+
+    setComments([...comments, newComment.data.recipient.comments.at(-1)]);
     setRes(newComment.data);
     setSend(false);
     reset();
   };
 
+  function onClickUserName(commentOwnerId) {
+    console.log("CLICK");
+    navigate({
+      pathname: "/chats",
+      search: `?commentOwnerId=${commentOwnerId}`,
+    });
+  }
   return (
     <>
       <div className="chat-wrapper">
@@ -97,7 +103,15 @@ export const Comments = ({ selectedRecipient }) => {
                       : "friend-text"
                   }
                 >
-                  {comment.content}
+                  <h5 onClick={() => onClickUserName(comment.owner._id)}>
+                    {comment.owner.name}:
+                  </h5>
+                  <div className="comment-and-hour">
+                    <p> {comment.content}</p>
+                    <small className="chat-time">
+                      {getChatLastMessageHour(comment.createdAt)}
+                    </small>
+                  </div>
                 </div>
               </div>
             ))}
