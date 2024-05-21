@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom";
+// import { cityById } from "../services/city.service";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./CountryCard.css";
-import { Link } from "react-router-dom";
-import axios from "axios";
 
 export const CountryCard = ({ country }) => {
   const [expanded, setExpanded] = useState(false); // Estado para ampliar la tarjeta del país
-
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -14,24 +15,29 @@ export const CountryCard = ({ country }) => {
       className={`country-card ${expanded ? "expanded" : ""}`}
       onClick={handleExpandClick}
     >
-      <h2>{country.name}</h2>
+      <h1>{country.name}</h1>
       <img src={country.image} alt={country.name} />
-      {/* {expanded && (
+
+      {/* <p> {country.description}</p>
+      <p>
+        <h4>Comida típica:</h4> {country.tipicalFood}
+      </p>
+      <p>
+        <h4>Tradiciones de interés:</h4> {country.traditions}{" "}
+      </p>
+      {expanded && (
         <div className="city-list">
-          <h3>Ciudades disponibles:</h3>
-          <ul>
-            {country.cities.map((city, index) => (
-              <ul key={index}>
-                <Link to={city.path}>{city.name}</Link>
-              </ul>
-            ))} */}
-      {/* </ul>
+          <h4>Principales ciudades</h4>
+          {country.cities.map((city, index) => (
+            <li key={index}>
+              <Link to={city.path}>{cityById.name}</Link>
+            </li>
+          ))}
         </div>
       )} */}
-      {console.log(country)}
     </div>
-  );
-};
+  ); //! CÓDIGO PARA MOSTRAR COMIDA TÍPICA,TRADICIONES, CIUDADES? Y DESCRIPCIÓN
+}; //! FALTA LA NAVEGACIÖN DESDE LAS IMÁGENES
 
 //!--- FALTARIA AÑADIR TODOS LOS DATOS DE LA COUNTRY QUE INCLUIMOS EN EL MODELO DE COUNTRY (NEKY)
 
