@@ -5,32 +5,23 @@ export const Nav = () => {
   const { user, login, logout } = useAuth();
   return (
     <>
-      <nav>
-        <ul>
-          {user ? (
-            <>
-              <li>
-                <a href="/profile">Se borra el código NO TOCAR ☠️☠️☠️🚧🏗️</a>
-              </li>
-              <li>
-                <a href="/" onClick={logout}>
-                  Cerrar sesión
-                </a>
-              </li>
-            </>
-          ) : (
-            <>
-              <li>
-                <a href="/login" onClick={login}>
-                  Iniciar Sesión
-                </a>
-              </li>
-              <li>
-                <a href="/register">Nuevo usuario </a>
-              </li>
-            </>
-          )}
-        </ul>
+       <nav className="navPrincipal">
+        <NavLink to="/">
+          <button>Home</button>
+        </NavLink>
+        <NavLink to="/login">
+          <button>Login</button>
+        </NavLink>
+        <NavLink to="/profile">
+          <button>Profile</button>
+        </NavLink>
+        <NavLink to="/country">
+          <button>Country</button>
+        </NavLink>
+        <NavLink to="/chats">
+          <button>Chats</button> //!_Cambiar los chats de aqui irian en
+          profile buton
+        </NavLink>
       </nav>
     </>
   );
@@ -40,24 +31,24 @@ export const Nav = () => {
 
 //   return (
 //     <>
-//       <nav className="navPrincipal">
-//         <NavLink to="/">
-//           <button>Home</button>
-//         </NavLink>
-//         <NavLink to="/experiences">
-//           <button>Experiences</button>
-//         </NavLink>
-//         <NavLink to="/events">
-//           <button>Events</button>
-//         </NavLink>
-//         <NavLink to="/country">
-//           <button>Country</button>
-//         </NavLink>
-//         <NavLink to="/chats">
-//           <button>Chats</button> //!_Cambiar los chats de aqui irian en
-//           profile buton
-//         </NavLink>
-//       </nav>
+      // <nav className="navPrincipal">
+      //   <NavLink to="/">
+      //     <button>Home</button>
+      //   </NavLink>
+      //   <NavLink to="/experiences">
+      //     <button>Experiences</button>
+      //   </NavLink>
+      //   <NavLink to="/events">
+      //     <button>Events</button>
+      //   </NavLink>
+      //   <NavLink to="/country">
+      //     <button>Country</button>
+      //   </NavLink>
+      //   <NavLink to="/chats">
+      //     <button>Chats</button> //!_Cambiar los chats de aqui irian en
+      //     profile buton
+      //   </NavLink>
+      // </nav>
 //     </>
 //   );
 // }; 
