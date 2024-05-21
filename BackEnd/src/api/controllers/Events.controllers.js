@@ -5,7 +5,7 @@ const User = require("../models/User.model");
 const City = require("../models/City.models");
 const Experience = require("../models/Experience.model");
 
-//! -------------create new experiencie ----------------
+//! -------------create new Event ----------------
 //? -------------------------------POST create --------------------------
 const createEvent = async (req, res, next) => {
   //*Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador

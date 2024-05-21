@@ -26,7 +26,7 @@ CityRoutes.patch(
   updateCity
 );
 CityRoutes.delete("/:idCity", [isAuthSuper], deleteCity);
-CityRoutes.get("/getAll/:idCountry", getAll);
+CityRoutes.get("/", getAll);
 CityRoutes.get("/cities/:countryId", getCountry);
 
 
