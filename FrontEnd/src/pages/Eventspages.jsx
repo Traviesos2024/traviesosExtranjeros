@@ -52,22 +52,6 @@ export const Eventspages = () => {
   //   event.cities?.some(cities => cities.toLowerCase().includes(searchCities))
   // );
 
-  //Style del boton de crear evento
-  const buttonStyle = {
-    backgroundColor: "#4CAF50",
-    border: "none",
-    color: "white",
-    padding: "12px 32px",
-    textAlign: "center",
-    textDecoration: "none",
-    display: "inline-block",
-    fontSize: "16px",
-    margin: "15px 60px",
-    cursor: "pointer",
-    borderRadius: "4px",
-    transition: "background-color 0.3s",
-  };
-
   // Style al buscador
   const inputStyle = {
     width: "50%",
@@ -90,17 +74,7 @@ export const Eventspages = () => {
 
   return (
     <div id="containerEvent">
-      <button
-        style={buttonStyle}
-        // onMouseOver={(e) => e.currentTarget.style.backgroundColor = hoverStyle.backgroundColor}-------------------------->>>>>>>> BORRAR
-        onMouseOut={(e) =>
-          (e.currentTarget.style.backgroundColor = buttonStyle.backgroundColor)
-        }
-        onClick={handleClick}
-      >
-        {" "}
-        ✒️ CREAR EVENTO{" "}
-      </button>
+      <button onClick={handleClick}> ✒️ CREA TU EVENTO </button>
       <br></br>
       <input
         type="search"
@@ -117,7 +91,6 @@ export const Eventspages = () => {
       <br></br>
       {events.length > 0 &&
         events
-          .slice(0, 1000)
           .map((item) => (
             <Event
               src={item?.image}
@@ -127,6 +100,7 @@ export const Eventspages = () => {
               date={item?.date}
               description={item?.description}
               cities={item?.cities?.map((city) => city.name)}
+              // cities={item?.city}
               eventId={item?._id}
               comments={item?.comments}
             />
