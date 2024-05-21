@@ -262,26 +262,29 @@ const createMessage = async (req, res, next) => {
         return res.status(404).json("no puedes hacer comentarios privados");
       } else {
         try {
+          req.body["owner"] = req.user;
           const newMessage = new Message(req.body);
           const savedMessage = await newMessage.save();
 
           try {
             await User.findByIdAndUpdate(req.user._id, {
               $push: {
-                postedMessages: newMessage._id,
+                postedMessages: savedMessage._id,
               },
             });
 
             try {
               await Event.findByIdAndUpdate(findEvent._id, {
-                $push: { comments: newMessage._id },
+                $push: { comments: savedMessage._id },
               });
 
               return res.status(200).json({
                 userOwner: await User.findById(req.user._id).populate(
                   "postedMessages"
                 ),
-                Event: await Event.findById(findEvent._id).populate("comments"),
+                recipient: await Event.findById(findEvent._id).populate(
+                  "comments"
+                ),
               });
             } catch (error) {
               return res.status(404).json({
@@ -308,26 +311,27 @@ const createMessage = async (req, res, next) => {
         return res.status(404).json("no puedes hacer comentarios privados");
       } else {
         try {
+          req.body["owner"] = req.user;
           const newMessage = new Message(req.body);
           const savedMessage = await newMessage.save();
 
           try {
             await User.findByIdAndUpdate(req.user._id, {
               $push: {
-                postedMessages: newMessage._id,
+                postedMessages: savedMessage._id,
               },
             });
 
             try {
               await Experience.findByIdAndUpdate(findExperience._id, {
-                $push: { comments: newMessage._id },
+                $push: { comments: savedMessage._id },
               });
 
               return res.status(200).json({
                 userOwner: await User.findById(req.user._id).populate(
                   "postedMessages"
                 ),
-                Experience: await Experience.findById(
+                recipient: await Experience.findById(
                   findExperience._id
                 ).populate("comments"),
               });

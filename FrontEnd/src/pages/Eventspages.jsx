@@ -128,6 +128,7 @@ export const Eventspages = () => {
               description={item?.description}
               cities={item?.cities?.map((city) => city.name)}
               eventId={item?._id}
+              comments={item?.comments}
             />
           ))}
     </div>

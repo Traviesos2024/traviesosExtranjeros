@@ -86,7 +86,7 @@ export const ChatPage = ({ selectedChat }) => {
           <img src={chat.userTwo.image} alt="user" />
           <h3>{chat.userTwo.name}</h3>
         </div>
-        {chat && chat.messages ? (
+        {chat && chat.messages && chat.messages.length > 0 ? (
           <div className="text-div">
             {chat.messages.map((message) => (
               <div
