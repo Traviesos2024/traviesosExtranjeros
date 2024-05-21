@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./Register.css";
@@ -9,9 +8,7 @@ import { Navigate } from "react-router-dom";
 import { createEvent } from "../services/events.service";
 import { getAllCity } from "../services/city.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
-import Select from "react-select";
-
-
+//import Select from "react-select";
 export const EventsForm = () => {
   //! 1) crear los estados
 
@@ -21,10 +18,11 @@ export const EventsForm = () => {
   const { allUser, setAllUser, bridgeData } = useAuth();
   const [events, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
-   const [ cities, setCities ] = useState([]);
+
+  const [cities, setCities] = useState([]);
+
   const [resCity, setResCity] = useState({});
-  const [city,setCity] = useState('');
-  
+  const [city, setCity] = useState("");
 
   //! 2) llamada al hook de react hook form
 
@@ -34,14 +32,13 @@ export const EventsForm = () => {
 
   const formSubmit = async (formData) => {
     const inputFile = document.getElementById("file-upload").files;
-
     //* condicional para enviar los datos del formulario al backend tanto si hay subida imagen como si no
     if (inputFile.length != 0) {
       // si es diferente a 0 es que hay algo dentro de files
       const customFormData = {
         ...formData,
         image: inputFile[0],
-        cities: city
+        cities: city,
       };
       //llamada al backend
       setSend(true);
@@ -81,7 +78,7 @@ export const EventsForm = () => {
   }, []);
 
   useEffect(() => {
-    useErrorEvent(resCity, setResCity , setCities);
+    useErrorEvent(resCity, setResCity, setCities);
   }, [resCity]);
 
   useEffect(() => {
@@ -121,10 +118,10 @@ export const EventsForm = () => {
                   autoComplete="false"
                   placeholder="Añadir evento"
                   {...register("name", { required: true })}
-                />  
+                />
               </div>
               <div className="description_container form-group">
-              <label htmlFor="custom-input" className="custom-placeholder">
+                <label htmlFor="custom-input" className="custom-placeholder">
                   Descripción
                 </label>
                 <input
@@ -135,12 +132,14 @@ export const EventsForm = () => {
                   autoComplete="false"
                   placeholder=""
                   {...register("description", { required: true })}
-                />              
+                />
               </div>
 
               <div className="category_container form-group">
-              <label htmlFor="category" className="custom-placeholder">Categoria</label>
-              <input
+                <label htmlFor="category" className="custom-placeholder">
+                  Categoria
+                </label>
+                <input
                   className="input_user"
                   type="text"
                   id="category"
@@ -150,29 +149,49 @@ export const EventsForm = () => {
                   list="category-options"
                   {...register("category", { required: true })}
                 />
-                  <datalist id="category-options">
-                    <option value="Música" />
-                    <option value="Gastronomía" />
-                    <option value="Deportes" />
-                    <option value="Otros..." />
-                  </datalist>
-                </div>
+                <datalist id="category-options">
+                  <option value="Música" />
+                  <option value="Gastronomía" />
+                  <option value="Deportes" />
+                  <option value="Otros..." />
+                </datalist>
+              </div>
 
-                {/* <div className="cities_container form-group">
-              <label htmlFor="custom-input" className="custom-placeholder">
+              {/* <div className="category_container form-group">
+              <label htmlFor="category" className="custom-placeholder">Categoria </label>
+              <select
+                 className="input_user"
+                 id="category"
+                name="category"
+                autoComplete="off"
+                defaultValue="" // Puedes usar 'value' si estás manejando el estado
+               {...register("category", { required: true })}
+               >
+              <option value="" disabled>Selecciona una categoría</option>
+              <option value="Música">Música</option>
+              <option value="Gastronomía">Gastronomía</option>
+              <option value="Deportes">Deportes</option>
+               <option value="Otros...">Otros...</option>
+              </select>
+              </div> */}
+
+              <div className="cities_container form-group">
+                <label htmlFor="custom-input" className="custom-placeholder">
                   Ciudad
                 </label>
                 <Select
-                name="cities"
-                id="cities"
-                placeholder="Selecciona una ciudad" 
-                options={cities.data.map((city,index)=>{return{label:city.name,value:city._id,key:index}})}
-                onChange={({value})=> setCity(value)}
+                  name="cities"
+                  id="cities"
+                  placeholder="Selecciona una ciudad"
+                  options={cities.data.map((city, index) => {
+                    return { label: city.name, value: city._id, key: index };
+                  })}
+                  onChange={({ value }) => setCity(value)}
                 />
-              </div> */}
-              
+              </div>
+
               <div className="date_container form-group">
-              <label htmlFor="custom-input" className="custom-placeholder">
+                <label htmlFor="custom-input" className="custom-placeholder">
                   Fecha y Hora
                 </label>
                 <input
@@ -183,9 +202,8 @@ export const EventsForm = () => {
                   autoComplete="false"
                   placeholder="DD-MM-AAAA"
                   {...register("date", { required: true })}
-                />            
-              </div> 
-
+                />
+              </div>
 
               <div>
                 <Uploadfile required />

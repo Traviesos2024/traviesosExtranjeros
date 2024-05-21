@@ -1,21 +1,32 @@
 .country-card {
-  background-color:rgb(255, 255, 255);
+  background-color: rgb(255, 255, 255);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  width: calc(50% - 20px); /* Calcula el ancho para mostrar dos elementos por fila */
+  width: calc(
+    50% - 20px
+  ); /* Calcula el ancho para mostrar dos elementos por fila */
   margin: 10px;
   text-align: center;
   display: inline-block; /* Cambio necesario para distribuir los elementos en filas */
 }
-
+/* imágenes de los países */
 .country-card img {
-  width: 100%;
-  border-radius: 8px;
-  width: 150px;
-  height: 150px;
+  border-radius: 7px;
+  width: 210px;
+  height: 200px;
   object-fit: cover;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
+}
+/* titulo de países */
+.country-card h1 {
+  margin: 0;
+  font-size: 1, 6rem;
+  color: #6d71e5;
+  font-style: oblique;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  font-weight: 500;
 }
 
 .country-card h2 {
@@ -24,9 +35,10 @@
 }
 
 .country-card p {
-  color: #8a7e72ff;
+  color: rgb(82, 80, 80);
+  font-size: medium;
+  font-weight: 200;
 }
-
 .city-list {
   margin-top: 10px;
 }
@@ -42,10 +54,17 @@
 
 .city-list a {
   text-decoration: none;
-  color:#6d71e5ff;
+  color: #6d71e5ff;
   transition: color 0.3s ease;
 }
 
 .city-list a:hover {
-  color: #101834;
+  color: #6d71e5;
 }
+
+.city-list h4 {
+  font-size: medium;
+  font-family: sans-serif;
+  color: #e7cb57;
+}
+/* Posible color para el desplegable de city */
