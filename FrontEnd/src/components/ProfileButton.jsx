@@ -28,6 +28,7 @@ const ProfileButton = () => {
   };
 
   return (
+   
     <button onClick={handleProfileClick}>
       {loggedInUser ? "Ver perfil" : "Iniciar sesión"}
     </button>
