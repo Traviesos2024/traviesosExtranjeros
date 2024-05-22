@@ -108,12 +108,10 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "/:country",
-        element: (
-          <Protected>
-            <Country />
-          </Protected>
-        ),
+        path: "/country/:name/:idCountry",
+        /**  */
+
+        element: <Country />,
       },
       {
         path: "/:city/:id",

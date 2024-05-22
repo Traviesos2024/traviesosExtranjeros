@@ -14,3 +14,5 @@ export * from "./FigureUser";
 export * from "./NavProfile";
 export * from "./Citybyid";
 export * from "./Eventos";
+export * from "./CardCountryHome";
+export * from "./CardCitiesGallery";
