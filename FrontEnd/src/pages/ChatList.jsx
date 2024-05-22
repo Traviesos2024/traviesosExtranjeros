@@ -114,7 +114,7 @@ export const ChatListPage = () => {
           )}
         </div>
         {selectedChat ? (
-          <div className="chatPage-wrapper">
+          <div key={selectedChat} className="chatPage-wrapper">
             <ChatPage selectedChat={selectedChat} />
           </div>
         ) : (
