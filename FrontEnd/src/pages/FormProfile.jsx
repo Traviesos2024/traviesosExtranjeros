@@ -37,7 +37,7 @@ export const FormProfile = () => {
         formDataToSubmit.append("name", formData.name);
         formDataToSubmit.append("country", formData.country);
         formDataToSubmit.append("city", formData.city);
-        
+
         if (inputFile.length != 0) {
           const custonFormData = {
             ...formData,
@@ -49,7 +49,7 @@ export const FormProfile = () => {
           setSend(false);
         } else {
           const custonFormData = {
-            ...formData, 
+            ...formData,
             image: inputFile[0],
           };
           setSend(true);
@@ -59,7 +59,7 @@ export const FormProfile = () => {
       }
     });
   };
-  
+
   useEffect(() => {
     console.log(res);
     useUpdateError(res, setRes, setUser, logout);
@@ -168,7 +168,6 @@ export const FormProfile = () => {
   );
 };
 
-
 // import { useForm } from "react-hook-form";
 
 // import "./FormProfile.css";
@@ -186,7 +185,7 @@ export const FormProfile = () => {
 //   const [send, setSend] = useState(false);
 //   const [countries, setCountries] = useState([]);
 //   const [cities, setCities] = useState([]);
-  
+
 //   //  ---> copiamos los datos que tenem os ahora mismo para ponerlo en el input como valor por defecto
 //   const defaultData = {
 //     name: user?.user,
@@ -211,8 +210,6 @@ export const FormProfile = () => {
 //             image: inputFile[0],
 
 //           };
-
-      
 
 //           setSend(true);
 //           setRes(await updateUser(custonFormData));
@@ -257,8 +254,6 @@ export const FormProfile = () => {
 //     }
 //   }, [selectedCountry]);
 
-
-
 //   return (
 //     <>
 //       <div className="containerProfile">
@@ -283,7 +278,7 @@ export const FormProfile = () => {
 //                 Username
 //               </label>
 //             </div>
-            
+
 //             <div className="user_container form-group">
 //               <select
 //                 className="input_user"
@@ -302,7 +297,7 @@ export const FormProfile = () => {
 //                 Country
 //               </label>
 //             </div>
-  
+
 //             {selectedCountry && (
 //               <div className="city_container form-group">
 //                 <select
@@ -323,9 +318,9 @@ export const FormProfile = () => {
 //                 </label>
 //               </div>
 //             )}
-  
+
 //             <Uploadfile />
-  
+
 //             <div className="btn_container">
 //               <button
 //                 className="btn"
@@ -343,6 +338,3 @@ export const FormProfile = () => {
 //   );
 
 // };
-
-  
- 

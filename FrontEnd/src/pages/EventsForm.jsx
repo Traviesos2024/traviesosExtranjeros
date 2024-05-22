@@ -8,7 +8,7 @@ import { Navigate } from "react-router-dom";
 import { createEvent } from "../services/events.service";
 import { getAllCity } from "../services/city.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
-//import Select from "react-select";
+import Select from "react-select"; //!Asegurarse de tener importado Select y no comentarlo
 export const EventsForm = () => {
   //! 1) crear los estados
 
