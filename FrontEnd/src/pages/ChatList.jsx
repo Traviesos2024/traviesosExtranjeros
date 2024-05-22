@@ -96,14 +96,14 @@ export const ChatListPage = () => {
                 >
                   <img
                     className="chat-list-image"
-                    src={chat.userTwo.image}
+                    src={chat.userTwo?.image}
                     alt="user"
                   />
                   <div>
-                    <h3>{chat.userTwo.name}</h3>
+                    <h3>{chat.userTwo?.name}</h3>
                     <p>{chat.messages.at(-1)?.content}</p>
                   </div>
-                  <small className="chat-time">
+                  <small className="chats-time">
                     {getChatLastMessageHour(chat.messages.at(-1)?.createdAt)}
                   </small>
                 </div>

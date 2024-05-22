@@ -3,9 +3,10 @@ import "./Chat.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
 import { getChatById } from "../services/chats.service";
-import { createMessage } from "../services/message.service";
+import { createMessage, toggleLikeMessage } from "../services/message.service";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { getChatLastMessageHour } from "../utils";
 
 export const ChatPage = ({ selectedChat }) => {
   //! 1) crear los estados
@@ -19,7 +20,11 @@ export const ChatPage = ({ selectedChat }) => {
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef();
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView();
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "center",
+    });
   };
 
   const { register, handleSubmit, setValue, reset } = useForm();
@@ -71,7 +76,13 @@ export const ChatPage = ({ selectedChat }) => {
     //llamada al backend
     setSend(true);
 
-    const newMessage = await createMessage(chat.userTwo._id, customFormData);
+    var recipientId = chat.userTwo._id;
+    console.log(recipientId);
+    if (user._id == chat.userTwo._id) {
+      recipientId = chat.userOne;
+      console.log(recipientId);
+    }
+    const newMessage = await createMessage(recipientId, customFormData);
     chat.messages = [...chat.messages, newMessage.data.comment];
     setChat(chat);
     setRes(newMessage.data);
@@ -79,11 +90,28 @@ export const ChatPage = ({ selectedChat }) => {
     reset();
   };
 
+  async function onToggleLike(comment) {
+    const updatedMessage = await toggleLikeMessage(comment._id);
+
+    let chatToUpdate = { ...chat };
+    const indexOfMessageToReplace = chatToUpdate.messages.findIndex(
+      (message) => message._id == updatedMessage.data.message._id
+    );
+    chatToUpdate.messages[indexOfMessageToReplace] =
+      updatedMessage.data.message;
+
+    setChat(chatToUpdate);
+  }
+
   return (
     <>
       <div className="chat-wrapper">
         <div className="chat-header-wrapper">
-          <img src={chat.userTwo.image} alt="user" />
+          <img
+            className="chat-user-image"
+            src={chat.userTwo.image}
+            alt="user"
+          />
           <h3>{chat.userTwo.name}</h3>
         </div>
         {chat && chat.messages && chat.messages.length > 0 ? (
@@ -106,12 +134,26 @@ export const ChatPage = ({ selectedChat }) => {
                 >
                   {message.content}
                 </div>
+                <small className="chat-time">
+                  {getChatLastMessageHour(message?.createdAt)}
+                </small>
+                <span
+                  className={
+                    message.likes.find((userFav) => userFav._id == user._id)
+                      ? "material-symbols-outlined like"
+                      : "material-symbols-outlined"
+                  }
+                  onClick={() => onToggleLike(message)}
+                >
+                  favorite
+                </span>
               </div>
             ))}
           </div>
         ) : (
           <h3>You have no messages</h3>
         )}
+        <div ref={messagesEndRef} />
         <form id="formularios" onSubmit={handleSubmit(formSubmit)}>
           <label htmlFor="content">Escribe tu mensaje:</label>
           <textarea
@@ -133,7 +175,6 @@ export const ChatPage = ({ selectedChat }) => {
             </button>
           </div>
         </form>
-        <div ref={messagesEndRef} />
       </div>
     </>
   );
