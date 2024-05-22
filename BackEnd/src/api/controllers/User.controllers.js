@@ -680,7 +680,7 @@ const update = async (req, res, next) => {
           }
         } else {
           testUpdate.push({
-            [item]: false,
+            [item]: true,
           });
         }
       });

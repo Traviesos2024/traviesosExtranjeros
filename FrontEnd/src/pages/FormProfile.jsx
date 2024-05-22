@@ -49,7 +49,8 @@ export const FormProfile = () => {
           setSend(false);
         } else {
           const custonFormData = {
-            ...formData,
+            ...formData, 
+            image: inputFile[0],
           };
           setSend(true);
           setRes(await updateUser(custonFormData));
