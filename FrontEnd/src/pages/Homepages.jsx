@@ -9,7 +9,7 @@ export const Homepages = () => {
 
   useEffect(() => {
     (async () => {
-      setRes(await country());
+      // setRes(await country());
     })();
   }, []);
 
@@ -17,15 +17,14 @@ export const Homepages = () => {
     useErrorCountry(res, setRes, setCountries);
   }, [res]);
 
-  useEffect(() => {
-    console.log(country);
-  }, [country]);
+  // useEffect(() => {
+  //   console.log(country);
+  // }, [country]);
 
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/Country");
-    
   };
 
   return (

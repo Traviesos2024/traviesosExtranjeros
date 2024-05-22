@@ -12,13 +12,11 @@ header {
   }
 }
 
-
 .Botonesuser {
   display: flex;
-  align-items: center;
 }
 
-.Botonesuser button {
+.Botonesuser a {
   background-color: #e7cb57ff; /* Arylide yellow */
   color: #ffffffff; /* White */
   border: none;
@@ -27,15 +25,6 @@ header {
   margin-right: 10px;
   cursor: pointer;
   text-decoration: none;
-}
-
-.Botonesuser button:hover {
-  background-color: #b0d8d6ff; /* Light blue */
-}
-
-.Botonesuser a {
-  text-decoration: none;
-  color: #ffffffff; /* White */
 }
 
 .Nav {

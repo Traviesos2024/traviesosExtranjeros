@@ -1,38 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { byId, updateUser } from "../services/user.service";
-
-const ProfileButton = () => {
-  const [loggedInUser, setLoggedInUser] = useState(false);
-
-  useEffect(() => {
-    const fetchLoggedInUser = async () => {
-      try {
-        byId;
-
-        if (!response.ok) {
-          throw new Error("Error al obtener el usuario logado");
-        }
-
-        const user = await response.json();
-        setLoggedInUser(user);
-      } catch (error) {
-        console.error("Error al obtener el usuario logado:", error);
-      }
-    };
-
-    fetchLoggedInUser();
-  }, []);
-
-  const handleProfileClick = () => {
-    console.log("Mostrar perfil del usuario:", loggedInUser);
-  };
-
+import { NavLink } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+export const ProfileButton = () => {
+  const { user, login, logout } = useAuth();
   return (
-   
-    <button onClick={handleProfileClick}>
-      {loggedInUser ? "Ver perfil" : "Iniciar sesión"}
-    </button>
+    <>
+      {user ? (
+        <>
+          <NavLink to="/profile">
+            <button>Tu perfil</button>
+          </NavLink>
+          <NavLink to="/">
+            <button onClick={logout}>Cerrar sesión</button>
+          </NavLink>
+        </>
+      ) : (
+        <>
+          <NavLink to="/login">
+            <button>Iniciar sesión</button>
+          </NavLink>
+          <NavLink to="/register">
+            <button>Nuevo usuario</button>
+          </NavLink>
+        </>
+      )}
+    </>
   );
 };
-
-export default ProfileButton;
