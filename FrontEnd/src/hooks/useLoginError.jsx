@@ -10,6 +10,9 @@ export const useLoginError = (res, setRes, login, setLoginOk) => {
       image: res.data.user.image,
       check: res.data.user.check,
       gender: res.data.user.gender,
+      country: res.data.user.country,
+      city: res.data.user.city,
+      age: res.data.user.age,
       _id: res.data.user._id,
     };
 
