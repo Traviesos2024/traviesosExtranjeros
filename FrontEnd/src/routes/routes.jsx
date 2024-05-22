@@ -116,7 +116,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/:city:id",
+        path: "/:city/:id",
         element: (
           <Protected>
             <CountryCity />
