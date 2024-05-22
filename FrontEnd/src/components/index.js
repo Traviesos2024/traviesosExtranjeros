@@ -12,3 +12,5 @@ export * from "./Experience";
 export * from "./Comments";
 export * from "./FigureUser";
 export * from "./NavProfile";
+export * from "./Citybyid";
+export * from "./Eventos";

@@ -103,7 +103,7 @@ const getByCategory = async (req, res, next) => {
 const getByCity = async (req, res, next) => {
   try {
     const { city } = req.params;
-    const eventByCity = await Events.findByCity(city);
+    const eventByCity = await Events.find({ cities: city }).populate("cities");
     if (eventByCity) {
       return res.status(200).json(eventByCity);
     } else {

@@ -8,7 +8,6 @@ export const Header = () => {
     <header>
       <h1>Traviesos Extranjeros 🌎</h1>
       <Nav />
-      <p>HOla</p>
       <div className="Botonesuser">
         <ProfileButton />
       </div>
