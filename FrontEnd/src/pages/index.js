@@ -14,4 +14,5 @@ export * from "./Chat";
 export * from "./ExperiencesForm";
 export * from "./ChangePassword";
 export * from "./ForgotPassword";
+export * from "./FormProfile";
 export * from "./UpdateUserProfile";

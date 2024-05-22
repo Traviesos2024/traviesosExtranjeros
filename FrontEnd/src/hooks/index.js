@@ -8,3 +8,4 @@ export * from "./useErrorExperience";
 export * from "./useChangePasswordError";
 export * from "./useForgotPasswordError";
 export * from "./useUpdateError";
+export * from "./useDeleteUser";

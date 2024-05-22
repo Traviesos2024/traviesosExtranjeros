@@ -1,4 +1,15 @@
-.main {
+main {
+  width: 100vw;
+  min-height: 68vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+
+
+/* .main {
   min-height: 70vh;
   text-align: center;
   
@@ -7,7 +18,7 @@
 main{
   min-height: 35vw;
   display: flex;
-  justify-content: center; /* Centra el contenido horizontalmente si es necesario */
+  justify-content: center; 
   align-items: center; 
 }
 
@@ -45,4 +56,4 @@ button:hover {
 button.active {
   background-color: #f7fffe; 
   color: #333; 
-}
+} */

@@ -11,7 +11,9 @@ import {
   Eventspages,
   ChatListPage,
   ChatPage,
+  ProfilePage,
   EventsForm,
+  FormProfile,
   ExperiencesForm,
   ExperiencesPage,
   ForgotPassword,
@@ -19,7 +21,7 @@ import {
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
-import ProfilePage from "../pages/ProfilePage";
+// import ProfilePage from "../pages/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -95,14 +97,14 @@ export const router = createBrowserRouter([
               </Protected>
             ),
           },
-          // {
-          //   path: "/profile/",
-          //   element: (
-          //     <Protected>
-          //       <FormProfile />
-          //     </Protected>
-          //   ),
-          // },
+          {
+            path: "/profile/",
+            element: (
+              <Protected>
+                <FormProfile />
+              </Protected>
+            ),
+          },
         ],
       },
       {
