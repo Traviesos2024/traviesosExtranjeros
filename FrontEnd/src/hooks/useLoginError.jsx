@@ -1,6 +1,5 @@
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 export const useLoginError = (res, setRes, login, setLoginOk) => {
-  
   //! -----------------200
 
   if (res?.status == 200) {
@@ -10,6 +9,7 @@ export const useLoginError = (res, setRes, login, setLoginOk) => {
       email: res.data.user.email,
       image: res.data.user.image,
       check: res.data.user.check,
+      gender: res.data.user.gender,
       _id: res.data.user._id,
     };
 
