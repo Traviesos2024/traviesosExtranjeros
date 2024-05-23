@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./Register.css";
-import { registerUser, fetchCountries, fetchCities } from "../services/user.service";
+import {
+  registerUser,
+  fetchCountries,
+  fetchCities,
+} from "../services/user.service";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
 import { Link, Navigate } from "react-router-dom";
@@ -73,8 +77,8 @@ export const Register = () => {
   return (
     <>
       <div className="form-wrap">
-        <h1>Sign Up</h1>
-        <p>It’s free and only takes a minute.</p>
+        <h1>Registrate</h1>
+        <p>Es gratis y solo te llevará un minuto</p>
         <form onSubmit={handleSubmit(formSubmit)}>
           <div className="user_container form-group">
             <input
@@ -87,7 +91,7 @@ export const Register = () => {
               {...register("name", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
-              username
+              Nombre
             </label>
           </div>
           <div className="password_container form-group">
@@ -101,7 +105,7 @@ export const Register = () => {
               {...register("password", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
-              password
+              Contraseña
             </label>
           </div>
           <div className="email_container form-group">
@@ -115,7 +119,7 @@ export const Register = () => {
               {...register("email", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
-              email
+              Email
             </label>
           </div>
 
@@ -130,7 +134,7 @@ export const Register = () => {
               {...register("age", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
-              age
+              Fecha de nacimiento
             </label>
           </div>
 
@@ -174,7 +178,7 @@ export const Register = () => {
               name="country"
               {...register("country", { required: true })}
             >
-              <option value="">Select a country</option>
+              <option value="">Selecciona tu país</option>
               {countries.map((country) => (
                 <option key={country._id} value={country._id}>
                   {country.name}
@@ -182,7 +186,7 @@ export const Register = () => {
               ))}
             </select>
             <label htmlFor="country" className="custom-placeholder">
-              Country
+              Paises
             </label>
           </div>
 
@@ -195,7 +199,7 @@ export const Register = () => {
                 country=""
                 {...register("city", { required: true })}
               >
-                <option value="">Select a city</option>
+                <option value="">Selecciona tu ciudad</option>
                 {cities.map((city) => (
                   <option key={city._id} value={city._id}>
                     {city.name}
@@ -203,7 +207,7 @@ export const Register = () => {
                 ))}
               </select>
               <label htmlFor="city" className="custom-placeholder">
-                City
+                Ciudades
               </label>
             </div>
           )}
@@ -219,17 +223,16 @@ export const Register = () => {
               disabled={send}
               style={{ background: send ? "#49c1a388" : "#2f7a67" }}
             >
-              {send ? "Cargando..." : "Register"}
+              {send ? "Cargando..." : "Aceptar"}
             </button>
           </div>
         </form>
         <div className="footerForm">
           <p className="parrafoLogin">
-            Already have an account? <Link to="/login">Login Here</Link>
+            ¿Ya tienes una cuenta? <Link to="/login">Iniciar sesión</Link>
           </p>
         </div>
       </div>
     </>
   );
 };
-

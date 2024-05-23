@@ -17,7 +17,6 @@ export const EventsForm = () => {
   const [ok, setOk] = useState(false);
   const { allUser, setAllUser, bridgeData } = useAuth();
   const [events, setEvents] = useState([]);
-  const [showForm, setShowForm] = useState(false);
 
   const [cities, setCities] = useState([]);
 
@@ -90,138 +89,112 @@ export const EventsForm = () => {
   if (ok) {
     return <Navigate to="/Events" />;
   }
-  const toggleFormVisibility = () => {
-    setShowForm(!showForm); // Cambia el estado de visibilidad del formulario
-  };
 
   return (
     <div>
-      <h2>Events</h2>
-      <p>Discover and share events with others living abroad!</p>
       <div className="form-wrap">
-        <button className="btn" onClick={toggleFormVisibility}>
-          Crear evento
-        </button>
-        {showForm && (
-          <div>
-            <h1>Crear evento</h1>
-            <form onSubmit={handleSubmit(formSubmit)}>
-              <div className="user_container form-group">
-                <label htmlFor="custom-input" className="custom-placeholder">
-                  Evento
-                </label>
-                <input
-                  className="input_user"
-                  type="text"
-                  id="name"
-                  name="name"
-                  autoComplete="false"
-                  placeholder="Añadir evento"
-                  {...register("name", { required: true })}
-                />
-              </div>
-              <div className="description_container form-group">
-                <label htmlFor="custom-input" className="custom-placeholder">
-                  Descripción
-                </label>
-                <input
-                  className="input_user"
-                  type="texto"
-                  id="description"
-                  name="description"
-                  autoComplete="false"
-                  placeholder=""
-                  {...register("description", { required: true })}
-                />
-              </div>
+        <div>
+          <h1>Crear evento</h1>
+          <form onSubmit={handleSubmit(formSubmit)}>
+            <div className="user_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                Evento
+              </label>
+              <input
+                className="input_user"
+                type="text"
+                id="name"
+                name="name"
+                autoComplete="false"
+                placeholder="Añadir evento"
+                {...register("name", { required: true })}
+              />
+            </div>
+            <div className="description_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                Descripción
+              </label>
+              <input
+                className="input_user"
+                type="texto"
+                id="description"
+                name="description"
+                autoComplete="false"
+                placeholder=""
+                {...register("description", { required: true })}
+              />
+            </div>
 
-              <div className="category_container form-group">
-                <label htmlFor="category" className="custom-placeholder">
-                  Categoria
-                </label>
-                <input
-                  className="input_user"
-                  type="text"
-                  id="category"
-                  name="category"
-                  autoComplete="off"
-                  placeholder="Selecciona una categoría"
-                  list="category-options"
-                  {...register("category", { required: true })}
-                />
-                <datalist id="category-options">
-                  <option value="Música" />
-                  <option value="Gastronomía" />
-                  <option value="Deportes" />
-                  <option value="Otros..." />
-                </datalist>
-              </div>
-
-              {/* <div className="category_container form-group">
-              <label htmlFor="category" className="custom-placeholder">Categoria </label>
-              <select
-                 className="input_user"
-                 id="category"
+            <div className="category_container form-group">
+              <label htmlFor="category" className="custom-placeholder">
+                Categoria
+              </label>
+              <input
+                className="input_user"
+                type="text"
+                id="category"
                 name="category"
                 autoComplete="off"
-                defaultValue="" // Puedes usar 'value' si estás manejando el estado
-               {...register("category", { required: true })}
-               >
-              <option value="" disabled>Selecciona una categoría</option>
-              <option value="Música">Música</option>
-              <option value="Gastronomía">Gastronomía</option>
-              <option value="Deportes">Deportes</option>
-               <option value="Otros...">Otros...</option>
-              </select>
-              </div> */}
-
-              <div className="cities_container form-group">
-                <label htmlFor="custom-input" className="custom-placeholder">
-                  Ciudad
-                </label>
-                <Select
-                  name="cities"
-                  id="cities"
-                  placeholder="Selecciona una ciudad"
-                  options={cities.data.map((city, index) => {
+                placeholder="Selecciona una categoría"
+                list="category-options"
+                {...register("category", { required: true })}
+              />
+              <datalist id="category-options">
+                <option value="Música" />
+                <option value="Gastronomía" />
+                <option value="Deportes" />
+                <option value="Otros..." />
+              </datalist>
+            </div>
+            <div className="cities_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                Ciudad
+              </label>
+              <Select
+                name="cities"
+                id="cities"
+                placeholder="Selecciona una ciudad"
+                options={
+                  cities.length != 0 &&
+                  cities.data.map((city, index) => {
                     return { label: city.name, value: city._id, key: index };
-                  })}
-                  onChange={({ value }) => setCity(value)}
-                />
-              </div>
+                  })
+                }
+                onChange={({ value }) => setCity(value)}
+              />
+            </div>
 
-              <div className="date_container form-group">
-                <label htmlFor="custom-input" className="custom-placeholder">
-                  Fecha y Hora
-                </label>
-                <input
-                  className="input_user"
-                  type="datetime-local"
-                  id="date"
-                  name="daytime"
-                  autoComplete="false"
-                  placeholder="DD-MM-AAAA"
-                  {...register("date", { required: true })}
-                />
-              </div>
+            <div className="date_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                Fecha y Hora
+              </label>
+              <input
+                className="input_user"
+                type="datetime-local"
+                id="date"
+                name="daytime"
+                autoComplete="false"
+                placeholder="DD-MM-AAAA"
+                {...register("date", { required: true })}
+              />
+            </div>
 
-              <div>
-                <Uploadfile required />
-              </div>
+            <div>
+              <Uploadfile required />
+            </div>
 
-              <div className="btn_container">
-                <button
-                  className="btn"
-                  type="submit"
-                  disabled={send}
-                  style={{ background: send ? "#49c1a388" : "#2f7a67" }}
-                >
-                  {send ? "Cargando..." : "Nuevos eventos"}
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
+            <div className="btn_container">
+              <button
+                className="btn"
+                type="submit"
+                disabled={send}
+                style={{ background: send ? "#49c1a388" : "#2f7a67" }}
+              >
+                {send ? "Cargando..." : "Aceptar"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
       <ul>
         {events.map((event) => (
