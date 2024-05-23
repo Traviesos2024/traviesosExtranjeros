@@ -16,3 +16,4 @@ export * from "./Citybyid";
 export * from "./CardCountryHome";
 export * from "./CardCitiesGallery";
 export * from "./Eventos";
+export * from "./Input";

@@ -37,13 +37,19 @@ export const Event = ({
   const onToggleFavorite = () => {
     const newFavoriteState = !favorite;
     setFavorite(newFavoriteState);
-    localStorage.setItem(`favorite-${eventId}`, JSON.stringify(newFavoriteState));
+    localStorage.setItem(
+      `favorite-${eventId}`,
+      JSON.stringify(newFavoriteState)
+    );
   };
 
   const onToggleFollow = () => {
     const newFollowedState = !followed;
     setFollowed(newFollowedState);
-    localStorage.setItem(`followed-${eventId}`, JSON.stringify(newFollowedState));
+    localStorage.setItem(
+      `followed-${eventId}`,
+      JSON.stringify(newFollowedState)
+    );
   };
 
   return (
@@ -51,18 +57,21 @@ export const Event = ({
       <img src={src} alt={name} width={350} height={200} />
 
       <div onClick={onToggleFavorite} className="favorite-icon">
-        <span className={`material-symbols-outlined ${favorite ? 'favorite' : 'not-favorite'}`}>
+        <span
+          className={`material-symbols-outlined ${
+            favorite ? "favorite" : "not-favorite"
+          }`}
+        >
           favorite
         </span>
 
         <button onClick={onToggleFollow} className="follow-button">
-        {followed ? 'Unfollow' : 'Follow'}
-      </button>
-
+          {followed ? "Unfollow" : "Follow"}
+        </button>
       </div>
       <p>Evento: {name}</p>
       <p>Categoría: {category}</p>
-      <p>Fecha: {date}</p>
+      <p>Fecha: {new Date(date).toLocaleString()}</p>
       <p>Descripción: {description}</p>
       <p>Ciudad: {cities}</p>
 

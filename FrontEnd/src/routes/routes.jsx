@@ -18,6 +18,7 @@ import {
   ExperiencesPage,
   ForgotPassword,
   ChangePassword,
+  CountryAll,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -112,6 +113,11 @@ export const router = createBrowserRouter([
         /**  */
 
         element: <Country />,
+      },
+
+      {
+        path: "/country",
+        element: <CountryAll />,
       },
       {
         path: "/:city/:id",
