@@ -13,7 +13,7 @@ export * from "./Comments";
 export * from "./FigureUser";
 export * from "./NavProfile";
 export * from "./Citybyid";
+export * from "./Eventos";
 export * from "./CardCountryHome";
 export * from "./CardCitiesGallery";
-export * from "./Eventos";
 export * from "./Input";
