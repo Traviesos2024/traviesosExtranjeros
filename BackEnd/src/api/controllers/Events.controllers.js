@@ -51,8 +51,15 @@ const createEvent = async (req, res, next) => {
         /** Si existe vamos a enviar un 200 como que todo esta ok y le enviamos con un json
          * el objeto creado
          */
-
-        return res.status(200).json(saveEvent);
+        try {
+          await City.findByIdAndUpdate(req.body.cities, {
+            $push: { events: saveEvent._id },
+          });
+          return res.status(200).json(saveEvent);
+        } catch (error) {
+          console.log(error.message);
+          return res.status(404).json("error general update city");
+        }
       } else {
         return res
           .status(404)
