@@ -10,3 +10,4 @@ export * from "./useForgotPasswordError";
 export * from "./useUpdateError";
 export * from "./useDeleteUser";
 export * from "./useErrorCity";
+export * from "./useErrorLikeExperience";

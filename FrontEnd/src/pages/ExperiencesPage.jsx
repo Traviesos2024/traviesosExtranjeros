@@ -40,6 +40,7 @@ export const ExperiencesPage = () => {
           .slice(0, 1000)
           .map((item) => (
             <Experience
+            item={item}
               src={item?.image}
               name={item?.name}
               key={item.name}
@@ -48,6 +49,7 @@ export const ExperiencesPage = () => {
               comments={item?.comments}
               events={item?.events}
               experienceId={item?._id}
+              setExperiences = {setExperiences}
             />
           ))}
     </div>
