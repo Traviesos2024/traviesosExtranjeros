@@ -59,7 +59,7 @@ export const Event = ({
       <div onClick={onToggleLike} className="favorite-icon">
         <span
           className={
-            item.likeEvent.includes(user._id)
+            item?.likeEvent?.includes(user._id)
               ? "material-symbols-outlined favorite"
               : "material-symbols-outlined"
           }
@@ -71,7 +71,7 @@ export const Event = ({
       <div onClick={onToggleFollow} className="Check-Box">
         <span
           className={
-            item.eventFollowers.includes(user._id)
+            item?.eventFollowers?.includes(user._id)
               ? "material-symbols-outlined Check Box"
               : "material-symbols-outlined"
           }

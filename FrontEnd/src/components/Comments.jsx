@@ -80,10 +80,12 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
   };
 
   function onClickUserName(commentOwnerId) {
-    navigate({
-      pathname: "/chats",
-      search: `?commentOwnerId=${commentOwnerId}`,
-    });
+    if (commentOwnerId != user._id) {
+      navigate({
+        pathname: "/chats",
+        search: `?commentOwnerId=${commentOwnerId}`,
+      });
+    }
   }
   async function onToggleLike(comment) {
     const updatedMessage = await toggleLikeMessage(comment._id);

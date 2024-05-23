@@ -188,7 +188,8 @@ const getChatById = async (req, res, next) => {
     const { id } = req.params;
     const chatById = await Chat.findById(id)
       .populate("messages")
-      .populate("userTwo");
+      .populate("userTwo")
+      .populate("userOne");
     if (chatById) {
       return res.status(200).json(chatById);
     } else {
@@ -216,7 +217,8 @@ const getChatByUser = async (req, res, next) => {
       $or: [{ userOne: idUserQuery }, { userTwo: idUserQuery }],
     })
       .populate("messages")
-      .populate("userTwo");
+      .populate("userTwo")
+      .populate("userOne");
 
     if (chatByUser) {
       return res.status(200).json(chatByUser);

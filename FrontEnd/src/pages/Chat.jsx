@@ -79,7 +79,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
     var recipientId = chat.userTwo._id;
     console.log(recipientId);
     if (user._id == chat.userTwo._id) {
-      recipientId = chat.userOne;
+      recipientId = chat.userOne._id;
       console.log(recipientId);
     }
     const newMessage = await createMessage(recipientId, customFormData);

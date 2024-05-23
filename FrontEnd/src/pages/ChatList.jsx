@@ -40,11 +40,19 @@ export const ChatListPage = () => {
           );
           if (commentOwnerId) {
             if (chatFilteredByCommentOwnerId.length > 0) {
-              selectChat(chatFilteredByCommentOwnerId[0]?._id);
+              await selectChat(chatFilteredByCommentOwnerId[0]?._id);
+              await searchParams.delete("commentOwnerId");
+
+              await setSearchParams(searchParams);
+              commentOwnerId = undefined;
             } else {
               const newChat = await createEmptyChat(commentOwnerId);
               await setChats([...chats, newChat.data.chat]);
-              selectChat(newChat.data.chat?._id);
+              await selectChat(newChat.data.chat?._id);
+              await searchParams.delete("commentOwnerId");
+
+              await setSearchParams(searchParams);
+              commentOwnerId = undefined;
             }
           }
 
@@ -55,7 +63,7 @@ export const ChatListPage = () => {
       }
       fetchChats();
     }
-  }, [isLoading]);
+  }, []);
 
   useEffect(() => {
     console.log("allUser 🤡", allUser);
@@ -63,9 +71,9 @@ export const ChatListPage = () => {
 
   //! 5) estados de navegacion
 
-  if (isLoading) {
-    return <h1>cargando...</h1>;
-  }
+  // if (isLoading) {
+  //   return <h1>cargando...</h1>;
+  // }
 
   function selectChat(chat) {
     console.log(chat);
@@ -105,11 +113,19 @@ export const ChatListPage = () => {
                 >
                   <img
                     className="chat-list-image"
-                    src={chat.userTwo?.image}
+                    src={
+                      user._id == chat.userOne._id
+                        ? chat.userTwo?.image
+                        : chat.userOne?.image
+                    }
                     alt="user"
                   />
                   <div>
-                    <h3>{chat.userTwo?.name}</h3>
+                    <h3>
+                      {user._id == chat.userOne._id
+                        ? chat.userTwo?.name
+                        : chat.userOne?.name}
+                    </h3>
                     <p>{chat.messages.at(-1)?.content}</p>
                   </div>
                   <small className="chats-time">
