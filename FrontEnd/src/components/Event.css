@@ -1,0 +1,35 @@
+.favorite-icon {
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+.favorite {
+  color: red;
+   padding: 10px 20px;
+}
+
+.not-favorite {
+  color: black;
+   padding: 10px 20px;
+}
+
+
+.follow-button {
+  background-color: #4080c5;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.follow-button:hover {
+  background-color: #0056b3;
+}
+
+.follow-button:active {
+  background-color: #004494;
+}

@@ -156,25 +156,7 @@ export const EventsForm = () => {
                   <option value="Otros..." />
                 </datalist>
               </div>
-
-              {/* <div className="category_container form-group">
-              <label htmlFor="category" className="custom-placeholder">Categoria </label>
-              <select
-                 className="input_user"
-                 id="category"
-                name="category"
-                autoComplete="off"
-                defaultValue="" // Puedes usar 'value' si estás manejando el estado
-               {...register("category", { required: true })}
-               >
-              <option value="" disabled>Selecciona una categoría</option>
-              <option value="Música">Música</option>
-              <option value="Gastronomía">Gastronomía</option>
-              <option value="Deportes">Deportes</option>
-               <option value="Otros...">Otros...</option>
-              </select>
-              </div> */}
-
+              
               <div className="cities_container form-group">
                 <label htmlFor="custom-input" className="custom-placeholder">
                   Ciudad
