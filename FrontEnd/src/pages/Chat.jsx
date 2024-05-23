@@ -8,7 +8,7 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getChatLastMessageHour } from "../utils";
 
-export const ChatPage = ({ selectedChat }) => {
+export const ChatPage = ({ selectedChat, updateChatHour }) => {
   //! 1) crear los estados
   const { chatId } = useParams();
   const [send, setSend] = useState(false);
@@ -42,7 +42,7 @@ export const ChatPage = ({ selectedChat }) => {
             var chatResponse = await getChatById(chatId);
           }
           // await async "fetchChat()" function
-
+          console.log(chatResponse.data);
           await setChat(chatResponse.data);
           setIsLoading(false);
 
@@ -84,9 +84,11 @@ export const ChatPage = ({ selectedChat }) => {
     }
     const newMessage = await createMessage(recipientId, customFormData);
     chat.messages = [...chat.messages, newMessage.data.comment];
-    setChat(chat);
+    await setChat(chat);
     setRes(newMessage.data);
     setSend(false);
+    console.log(chat);
+    updateChatHour(chat);
     reset();
   };
 

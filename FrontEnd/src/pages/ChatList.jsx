@@ -29,10 +29,10 @@ export const ChatListPage = () => {
         try {
           // await async "fetchChats()" function
           const chatsResponse = await getChatByUser(user._id);
-          console.log(chatsResponse.data);
+
           await setChats(chatsResponse.data);
           setIsLoading(false);
-          console.log(commentOwnerId);
+
           let chatFilteredByCommentOwnerId = chatsResponse.data.filter(
             (chat) =>
               chat.userTwo._id == commentOwnerId ||
@@ -77,6 +77,15 @@ export const ChatListPage = () => {
       }
     }
   }
+  function updateChatHour(chatToUpdate) {
+    let chatsToUpdate = [...chats];
+    const indexOfChatToReplace = chatsToUpdate.findIndex(
+      (chat) => chat._id == chatToUpdate._id
+    );
+    chatsToUpdate[indexOfChatToReplace] = chatToUpdate;
+    setChats(chatsToUpdate);
+  }
+
   return (
     <>
       <div className="chat-page-container">
@@ -104,7 +113,9 @@ export const ChatListPage = () => {
                     <p>{chat.messages.at(-1)?.content}</p>
                   </div>
                   <small className="chats-time">
-                    {getChatLastMessageHour(chat.messages.at(-1)?.createdAt)}
+                    {chat.messages.at(-1)?.createdAt
+                      ? getChatLastMessageHour(chat.messages.at(-1)?.createdAt)
+                      : ""}
                   </small>
                 </div>
               ))}
@@ -115,7 +126,10 @@ export const ChatListPage = () => {
         </div>
         {selectedChat ? (
           <div key={selectedChat} className="chatPage-wrapper">
-            <ChatPage selectedChat={selectedChat} />
+            <ChatPage
+              selectedChat={selectedChat}
+              updateChatHour={updateChatHour}
+            />
           </div>
         ) : (
           ""
