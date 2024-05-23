@@ -39,8 +39,8 @@ export const Login = () => {
   return (
     <>
       <div className="form-wrap">
-        <h1>Sign In</h1>
-        <p>We are happy to see you again 💌</p>
+        <h1>Iniciar sesión</h1>
+        <p>Nos alegra verte de nuevo 🥰</p>
         <form onSubmit={handleSubmit(formSubmit)}>
           <div className="email_container form-group">
             <input
@@ -53,7 +53,7 @@ export const Login = () => {
               {...register("email", { required: true })}
             />
             <label htmlFor="custom-input" className="custom-placeholder">
-              email
+              Email
             </label>
 
             <div className="password_container form-group">
@@ -67,7 +67,7 @@ export const Login = () => {
                 {...register("password", { required: true })}
               />
               <label htmlFor="custom-input" className="custom-placeholder">
-                password
+                Contraseña
               </label>
             </div>
           </div>
@@ -79,14 +79,14 @@ export const Login = () => {
               disabled={send}
               style={{ background: send ? "#49c1a388" : "#49c1a2" }}
             >
-              LOGIN
+              Iniciar sesión
             </button>
           </div>
           <p className="bottom-text">
             <small>
-              Have you forgotten the password?
+              ¿Has olvidado tu contraseña?
               <Link to="/forgotpassword" className="anchorCustom">
-                Change password
+                Cambiar contraseña
               </Link>
             </small>
           </p>
@@ -94,7 +94,7 @@ export const Login = () => {
 
         <div className="footerForm">
           <p className="parrafoLogin">
-            Are you not registered? <Link to="/register">Register Here</Link>
+            ¿No tienes una cuenta? <Link to="/register">Registrate aquí</Link>
           </p>
         </div>
       </div>

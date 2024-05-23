@@ -77,12 +77,12 @@ export const Uploadfile = () => {
         <img id="file-image" src="#" alt="Preview" className="hidden" />
         <div id="start">
           <i className="fa fa-download" aria-hidden="true"></i>
-          <div className="divSelect">Select a file or drag here</div>
+          <div className="divSelect">Elige tu foto o arrastrala aquí</div>
           <div id="notimage" className="hidden">
-            Please select an image
+            Por favor, selecciona una imagen
           </div>
           <span id="file-upload-btn" className="btn btn-primary">
-            Select a file
+            Sube tu foto
           </span>
         </div>
         <div id="response" className="hidden">
