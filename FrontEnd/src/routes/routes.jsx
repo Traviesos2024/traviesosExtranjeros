@@ -128,6 +128,14 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "/events/:id",
+        element: (
+          <Protected>
+            <EventDetallePage />
+          </Protected>
+        ),
+      },
+      {
         path: "/chats",
         element: (
           <Protected>

@@ -11,7 +11,6 @@ const {
   toggleCountry,
   getAll,
   getCountry,
- 
 } = require("../controllers/City.controller");
 const CityRoutes = express.Router();
 
@@ -28,7 +27,5 @@ CityRoutes.patch(
 CityRoutes.delete("/:idCity", [isAuthSuper], deleteCity);
 CityRoutes.get("/", getAll);
 CityRoutes.get("/cities/:countryId", getCountry);
-
-
 
 module.exports = CityRoutes;

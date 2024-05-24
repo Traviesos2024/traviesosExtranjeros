@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { cityById } from "../services/city.service";
 import { useErrorCity } from "../hooks";
 import { Loader } from "./Loader";
@@ -33,15 +33,13 @@ export const Citybyid = () => {
           {city.events.map((item) => (
             <Eventos
               src={item.image}
+              item={item}
               name={item.name}
               key={item._id}
               date={item.date}
             />
           ))}
-
-          <NavLink to="/country">
-            <button>Atrás</button>
-          </NavLink>
+          <button onClick={() => navigate("/country")}>Atrás</button>
         </figure>
       ) : (
         <Loader />

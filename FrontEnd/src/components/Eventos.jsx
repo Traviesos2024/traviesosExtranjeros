@@ -1,9 +1,14 @@
-export const Eventos = ({ name, src, date }) => {
+import { Link } from "react-router-dom";
+
+export const Eventos = ({ name, src, date, item }) => {
+  console.log("id", item);
   return (
-    <figure>
-      <img src={src} alt={name} width={350} height={200} />
-      <p>Evento: {name}</p>
-      <p>Fecha: {new Date(date).toLocaleString()}</p>
-    </figure>
+    <Link to={`/events/${item._id}`}>
+      <figure>
+        <img src={src} alt={name} width={350} height={200} />
+        <p>Evento: {name}</p>
+        <p>Fecha: {new Date(date).toLocaleString()}</p>
+      </figure>
+    </Link>
   );
 };
