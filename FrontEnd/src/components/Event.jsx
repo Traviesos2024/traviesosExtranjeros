@@ -3,7 +3,7 @@ import { Comments } from "./index";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { toggleFollowEvent, toggleLikeEvent } from "../services/events.service"; // Importar la función de servicio
-import { useErrorLikeEvent, useErrorFollowEvent } from "../hooks"; // Importa un hook personalizado para manejar errores
+// import { useErrorLikeEvent, useErrorFollowEvent } from "../hooks"; // Importa un hook personalizado para manejar errores
 import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
 
 export const Event = ({
@@ -27,7 +27,7 @@ export const Event = ({
 
   // Recuperar el estado del local storage cuando el componente se monte
 
-  const onToggleLike = async (events) => {
+  const onToggleLike = async (event) => {
     try {
       const res = await toggleLikeEvent(eventId);
       console.log("res", res);
@@ -37,7 +37,7 @@ export const Event = ({
     }
   };
 
-  const onToggleFollow = async (events) => {
+  const onToggleFollow = async (event) => {
     try {
       const res = await toggleFollowEvent(eventId);
       console.log("res", res);
@@ -59,7 +59,7 @@ export const Event = ({
       <div onClick={onToggleLike} className="favorite-icon">
         <span
           className={
-            item?.likeEvent?.includes(user._id)
+            item.likeEvent.includes(user._id)
               ? "material-symbols-outlined favorite"
               : "material-symbols-outlined"
           }
@@ -68,15 +68,15 @@ export const Event = ({
         </span>
       </div>
       <p>{followed}</p>
-      <div onClick={onToggleFollow} className="Check-Box">
+      <div onClick={onToggleFollow} className="Check">
         <span
           className={
-            item?.eventFollowers?.includes(user._id)
-              ? "material-symbols-outlined Check Box"
+            item.eventFollowers.includes(user._id)
+              ? "material-symbols-outlined Check_box"
               : "material-symbols-outlined"
           }
         >
-          favorite
+          Check_box
         </span>
       </div>
       <p>Evento: {name}</p>

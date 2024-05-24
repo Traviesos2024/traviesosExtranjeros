@@ -1,37 +1,8 @@
-.favorite-icon {
-  cursor: pointer;
-  display: inline-block;
-  margin-top: 10px;
-}
-.Check-Box {
+.Check_box {
   color: rgb(0, 183, 255);
 }
 
 .favorite {
   color: red;
   padding: 10px 20px;
-}
-
-.not-favorite {
-  color: rgb(248, 238, 238);
-  padding: 10px 20px;
-}
-
-.follow-button {
-  background-color: #4080c5;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-.follow-button:hover {
-  background-color: #0056b3;
-}
-
-.follow-button:active {
-  background-color: #004494;
 }

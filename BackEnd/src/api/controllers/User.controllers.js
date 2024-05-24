@@ -354,7 +354,7 @@ const login = async (req, res, next) => {
 
   try {
     const { email, password } = req.body;
-    const userDB = await User.findOne({ email }).populate("city country");
+    const userDB = await User.findOne({ email }).populate("city country events");
 
     if (userDB) {
       // compara dos contraseñar una sin encryptar y otra que si lo esta

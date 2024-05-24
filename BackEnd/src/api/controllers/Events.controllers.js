@@ -188,8 +188,8 @@ const toggleLikeEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "disliked",
-            user: await User.findById(_id).populate("eventsFav"),
-            events: await Events.findById(idEvent).populate("likeEvent"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
             allEvent: await Events.find(),
           });
         } catch (error) {
@@ -217,8 +217,8 @@ const toggleLikeEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "like",
-            user: await User.findById(_id).populate("eventsFav"),
-            events: await Events.findById(idEvent).populate("likeEvent"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
             allEvent: await Events.find(),
           });
         } catch (error) {
@@ -259,8 +259,8 @@ const toggleFollowEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "unfollow",
-            user: await User.findById(_id).populate("eventsFollow"),
-            events: await Events.findById(idEvent).populate("eventFollowers"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
             allEvent: await Events.find(),
           });
         } catch (error) {
@@ -288,8 +288,8 @@ const toggleFollowEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "follow",
-            user: await User.findById(_id).populate("eventsFollow"),
-            events: await Events.findById(idEvent).populate("eventFollowers"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
             allEvent: await Events.find(),
           });
         } catch (error) {
