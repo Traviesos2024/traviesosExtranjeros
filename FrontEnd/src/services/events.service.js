@@ -14,6 +14,14 @@ export const createEvent = async (formData) => {
     .catch((error) => error);
 };
 
+// ----------------get By Id ------------------------
+
+export const eventById = async (idEvent) => {
+  return APITraviesos.get(`/event/finById/${idEvent}`)
+    .then((res) => res)
+    .catch((error) => error);
+};
+
 // ----------------getAll------------------------
 
 export const getAll = async () => {

@@ -19,6 +19,7 @@ import {
   ForgotPassword,
   ChangePassword,
   CountryAll,
+  EventDetallePage,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
