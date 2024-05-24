@@ -7,7 +7,7 @@ export const Nav = () => {
     <>
       {user ? (
         <>
-          <NavLink to="/">
+          <NavLink to="/log">
             <button>Home</button>
           </NavLink>
           <NavLink to={`/${user.city.name}/${user.city._id}`}>
