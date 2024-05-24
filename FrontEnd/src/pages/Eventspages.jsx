@@ -73,39 +73,40 @@ export const Eventspages = () => {
       />
       <hr />
       <br></br>
-
-      {data.length > 0
-        ? data.map((item) => (
-            <Event
-            item={item}
-              src={item?.image}
-              name={item?.name}
-              key={item._id}
-              category={item?.category}
-              date={item?.date}
-              description={item?.description}
-              cities={item?.cities?.map((city) => city.name)}
-              eventId={item?._id}
-              comments={item?.comments}
-              setEvents = {setEvents}
-            />
-          ))
-        : events.length > 0 &&
-          events.map((item) => (
-            <Event
-            item={item}
-              src={item?.image}
-              name={item?.name}
-              key={item._id}
-              category={item?.category}
-              date={item?.date}
-              description={item?.description}
-              cities={item?.cities?.map((city) => city.name)}
-              eventId={item?._id}
-              comments={item?.comments}
-              setEvents={setEvents}
-            />
-          ))}
+      <div className="cards-wrapper">
+        {data.length > 0
+          ? data.map((item) => (
+              <Event
+                item={item}
+                src={item?.image}
+                name={item?.name}
+                key={item._id}
+                category={item?.category}
+                date={item?.date}
+                description={item?.description}
+                cities={item?.cities?.map((city) => city.name)}
+                eventId={item?._id}
+                comments={item?.comments}
+                setEvents={setEvents}
+              />
+            ))
+          : events.length > 0 &&
+            events.map((item) => (
+              <Event
+                item={item}
+                src={item?.image}
+                name={item?.name}
+                key={item._id}
+                category={item?.category}
+                date={item?.date}
+                description={item?.description}
+                cities={item?.cities?.map((city) => city.name)}
+                eventId={item?._id}
+                comments={item?.comments}
+                setEvents={setEvents}
+              />
+            ))}
+      </div>
     </div>
   );
 };

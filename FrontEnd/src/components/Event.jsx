@@ -53,45 +53,67 @@ export const Event = ({
   };
 
   return (
-    <figure>
+    <figure key={eventId} className="card">
       <img src={src} alt={name} width={350} height={200} />
-      <p>{likes}</p>
-      <div onClick={onToggleLike} className="favorite-icon">
-        <span
-          className={
-            item.likeEvent.includes(user._id)
-              ? "material-symbols-outlined favorite"
-              : "material-symbols-outlined"
-          }
-        >
-          favorite
-        </span>
-      </div>
-      <p>{followed}</p>
-      <div onClick={onToggleFollow} className="Check">
-        <span
-          className={
-            item.eventFollowers.includes(user._id)
-              ? "material-symbols-outlined Check_box"
-              : "material-symbols-outlined"
-          }
-        >
-          Check_box
-        </span>
-      </div>
-      <p>Evento: {name}</p>
-      <p>Categoría: {category}</p>
-      <p>Fecha: {new Date(date).toLocaleString()}</p>
-      <p>Descripción: {description}</p>
-      <p>Ciudad: {cities}</p>
+      <div className="card-padding">
+        <p>{likes}</p>
+        <div className="card-icons-wrapper">
+          <div onClick={onToggleLike} className="favorite-icon">
+            <span
+              className={
+                item.likeEvent.includes(user._id)
+                  ? "material-symbols-outlined favorite"
+                  : "material-symbols-outlined"
+              }
+            >
+              favorite
+            </span>
+          </div>
+          <p>{followed}</p>
+          <div onClick={onToggleFollow} className="Check">
+            <span
+              className={
+                item.eventFollowers.includes(user._id)
+                  ? "material-symbols-outlined Check_box"
+                  : "material-symbols-outlined"
+              }
+            >
+              Check_box
+            </span>
+          </div>
+          <div className="comment-icon-padding">
+            <span
+              className="material-symbols-outlined"
+              onClick={onToggleComments}
+            >
+              mode_comment
+            </span>
+          </div>
+        </div>
 
-      <div>
-        <h4 onClick={onToggleComments}>Comments</h4>
-        {open ? (
-          <Comments selectedRecipient={eventId} commentsProps={comments} />
-        ) : (
-          ""
-        )}
+        <p>Evento: {name}</p>
+        <p>Categoría: {category}</p>
+        <p>Fecha: {new Date(date).toLocaleString()}</p>
+        <p>Descripción: {description}</p>
+        <p>Ciudad: {cities}</p>
+
+        <div className="card-comments-wrapper">
+          {open ? (
+            <>
+              <Comments selectedRecipient={eventId} commentsProps={comments} />
+              <div className="close-chat-wrapper">
+                <span
+                  onClick={onToggleComments}
+                  className="material-symbols-outlined"
+                >
+                  close
+                </span>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
     </figure>
   );
