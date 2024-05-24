@@ -13,7 +13,7 @@
   margin: 1px; /* Espacio entre las imágenes */
 }
 
-h1 {
+.cardCityGallery h1 {
   font-size: 1.8em; /* Tamaño del texto */
   color: #6d71e5; /* Color del texto */
   margin-bottom: 8px; /* Espacio inferior */
