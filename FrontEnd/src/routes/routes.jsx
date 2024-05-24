@@ -54,11 +54,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/log",
-<<<<<<< HEAD
-        element: <HomeLogado />,
-=======
         element: <HomeLogadoPage />,
->>>>>>> 799ba9289733046f778e565e0c3429bd0e5a5e36
       },
       {
         path: "/experiences",
