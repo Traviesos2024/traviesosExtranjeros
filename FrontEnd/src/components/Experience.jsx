@@ -1,29 +1,59 @@
+
+
 import "./Experience.css";
 import { Comments } from "./index";
-import { useState } from "react";
+import { useErrorExperience } from "../hooks"; // Importa un hook personalizado para manejar errores
+import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import { toggleLikeExperience } from "../services/experiences.service"; // Importar la función de servicio
 
 export const Experience = ({
   name,
   src,
   description,
-  likes,
+  initialLikes,
   comments,
   events,
   experienceId,
+  userId,
+  setExperiences,
+  item
 }) => {
   const [open, setOpen] = useState(false);
+  const { allUser, setAllUser, bridgeData, user } = useAuth();
+  const [likes, setLikes] = useState(initialLikes); // Estado de likes
+  
+  // Obtener el estado del like del backend cuando el componente se monte
+  
 
   const onToggle = (event) => {
     event.preventDefault();
     setOpen(!open);
   };
+
+  const onToggleLike = async (experiences) => {
+    try {
+      const res = await toggleLikeExperience(experienceId);
+      console.log("res", res)
+      res.status == 200 && 
+      setExperiences(res.data.allExperience)
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    };
+  };
+  
   return (
     <figure>
       <img src={src} alt={name} width={350} height={200} />
       <p>{name}</p>
       <p>{description}</p>
       <p>{likes}</p>
-
+      <div onClick={onToggleLike} className="favorite-icon">
+        <span className={item.likes.includes(user._id)? 'material-symbols-outlined favorite' : 'material-symbols-outlined'}>
+          favorite
+        </span>
+      </div>
       <p>{events}</p>
       <div>
         <h4 onClick={onToggle}>Comments</h4>
@@ -36,3 +66,153 @@ export const Experience = ({
     </figure>
   );
 };
+
+
+// import "./Experience.css";
+// import { Comments } from "./index";
+// import { useState, useEffect } from "react";
+// import axios from 'axios'; // Asegúrate de tener axios instalado y importado
+// import { fetchFavoriteStatus } from "../services/experiences.service";
+// export const Experience = ({
+//   name,
+//   src,
+//   description,
+//   likes,
+//   comments,
+//   events,
+//   experienceId,
+//   userId, // Asegúrate de pasar el userId como prop
+// }) => {
+//   const [open, setOpen] = useState(false);
+//   const [favorite, setFavorite] = useState(false); // Estado de like
+
+//   // Obtener el estado del like del backend cuando el componente se monte
+//   useEffect(() => {
+//     const fetchFavoriteStatus = async () => {
+//       try {
+//         const response = await axios.get(`/api/experiences/${experienceId}`, {
+//           headers: {
+//             Authorization: `Bearer ${localStorage.getItem('token')}` // Asumiendo que usas token para autenticación
+//           }
+//         });
+//         if (response.status === 200) {
+//           const isLiked = response.data.likes.includes(userId); // Asumiendo que response.data.likes es un array de user IDs
+//           setFavorite(isLiked);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching favorite status:", error);
+//       }
+//     };
+//     fetchFavoriteStatus();
+//   }, [experienceId, userId]);
+
+//   const onToggle = (event) => {
+//     event.preventDefault();
+//     setOpen(!open);
+//   };
+
+//   const onToggleFavorite = async () => {
+//     try {
+//       const response = await axios.patch(`/api/experiences/like/${experienceId}`, {}, {
+//         headers: {
+//           Authorization: `Bearer ${localStorage.getItem('token')}` // Asumiendo que usas token para autenticación
+//         }
+//       });
+//       if (response.status === 200) {
+//         setFavorite(prevFavorite => !prevFavorite);
+//       }
+//     } catch (error) {
+//       console.error("Error toggling favorite:", error);
+//     }
+//   };
+
+//   return (
+//     <figure>
+//       <img src={src} alt={name} width={350} height={200} />
+//       <p>{name}</p>
+//       <p>{description}</p>
+//       <p>{likes}</p>
+//       <div onClick={onToggleFavorite} className="favorite-icon">
+//         <span className={`material-symbols-outlined ${favorite ? 'favorite' : 'not-favorite'}`}>
+//           favorite
+//         </span>
+//       </div>
+//       <p>{events}</p>
+//       <div>
+//         <h4 onClick={onToggle}>Comments</h4>
+//         {open ? (
+//           <Comments selectedRecipient={experienceId} commentsProps={comments} />
+//         ) : (
+//           ""
+//         )}
+//       </div>
+//     </figure>
+//   );
+// };
+
+// import "./Experience.css";
+// import { Comments } from "./index";
+// import { useState, useEffect } from "react";
+// import {fetchExperiences}
+// export const Experience = ({
+//   name,
+//   src,
+//   description,
+//   likes,
+//   comments,
+//   events,
+//   experienceId,
+// }) => {
+//   const [open, setOpen] = useState(false);
+//   const [favorite, setFavorite] = useState(false); // like y dislike
+
+//   // Recuperar el estado del local storage cuando el componente se monte
+//   useEffect(() => {
+//     const savedFavorite = localStorage.getItem(`favorite-${experienceId}`);
+//     if (savedFavorite) {
+//       setFavorite(JSON.parse(savedFavorite));
+//     }
+//   }, [experienceId]);
+
+//   useEffect(() => {
+//     const likes = async () => {
+//       const experiencesData = await fetchExperiences();
+//       setExperiences(experiencesData);
+//     };
+//     likes();
+//   }, []);
+
+//   const onToggle = (event) => {
+//     event.preventDefault();
+//     setOpen(!open);
+//   };
+
+//   const onToggleFavorite = () => {
+//     const newFavoriteState = !favorite;
+//     setFavorite(newFavoriteState);
+//     localStorage.setItem(`favorite-${experienceId}`, JSON.stringify(newFavoriteState));
+//   };
+  
+//   return (
+//     <figure>
+//       <img src={src} alt={name} width={350} height={200} />
+//       <p>{name}</p>
+//       <p>{description}</p>
+//       <p>{likes}</p>
+//       <div onClick={onToggleFavorite} className="favorite-icon">
+//         <span className={`material-symbols-outlined ${favorite ? 'favorite' : 'not-favorite'}`}>
+//           favorite
+//         </span>
+//         </div>
+//       <p>{events}</p>
+//       <div>
+//         <h4 onClick={onToggle}>Comments</h4>
+//         {open ? (
+//           <Comments selectedRecipient={experienceId} commentsProps={comments} />
+//         ) : (
+//           ""
+//         )}
+//       </div>
+//     </figure>
+//   );
+// };

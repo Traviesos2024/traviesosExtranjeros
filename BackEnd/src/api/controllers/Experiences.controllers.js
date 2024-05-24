@@ -112,6 +112,7 @@ const toggleLikeExperience = async (req, res, next) => {
             experience: await Experience.findById(idExperience).populate(
               "likes"
             ),
+            allExperience:await Experience.find()
           });
         } catch (error) {
           return res.status(404).json({
@@ -144,6 +145,7 @@ const toggleLikeExperience = async (req, res, next) => {
             experience: await Experience.findById(idExperience).populate(
               "likes"
             ),
+            allExperience:await Experience.find()
           });
         } catch (error) {
           return res.status(404).json({

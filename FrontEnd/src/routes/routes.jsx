@@ -18,9 +18,12 @@ import {
   ExperiencesPage,
   ForgotPassword,
   ChangePassword,
+  CountryAll,
+  EventDetallePage,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
+import { HomeLogadoPage } from "../pages/HomeLogadoPage";
 // import ProfilePage from "../pages/ProfilePage";
 
 export const router = createBrowserRouter([
@@ -51,7 +54,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/log",
+<<<<<<< HEAD
         element: <HomeLogado />,
+=======
+        element: <HomeLogadoPage />,
+>>>>>>> 799ba9289733046f778e565e0c3429bd0e5a5e36
       },
       {
         path: "/experiences",
@@ -125,11 +132,24 @@ export const router = createBrowserRouter([
 
         element: <Country />,
       },
+
+      {
+        path: "/country",
+        element: <CountryAll />,
+      },
       {
         path: "/:city/:id",
         element: (
           <Protected>
             <CountryCity />
+          </Protected>
+        ),
+      },
+      {
+        path: "/events/:id",
+        element: (
+          <Protected>
+            <EventDetallePage />
           </Protected>
         ),
       },

@@ -4,6 +4,7 @@ const Events = require("../models/Events.model");
 const User = require("../models/User.model");
 const City = require("../models/City.models");
 const Experience = require("../models/Experience.model");
+const Event = require("../models/Events.model");
 
 //! -------------create new Events ----------------
 //? -------------------------------POST create --------------------------
@@ -51,8 +52,15 @@ const createEvent = async (req, res, next) => {
         /** Si existe vamos a enviar un 200 como que todo esta ok y le enviamos con un json
          * el objeto creado
          */
-
-        return res.status(200).json(saveEvent);
+        try {
+          await City.findByIdAndUpdate(req.body.cities, {
+            $push: { events: saveEvent._id },
+          });
+          return res.status(200).json(saveEvent);
+        } catch (error) {
+          console.log(error.message);
+          return res.status(404).json("error general update city");
+        }
       } else {
         return res
           .status(404)
@@ -180,8 +188,9 @@ const toggleLikeEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "disliked",
-            user: await User.findById(_id).populate("eventsFav"),
-            events: await Events.findById(idEvent).populate("likeEvent"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
+            allEvent: await Events.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -208,8 +217,9 @@ const toggleLikeEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "like",
-            user: await User.findById(_id).populate("eventsFav"),
-            events: await Events.findById(idEvent).populate("likeEvent"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
+            allEvent: await Events.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -249,8 +259,9 @@ const toggleFollowEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "unfollow",
-            user: await User.findById(_id).populate("eventsFollow"),
-            events: await Events.findById(idEvent).populate("eventFollowers"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
+            allEvent: await Events.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -277,8 +288,9 @@ const toggleFollowEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "follow",
-            user: await User.findById(_id).populate("eventsFollow"),
-            events: await Events.findById(idEvent).populate("eventFollowers"),
+            user: await User.findById(_id),
+            events: await Events.findById(idEvent),
+            allEvent: await Events.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -369,6 +381,31 @@ const toggleCity = async (req, res, next) => {
     }
   } catch (error) {
     return res.status(500).json({ error: error.message });
+  }
+};
+
+//! -----------------------------------------------------------------------------
+//? ---------------------------------findById------------------------------------
+//! -----------------------------------------------------------------------------
+
+const eventById = async (req, res, next) => {
+  try {
+    /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
+    El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
+    const { idEvent } = req.params;
+    const eventById = await Event.findById(idEvent).populate(
+      "name experience cities"
+    );
+
+    if (eventById) {
+      // comprobamos si existe
+      return res.status(200).json(eventById); // mandamos un json con el objeto
+    } else {
+      // si no lo ha encontrado
+      return res.status(404).json("evento no encontrado"); // mandamos usuario no encontrado
+    }
+  } catch (error) {
+    return next(error);
   }
 };
 
@@ -540,4 +577,5 @@ module.exports = {
   toggleFollowEvent,
   toggleCity,
   sortByDate,
+  eventById,
 };

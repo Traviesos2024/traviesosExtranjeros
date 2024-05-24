@@ -1,5 +1,7 @@
 import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
+import axios from 'axios';
+
 
 // ----------------createExperience ------------------------
 
@@ -81,3 +83,6 @@ export const deleteExperience = async (idExperience) => {
     .then((res) => res)
     .catch((error) => error);
 };
+
+
+

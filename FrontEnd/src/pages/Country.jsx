@@ -2,7 +2,6 @@ import "./Country.css";
 import React, { useState, useEffect } from "react";
 import { countryById, getAllCountry } from "../services/country.service";
 import { useErrorCountry } from "../hooks";
-import { countriesData } from "../data";
 import { Outlet, useParams } from "react-router-dom";
 import { Loader, CountryCard } from "../components";
 import CardCitiesGallery from "../components/CardCitiesGallery";
@@ -27,6 +26,10 @@ export const Country = () => {
   return (
     <div id="containerGallery">
       <h1>{country != null && country.name}</h1>
+      <p>{country != null && country.description}</p>
+      <h4>Principales tradiciones:</h4>{" "}
+      <p> {country != null && country.traditions}</p>
+      <h4>Comida típica:</h4> <p> {country != null && country.tipicalFood}</p>
       {country != null &&
         country.cities.map((item) => (
           <CardCitiesGallery data={item} key={JSON.stringify(item)} />

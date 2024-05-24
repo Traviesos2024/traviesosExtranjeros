@@ -86,8 +86,11 @@ const deleteChat = async (req, res, next) => {
 
     try {
       const messages = await Message.findById({ $in: chat.messages });
+
       console.log(messages);
       if (messages) {
+        console.log("ENTRA DELETE");
+
         try {
           const removeMessageFromExperience = await Experience.updateMany(
             { message: { $in: chat.messages } },
@@ -98,11 +101,13 @@ const deleteChat = async (req, res, next) => {
               { message: { $in: chat.messages } },
               { $pull: { message: { $in: chat.messages } } }
             );
+
             try {
               const removeMessageFromEvent = await Event.updateMany(
                 { message: { $in: chat.messages } },
                 { $pull: { message: { $in: chat.messages } } }
               );
+
               try {
                 await User.updateMany(
                   { messagesFav: { $in: chat.messages } },
@@ -117,6 +122,7 @@ const deleteChat = async (req, res, next) => {
                   { $pull: { commentsPublicByOther: { $in: chat.messages } } }
                 );
                 await User.updateMany({ chats: id }, { $pull: { chats: id } });
+
                 try {
                   const messagesDelete = await Message.deleteMany({
                     id: { $in: chat.messages },
@@ -182,7 +188,8 @@ const getChatById = async (req, res, next) => {
     const { id } = req.params;
     const chatById = await Chat.findById(id)
       .populate("messages")
-      .populate("userTwo");
+      .populate("userTwo")
+      .populate("userOne");
     if (chatById) {
       return res.status(200).json(chatById);
     } else {
@@ -210,7 +217,8 @@ const getChatByUser = async (req, res, next) => {
       $or: [{ userOne: idUserQuery }, { userTwo: idUserQuery }],
     })
       .populate("messages")
-      .populate("userTwo");
+      .populate("userTwo")
+      .populate("userOne");
 
     if (chatByUser) {
       return res.status(200).json(chatByUser);

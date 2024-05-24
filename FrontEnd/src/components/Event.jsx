@@ -1,6 +1,10 @@
 import "./Event.css";
 import { Comments } from "./index";
 import { useState, useEffect } from "react";
+import axios from "axios";
+import { toggleFollowEvent, toggleLikeEvent } from "../services/events.service"; // Importar la función de servicio
+// import { useErrorLikeEvent, useErrorFollowEvent } from "../hooks"; // Importa un hook personalizado para manejar errores
+import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
 
 export const Event = ({
   name,
@@ -11,58 +15,73 @@ export const Event = ({
   description,
   eventId,
   comments,
+  setEvents,
+  item,
+  initialLikes,
+  initialFollowers,
 }) => {
   const [open, setOpen] = useState(false);
-  const [favorite, setFavorite] = useState(false); // like y dislike
-  const [followed, setFollowed] = useState(false); // follow y unfollow
+  const { allUser, setAllUser, bridgeData, user } = useAuth();
+  const [likes, setLikes] = useState(initialLikes); // Estado de likes
+  const [followed, setFollowed] = useState(initialFollowers); // follow y unfollow
 
   // Recuperar el estado del local storage cuando el componente se monte
-  useEffect(() => {
-    const savedFavorite = localStorage.getItem(`favorite-${eventId}`);
-    if (savedFavorite) {
-      setFavorite(JSON.parse(savedFavorite));
-    }
 
-    const savedFollowed = localStorage.getItem(`followed-${eventId}`);
-    if (savedFollowed) {
-      setFollowed(JSON.parse(savedFollowed));
+  const onToggleLike = async (event) => {
+    try {
+      const res = await toggleLikeEvent(eventId);
+      console.log("res", res);
+      res.status == 200 && setEvents(res.data.allEvent);
+    } catch (error) {
+      console.error("Error toggling like:", error);
     }
-  }, [eventId]);
+  };
+
+  const onToggleFollow = async (event) => {
+    try {
+      const res = await toggleFollowEvent(eventId);
+      console.log("res", res);
+      res.status == 200 && setEvents(res.data.allEvent);
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
 
   const onToggleComments = (event) => {
     event.preventDefault();
     setOpen(!open);
   };
 
-  const onToggleFavorite = () => {
-    const newFavoriteState = !favorite;
-    setFavorite(newFavoriteState);
-    localStorage.setItem(`favorite-${eventId}`, JSON.stringify(newFavoriteState));
-  };
-
-  const onToggleFollow = () => {
-    const newFollowedState = !followed;
-    setFollowed(newFollowedState);
-    localStorage.setItem(`followed-${eventId}`, JSON.stringify(newFollowedState));
-  };
-
   return (
     <figure>
       <img src={src} alt={name} width={350} height={200} />
-
-      <div onClick={onToggleFavorite} className="favorite-icon">
-        <span className={`material-symbols-outlined ${favorite ? 'favorite' : 'not-favorite'}`}>
+      <p>{likes}</p>
+      <div onClick={onToggleLike} className="favorite-icon">
+        <span
+          className={
+            item.likeEvent.includes(user._id)
+              ? "material-symbols-outlined favorite"
+              : "material-symbols-outlined"
+          }
+        >
           favorite
         </span>
-
-        <button onClick={onToggleFollow} className="follow-button">
-        {followed ? 'Unfollow' : 'Follow'}
-      </button>
-
+      </div>
+      <p>{followed}</p>
+      <div onClick={onToggleFollow} className="Check">
+        <span
+          className={
+            item.eventFollowers.includes(user._id)
+              ? "material-symbols-outlined Check_box"
+              : "material-symbols-outlined"
+          }
+        >
+          Check_box
+        </span>
       </div>
       <p>Evento: {name}</p>
       <p>Categoría: {category}</p>
-      <p>Fecha: {date}</p>
+      <p>Fecha: {new Date(date).toLocaleString()}</p>
       <p>Descripción: {description}</p>
       <p>Ciudad: {cities}</p>
 

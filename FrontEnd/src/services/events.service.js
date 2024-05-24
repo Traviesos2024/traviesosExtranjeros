@@ -1,5 +1,6 @@
 import { updateToken } from "../utils";
 import { APITraviesos } from "./serviceApi.config";
+import axios from "axios";
 
 // ----------------createEvent ------------------------
 
@@ -10,6 +11,14 @@ export const createEvent = async (formData) => {
       Authorization: `Bearer ${updateToken()}`,
     },
   })
+    .then((res) => res)
+    .catch((error) => error);
+};
+
+// ----------------get By Id ------------------------
+
+export const eventById = async (idEvent) => {
+  return APITraviesos.get(`/event/finById/${idEvent}`)
     .then((res) => res)
     .catch((error) => error);
 };

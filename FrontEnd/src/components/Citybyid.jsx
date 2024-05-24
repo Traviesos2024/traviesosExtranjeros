@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { cityById } from "../services/city.service";
 import { useErrorCity } from "../hooks";
 import { Loader } from "./Loader";
+import { Eventos } from "./Eventos";
 
 export const Citybyid = () => {
   const [city, setCity] = useState(null);
@@ -13,6 +14,7 @@ export const Citybyid = () => {
   useEffect(() => {
     (async () => {
       setRes(await cityById(id));
+      console.log("city 🥑", city);
     })();
   }, []);
   useEffect(() => {
@@ -27,7 +29,16 @@ export const Citybyid = () => {
           <img src={city.image} />
           <h2>{city.name}</h2>
           <p>{city.description}</p>
-          <p>{city.country}</p>
+          <p>{city?.country[0].name}</p>
+          {city.events.map((item) => (
+            <Eventos
+              src={item.image}
+              item={item}
+              name={item.name}
+              key={item._id}
+              date={item.date}
+            />
+          ))}
           <button onClick={() => navigate("/country")}>Atrás</button>
         </figure>
       ) : (
