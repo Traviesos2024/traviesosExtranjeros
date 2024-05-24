@@ -10,7 +10,7 @@ export const Nav = () => {
           <NavLink to="/">
             <button>Home</button>
           </NavLink>
-          <NavLink to="/Oxford/6648e20eec90657fef4a88ee">
+          <NavLink to={`/${user.city.name}/${user.city._id}`}>
             {/* Hay que hacer un link dinámico aqui para que pinte la ciudad del
             usuario según la que corresponda */}
             <button>Mi ciudad</button>
