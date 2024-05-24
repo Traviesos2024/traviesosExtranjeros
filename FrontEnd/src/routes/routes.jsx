@@ -50,6 +50,10 @@ export const router = createBrowserRouter([
         element: <Homepages />,
       },
       {
+        path: "/log",
+        element: <HomeLogado />,
+      },
+      {
         path: "/experiences",
         element: (
           <Protected>
@@ -105,6 +109,14 @@ export const router = createBrowserRouter([
               </Protected>
             ),
           },
+          // {
+          //   path: "/profile/destacados/",
+          //   element: (
+          //     <Protected>
+          //       <FormProfile />
+          //     </Protected>
+          //   ),
+          // },
         ],
       },
       {
