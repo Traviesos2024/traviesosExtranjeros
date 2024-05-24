@@ -102,7 +102,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
     chatToUpdate.messages[indexOfMessageToReplace] =
       updatedMessage.data.message;
 
-    setChat(chatToUpdate);
+    await setChat(chatToUpdate);
   }
 
   return (
@@ -141,7 +141,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                 </small>
                 <span
                   className={
-                    message.likes.find((userFav) => userFav._id == user._id)
+                    message?.likes?.find((userFav) => userFav?._id == user._id)
                       ? "material-symbols-outlined like"
                       : "material-symbols-outlined"
                   }
