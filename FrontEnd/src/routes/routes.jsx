@@ -23,6 +23,7 @@ import {
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
+import { HomeLogadoPage } from "../pages/HomeLogadoPage";
 // import ProfilePage from "../pages/ProfilePage";
 
 export const router = createBrowserRouter([
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Homepages />,
+      },
+      {
+        path: "/log",
+        element: <HomeLogadoPage />,
       },
       {
         path: "/experiences",
@@ -107,6 +112,14 @@ export const router = createBrowserRouter([
               </Protected>
             ),
           },
+          // {
+          //   path: "/profile/destacados/",
+          //   element: (
+          //     <Protected>
+          //       <FormProfile />
+          //     </Protected>
+          //   ),
+          // },
         ],
       },
       {
