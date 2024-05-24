@@ -17,7 +17,7 @@ CountryRoutes.post(
   upload.single("image"),
   createCountry
 );
-CountryRoutes.get("/finById/:idCountry", countryById);
+CountryRoutes.get("/findById/:idCountry", countryById);
 CountryRoutes.patch(
   "/update/:idCountry",
   [isAuth],

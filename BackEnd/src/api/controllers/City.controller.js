@@ -58,7 +58,8 @@ const cityById = async (req, res, next) => {
     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
     El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
     const { idCity } = req.params;
-    const cityById = await City.findById(idCity);
+    const cityById = await City.findById(idCity).populate("country events");
+
     if (cityById) {
       // comprobamos si existe
       return res.status(200).json(cityById); // mandamos un json con el objeto
@@ -318,20 +319,15 @@ const getAll = async (req, res, next) => {
 const getCountry = async (req, res) => {
   try {
     const { countryId } = req.params;
-    const country = await Country.findById(countryId).populate('cities');
+    const country = await Country.findById(countryId).populate("cities");
     if (!country) {
-      return res.status(404).json({ message: 'Country not found' });
+      return res.status(404).json({ message: "Country not found" });
     }
     res.json(country.cities);
   } catch (error) {
-    res.status(500).json({ message: 'Error retrieving cities', error });
+    res.status(500).json({ message: "Error retrieving cities", error });
   }
 };
-
-
-
-
-
 
 module.exports = {
   createCity,
@@ -342,5 +338,4 @@ module.exports = {
   toggleCountry,
   getAll,
   getCountry,
-  
 };

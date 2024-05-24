@@ -4,6 +4,7 @@ const Events = require("../models/Events.model");
 const User = require("../models/User.model");
 const City = require("../models/City.models");
 const Experience = require("../models/Experience.model");
+const Event = require("../models/Events.model");
 
 //! -------------create new Events ----------------
 //? -------------------------------POST create --------------------------
@@ -383,6 +384,29 @@ const toggleCity = async (req, res, next) => {
   }
 };
 
+//! -----------------------------------------------------------------------------
+//? ---------------------------------findById------------------------------------
+//! -----------------------------------------------------------------------------
+
+const eventById = async (req, res, next) => {
+  try {
+    /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
+    El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
+    const { idEvent } = req.params;
+    const eventById = await Event.findById(idEvent).populate("name experience");
+
+    if (eventById) {
+      // comprobamos si existe
+      return res.status(200).json(eventById); // mandamos un json con el objeto
+    } else {
+      // si no lo ha encontrado
+      return res.status(404).json("evento no encontrado"); // mandamos usuario no encontrado
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
 //? -------------------------------UPDATE -------------------------------
 
 const updateEvent = async (req, res, next) => {
@@ -551,4 +575,5 @@ module.exports = {
   toggleFollowEvent,
   toggleCity,
   sortByDate,
+  eventById,
 };
