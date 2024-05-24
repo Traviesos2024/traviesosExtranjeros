@@ -187,7 +187,10 @@ const getChatById = async (req, res, next) => {
   try {
     const { id } = req.params;
     const chatById = await Chat.findById(id)
-      .populate("messages")
+      .populate({
+        path: "messages",
+        populate: [{ path: "owner" }, { path: "likes" }],
+      })
       .populate("userTwo")
       .populate("userOne");
     if (chatById) {

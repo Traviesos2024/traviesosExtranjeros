@@ -66,9 +66,7 @@ const getAll = async (req, res, next) => {
       .populate("events")
       .populate({
         path: "comments",
-        populate: {
-          path: "owner",
-        },
+        populate: [{ path: "owner" }, { path: "likes" }],
       });
     /** el find nos devuelve un array */
     if (allExperience.length > 0) {
@@ -112,7 +110,7 @@ const toggleLikeExperience = async (req, res, next) => {
             experience: await Experience.findById(idExperience).populate(
               "likes"
             ),
-            allExperience:await Experience.find()
+            allExperience: await Experience.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -145,7 +143,7 @@ const toggleLikeExperience = async (req, res, next) => {
             experience: await Experience.findById(idExperience).populate(
               "likes"
             ),
-            allExperience:await Experience.find()
+            allExperience: await Experience.find(),
           });
         } catch (error) {
           return res.status(404).json({

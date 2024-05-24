@@ -24,7 +24,6 @@ export const ChatListPage = () => {
   useEffect(() => {
     useErrorRegister(res, setRes, setOk);
     if (user && isLoading) {
-      console.log(user._id);
       async function fetchChats() {
         try {
           // await async "fetchChats()" function
@@ -56,7 +55,6 @@ export const ChatListPage = () => {
   }
 
   function selectChat(chat) {
-    console.log(chat);
     if (chat) {
       if (window.innerWidth > 760) {
         setSelectedChat(chat._id);
