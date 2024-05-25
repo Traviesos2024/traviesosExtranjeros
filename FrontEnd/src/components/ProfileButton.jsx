@@ -6,20 +6,28 @@ export const ProfileButton = () => {
     <>
       {user ? (
         <>
-          <NavLink to="/profile">
-            <button>Tu perfil</button>
+          <NavLink to="/ajustes">
+            <span className="material-symbols-outlined">settings</span>
           </NavLink>
+          <NavLink to="/profile">
+            <span className="material-symbols-outlined">account_circle</span>
+          </NavLink>
+
           <NavLink to="/">
-            <button onClick={logout}>Cerrar sesión</button>
+            <span className="material-symbols-outlined" onClick={logout}>
+              logout
+            </span>
+            {/* <button onClick={logout}>Cerrar sesión</button> */}
           </NavLink>
         </>
       ) : (
         <>
           <NavLink to="/login">
-            <button>Iniciar sesión</button>
+            <span class="material-symbols-outlined">login</span>
           </NavLink>
           <NavLink to="/register">
-            <button>Nuevo usuario</button>
+            <span class="material-symbols-outlined">location_away</span>
+            {/* <button>Nuevo usuario</button> */}
           </NavLink>
         </>
       )}

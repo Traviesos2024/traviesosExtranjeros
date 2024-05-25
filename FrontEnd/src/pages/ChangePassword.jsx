@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
 import { changePasswordUserToken } from "../services/user.service";
 import { useChangePasswordError } from "../hooks";
+import { NavProfile } from "../components";
 
 export const ChangePassword = () => {
   const { setUser } = useAuth();
@@ -52,6 +53,7 @@ export const ChangePassword = () => {
 
   return (
     <>
+      <NavProfile />
       <div className="form-wrap">
         <h1>Change your password ♻</h1>
         <p>Please, enter your old and new passwords</p>

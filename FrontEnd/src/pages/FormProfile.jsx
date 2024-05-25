@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-
+import { NavProfile } from "../components";
 import "./FormProfile.css";
 import { FigureUser, Uploadfile } from "../components";
 import { useAuth } from "../context/authContext";
@@ -86,6 +86,7 @@ export const FormProfile = () => {
 
   return (
     <>
+      <NavProfile />
       <div className="containerProfile">
         <div className="containerDataNoChange">
           <FigureUser user={user} />

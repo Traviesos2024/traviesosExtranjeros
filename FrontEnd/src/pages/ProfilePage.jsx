@@ -1,4 +1,4 @@
-import { Experience, NavProfile } from "../components";
+import { Experience } from "../components";
 import "./ProfilePage.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -58,7 +58,6 @@ export const ProfilePage = ({ item }) => {
 
   return (
     <>
-      <NavProfile />
       <main>
         <div className="homePage">
           <h3 className="TituloViajeros">

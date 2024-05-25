@@ -1,27 +1,29 @@
-
 header {
-  background-color: rgb(255, 255, 255); 
-  color: rgb(0, 0, 0); 
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  & h1{
-  font-size: 24px;
-  color:#6d71e5ff;
+  & h1 {
+    font-size: 24px;
+    color: #6d71e5ff;
   }
 }
-
 
 .Nav {
   display: flex;
   align-items: center;
 }
 
-.logoViajeros{
+.logoViajeros {
   height: 150px;
   width: 150px;
   border-radius: 30px;
-  padding:5px;
+  padding: 5px;
   left: 30px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 24;
 }
