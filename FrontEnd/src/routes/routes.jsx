@@ -104,8 +104,9 @@ export const router = createBrowserRouter([
               </Protected>
             ),
           },
+
           {
-            path: "/profile/",
+            path: "/profile/updateUser",
             element: (
               <Protected>
                 <FormProfile />
