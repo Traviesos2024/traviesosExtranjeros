@@ -104,33 +104,26 @@ export const router = createBrowserRouter([
             <ProfilePage />
           </Protected>
         ),
-        children: [
-          {
-            path: "/profile/changePassword",
-            element: (
-              <Protected>
-                <ChangePassword />
-              </Protected>
-            ),
-          },
+        // children: [
 
-          {
-            path: "/profile/updateUser",
-            element: (
-              <Protected>
-                <FormProfile />
-              </Protected>
-            ),
-          },
-          // {
-          //   path: "/profile/destacados/",
-          //   element: (
-          //     <Protected>
-          //       <FormProfile />
-          //     </Protected>
-          //   ),
-          // },
-        ],
+        // ],
+      },
+      {
+        path: "/profile/changePassword",
+        element: (
+          <Protected>
+            <ChangePassword />
+          </Protected>
+        ),
+      },
+
+      {
+        path: "/profile/updateUser",
+        element: (
+          <Protected>
+            <FormProfile />
+          </Protected>
+        ),
       },
       {
         path: "/country/:name/:idCountry",

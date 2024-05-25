@@ -1,4 +1,3 @@
-
 import { Experience, NavProfile } from "../components";
 import "./ProfilePage.css";
 import { useState, useEffect } from "react";
@@ -16,13 +15,13 @@ export const ProfilePage = ({ item }) => {
   const [experiences, setExperiences] = useState([]);
   const [resEvents, setResEvents] = useState({});
   const [resExperiences, setResExperiences] = useState({});
-  
+
   useEffect(() => {
     (async () => {
       setResEvents(await getAll());
     })();
   }, []);
-  
+
   useEffect(() => {
     (async () => {
       setResExperiences(await getAllExperiences());
@@ -46,9 +45,15 @@ export const ProfilePage = ({ item }) => {
   }, [events]);
 
   // Filtrar los eventos que están en la lista de likeEvent del usuario
-  const likedEvents = events.filter(event => event.likeEvent.includes(user._id));
-  const followedEvents = events.filter(event => event.eventFollowers.includes(user._id));
-  const experiencesLikes = experiences.filter(experience => experience.likes && experience.likes.includes(user._id));
+  const likedEvents = events.filter((event) =>
+    event.likeEvent.includes(user._id)
+  );
+  const followedEvents = events.filter((event) =>
+    event.eventFollowers.includes(user._id)
+  );
+  const experiencesLikes = experiences.filter(
+    (experience) => experience.likes && experience.likes.includes(user._id)
+  );
   console.log("soy tu experiencia de la caca", experiencesLikes);
 
   return (
@@ -125,7 +130,8 @@ export const ProfilePage = ({ item }) => {
             )}
           </div>
           <p className="parrafo">
-            Echa un vistazo de los nuevos eventos disponibles en {user.city.name}
+            Echa un vistazo de los nuevos eventos disponibles en{" "}
+            {user.city.name}
           </p>
           <button>
             <Link to="/events">Eventos</Link>
@@ -135,5 +141,3 @@ export const ProfilePage = ({ item }) => {
     </>
   );
 };
-
-
