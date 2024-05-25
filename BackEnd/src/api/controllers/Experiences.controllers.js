@@ -60,7 +60,7 @@ const createExperience = async (req, res, next) => {
 };
 //! -------------------get all------------------------------
 
-const getAll = async (req, res, next) => {
+const getAllExperiences = async (req, res, next) => {
   try {
     const allExperience = await Experience.find()
       .populate("events")
@@ -359,5 +359,5 @@ module.exports = {
   byId,
   update,
   deleteExperience,
-  getAll,
+  getAllExperiences,
 };

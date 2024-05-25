@@ -18,7 +18,7 @@ export const createExperience = async (formData) => {
 
 // ----------------getAll------------------------
 
-export const getAll = async () => {
+export const getAllExperiences = async () => {
   return APITraviesos.get(`/experiences/getAll`)
     .then((res) => res)
     .catch((error) => error);

@@ -6,7 +6,7 @@ const {
   byId,
   update,
   deleteExperience,
-  getAll,
+  getAllExperiences,
 } = require("../controllers/Experiences.controllers");
 const { isAuth } = require("../../middleware/auth.middleware");
 const { upload } = require("../../middleware/files.middleware");
@@ -33,6 +33,6 @@ ExperienceRoutes.patch(
 );
 ExperienceRoutes.get("/finById/:idExperience", byId);
 ExperienceRoutes.delete("/:idExperience", [isAuth], deleteExperience);
-ExperienceRoutes.get("/getAll", getAll);
+ExperienceRoutes.get("/getAll", getAllExperiences);
 
 module.exports = ExperienceRoutes;

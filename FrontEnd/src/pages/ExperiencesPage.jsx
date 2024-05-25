@@ -4,7 +4,7 @@ import { Experience } from "../components";
 import { toggleEvent } from "../services/experiences.service";
 import { useNavigate } from "react-router-dom";
 import { useErrorExperience } from "../hooks/useErrorExperience";
-import { getAll } from "../services/experiences.service";
+import { getAllExperiences } from "../services/experiences.service";
 
 export const ExperiencesPage = () => {
   const [experiences, setExperiences] = useState([]);
@@ -12,7 +12,7 @@ export const ExperiencesPage = () => {
 
   useEffect(() => {
     (async () => {
-      setRes(await getAll());
+      setRes(await getAllExperiences());
     })();
   }, []);
 
