@@ -33,7 +33,7 @@ export const HomeLogadoPage = ({items}) => {
   return (
     <main>
       <div className="homePage">
-        <h3 className="TituloViajeros">Bienvenid@ {user.user}!!</h3>
+        <h3 className="TituloViajeros">¡¡Bienvenid@ {user.user}!!</h3>
         <p className="parrafo">
             Aquí tienes tus destacados...
         </p>
