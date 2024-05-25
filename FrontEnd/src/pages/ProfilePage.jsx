@@ -57,7 +57,7 @@ export const ProfilePage = ({ item }) => {
       <main>
         <div className="homePage">
           <h3 className="TituloViajeros">
-            ¡¡Hola {user.name}, aquí tienes todo tu contenido!!
+            ¡¡Hola {user.user}, aquí tienes todo tu contenido!!
           </h3>
           <h2 className="EventosHome">Eventos en {user.city.name}</h2>
           <div>

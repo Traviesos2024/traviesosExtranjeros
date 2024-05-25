@@ -5,6 +5,7 @@ import axios from "axios";
 import { toggleFollowEvent, toggleLikeEvent } from "../services/events.service"; // Importar la función de servicio
 // import { useErrorLikeEvent, useErrorFollowEvent } from "../hooks"; // Importa un hook personalizado para manejar errores
 import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
+import { Link } from "react-router-dom";
 
 export const Event = ({
   name,
@@ -88,6 +89,11 @@ export const Event = ({
             >
               mode_comment
             </span>
+          </div>
+          <div>
+          <button>
+          <Link to="/experiences">Ver experiencias</Link>
+        </button>
           </div>
         </div>
 
