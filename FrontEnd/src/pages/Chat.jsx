@@ -42,7 +42,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
             var chatResponse = await getChatById(chatId);
           }
           // await async "fetchChat()" function
-          console.log(chatResponse.data);
+
           await setChat(chatResponse.data);
           setIsLoading(false);
 
@@ -77,17 +77,16 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
     setSend(true);
 
     var recipientId = chat.userTwo._id;
-    console.log(recipientId);
+
     if (user._id == chat.userTwo._id) {
       recipientId = chat.userOne._id;
-      console.log(recipientId);
     }
     const newMessage = await createMessage(recipientId, customFormData);
     chat.messages = [...chat.messages, newMessage.data.comment];
     await setChat(chat);
     setRes(newMessage.data);
     setSend(false);
-    console.log(chat);
+
     updateChatHour(chat);
     reset();
   };
@@ -102,7 +101,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
     chatToUpdate.messages[indexOfMessageToReplace] =
       updatedMessage.data.message;
 
-    setChat(chatToUpdate);
+    await setChat(chatToUpdate);
   }
 
   return (
@@ -141,7 +140,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                 </small>
                 <span
                   className={
-                    message.likes.find((userFav) => userFav._id == user._id)
+                    message?.likes?.find((userFav) => userFav?._id == user._id)
                       ? "material-symbols-outlined like"
                       : "material-symbols-outlined"
                   }

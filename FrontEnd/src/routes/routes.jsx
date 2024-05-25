@@ -112,6 +112,14 @@ export const router = createBrowserRouter([
               </Protected>
             ),
           },
+          // {
+          //   path: "/profile/destacados/",
+          //   element: (
+          //     <Protected>
+          //       <FormProfile />
+          //     </Protected>
+          //   ),
+          // },
         ],
       },
       {

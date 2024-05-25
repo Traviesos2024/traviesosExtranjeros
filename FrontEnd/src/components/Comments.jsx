@@ -5,6 +5,7 @@ import { useAuth } from "../context/authContext";
 import { createMessage, toggleLikeMessage } from "../services/message.service";
 import { getChatLastMessageHour } from "../utils";
 import { useNavigate } from "react-router-dom";
+import { getChatByUser, createEmptyChat } from "../services/chats.service";
 
 import { useForm } from "react-hook-form";
 
@@ -79,11 +80,26 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
     reset();
   };
 
-  function onClickUserName(commentOwnerId) {
+  async function onClickUserName(commentOwnerId) {
+    const chatsResponse = await getChatByUser(user._id);
+
     if (commentOwnerId != user._id) {
+      let chatFilteredByCommentOwnerId = chatsResponse.data.filter(
+        (chat) =>
+          chat.userTwo._id == commentOwnerId ||
+          chat.userOne._id == commentOwnerId
+      );
+      let selectedChatId = undefined;
+      if (chatFilteredByCommentOwnerId.length > 0) {
+        selectedChatId = chatFilteredByCommentOwnerId[0]?._id;
+      } else {
+        const newChat = await createEmptyChat(commentOwnerId);
+        selectedChatId = newChat.data.chat?._id;
+      }
+
       navigate({
         pathname: "/chats",
-        search: `?commentOwnerId=${commentOwnerId}`,
+        search: `?selectedChatId=${selectedChatId}`,
       });
     }
   }
@@ -103,28 +119,30 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
       <div className="chat-wrapper">
         {comments && comments.length > 0 ? (
           <div className="text-div">
-            {comments.map((comment) => (
+            {comments?.map((comment) => (
               <div
-                key={comment._id}
+                key={comment?._id}
                 className={
-                  user._id == comment.owner || user._id == comment.owner._id
+                  user._id == comment?.owner || user._id == comment?.owner._id
                     ? "my-text-wrapper"
                     : "friend-text-wrapper"
                 }
               >
                 <div
                   className={
-                    user._id == comment.owner || user._id == comment.owner._id
+                    user._id == comment?.owner || user._id == comment?.owner._id
                       ? "my-text"
                       : "friend-text"
                   }
                 >
-                  <h5 onClick={() => onClickUserName(comment.owner._id)}>
-                    {comment.owner.name}:
+                  <h5 onClick={() => onClickUserName(comment?.owner._id)}>
+                    {comment?.owner.name}:
                   </h5>
                   <span
                     className={
-                      comment.likes.find((userFav) => userFav._id == user._id)
+                      comment?.likes?.find(
+                        (userFav) => userFav?._id == user._id
+                      )
                         ? "material-symbols-outlined like"
                         : "material-symbols-outlined"
                     }
@@ -134,9 +152,9 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                   </span>
 
                   <div className="comment-and-hour">
-                    <p> {comment.content}</p>
+                    <p> {comment?.content}</p>
                     <small className="chat-time">
-                      {getChatLastMessageHour(comment.createdAt)}
+                      {getChatLastMessageHour(comment?.createdAt)}
                     </small>
                   </div>
                 </div>

@@ -3,7 +3,7 @@ import { ChatPage } from "./index";
 import "./ChatList.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
-import { getChatByUser, createEmptyChat } from "../services/chats.service";
+import { getChatByUser } from "../services/chats.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChatLastMessageHour } from "../utils";
 export const ChatListPage = () => {
@@ -18,43 +18,22 @@ export const ChatListPage = () => {
   const navigate = useNavigate();
   const [selectedChat, setSelectedChat] = useState(undefined);
   let [searchParams, setSearchParams] = useSearchParams();
-  let commentOwnerId = searchParams.get("commentOwnerId");
+  let selectedChatId = searchParams.get("selectedChatId");
   //! 4) useEffects que gestionan la repuesta y manejan los errores
 
   useEffect(() => {
     useErrorRegister(res, setRes, setOk);
     if (user && isLoading) {
-      console.log(user._id);
       async function fetchChats() {
         try {
           // await async "fetchChats()" function
           const chatsResponse = await getChatByUser(user._id);
 
           await setChats(chatsResponse.data);
-          setIsLoading(false);
-
-          let chatFilteredByCommentOwnerId = chatsResponse.data.filter(
-            (chat) =>
-              chat.userTwo._id == commentOwnerId ||
-              chat.userOne._id == commentOwnerId
-          );
-          if (commentOwnerId) {
-            if (chatFilteredByCommentOwnerId.length > 0) {
-              await selectChat(chatFilteredByCommentOwnerId[0]?._id);
-              await searchParams.delete("commentOwnerId");
-
-              await setSearchParams(searchParams);
-              commentOwnerId = undefined;
-            } else {
-              const newChat = await createEmptyChat(commentOwnerId);
-              await setChats([...chats, newChat.data.chat]);
-              await selectChat(newChat.data.chat?._id);
-              await searchParams.delete("commentOwnerId");
-
-              await setSearchParams(searchParams);
-              commentOwnerId = undefined;
-            }
+          if (selectedChatId) {
+            setSelectedChat(selectedChatId);
           }
+          setIsLoading(false);
 
           bridgeData("ALLUSER");
         } catch (err) {
@@ -63,7 +42,7 @@ export const ChatListPage = () => {
       }
       fetchChats();
     }
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     console.log("allUser 🤡", allUser);
@@ -71,12 +50,11 @@ export const ChatListPage = () => {
 
   //! 5) estados de navegacion
 
-  // if (isLoading) {
-  //   return <h1>cargando...</h1>;
-  // }
+  if (isLoading) {
+    return <h1>cargando...</h1>;
+  }
 
   function selectChat(chat) {
-    console.log(chat);
     if (chat) {
       if (window.innerWidth > 760) {
         setSelectedChat(chat._id);
