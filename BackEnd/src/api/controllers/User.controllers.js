@@ -355,7 +355,7 @@ const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userDB = await User.findOne({ email }).populate(
-      "city country events eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav"
+      "city country eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav"
     );
 
     if (userDB) {
@@ -388,7 +388,7 @@ const autoLogin = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userDB = await User.findOne({ email }).populate(
-      "city country events eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav"
+      "city country  eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav"
     );
 
     if (userDB) {
