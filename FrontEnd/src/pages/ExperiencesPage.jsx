@@ -5,10 +5,16 @@ import { toggleEvent } from "../services/experiences.service";
 import { useNavigate } from "react-router-dom";
 import { useErrorExperience } from "../hooks/useErrorExperience";
 import { getAllExperiences } from "../services/experiences.service";
+import { useErrorEvent } from "../hooks";
+import { getAll } from "../services/events.service";
 
 export const ExperiencesPage = () => {
   const [experiences, setExperiences] = useState([]);
   const [res, setRes] = useState({});
+  const [resEvents, setResEvents] = useState({});
+  const [events, setEvents] = useState([]);
+
+  
 
   useEffect(() => {
     (async () => {
@@ -24,19 +30,36 @@ export const ExperiencesPage = () => {
     console.log(experiences);
   }, [experiences]);
 
+  useEffect(() => {
+    (async () => {
+      setResEvents(await getAll());
+    })();
+  }, []);
+
+  useEffect(() => {
+    useErrorEvent(resEvents, setResEvents, setEvents);
+  }, [resEvents]);
+
+  useEffect(() => {
+    console.log(events);
+  }, [events]);
+
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/ExperiencesForm");
   };
 
+  const experiencesEvent = experiences.filter(experience => experience.events.includes(events._id));
+
+
   return (
     <div id="containerExperience">
       <button onClick={handleClick}> ✒️ CREA TU EXPERIENCIA </button>
       <hr />
       <br></br>
-      {experiences.length > 0 &&
-        experiences
+      {experiencesEvent.length > 0 &&
+        experiencesEvent
           .slice(0, 1000)
           .map((item) => (
             <Experience

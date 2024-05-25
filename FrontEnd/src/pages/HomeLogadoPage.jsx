@@ -35,7 +35,7 @@ export const HomeLogadoPage = ({items}) => {
       <div className="homePage">
         <h3 className="TituloViajeros">¡¡Bienvenid@ {user.user}!!</h3>
         <p className="parrafo">
-            Aquí tienes tus destacados...
+            Aquí tienes los eventos más destacados de tu ciudad...
         </p>
 
         <h2 className="EventosHome">
