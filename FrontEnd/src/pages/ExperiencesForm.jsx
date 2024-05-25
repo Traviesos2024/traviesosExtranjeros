@@ -4,10 +4,16 @@ import "./Register.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
 import { Uploadfile } from "../components";
-import { createExperience } from "../services/experiences.service";
+import { createExperience, toggleEvent } from "../services/experiences.service";
 import { Navigate } from "react-router-dom";
+import { getAll } from "../services/events.service";
+import { getAllExperiences} from "../services/experiences.service";
+import { useErrorEvent } from "../hooks";
+import { useErrorExperience } from "../hooks/useErrorExperience";
 
-export const ExperiencesForm = () => {
+
+
+export const ExperiencesForm = ({idExperience}) => {
   //! 1) crear los estados
 
   const [res, setRes] = useState({});
@@ -15,10 +21,25 @@ export const ExperiencesForm = () => {
   const [ok, setOk] = useState(false);
   const { allUser, setAllUser, bridgeData } = useAuth();
   const [experiences, setExperiences] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [resEvents, setResEvents] = useState({});
+  const [selectedEvent, setSelectedEvent] = useState(null);
+
 
   //! 2) llamada al hook de react hook form
 
   const { register, handleSubmit, setValue } = useForm();
+
+  const onToggleEvent = async (event) => {
+    try {
+      const res = await toggleEvent(idExperience);
+      console.log("res", res);
+      res.status == 200 && setEvents(res.data.allEvent);
+    } catch (error) {
+      console.error("Error toggling like:", error);
+    }
+  };
+
 
   //! 3) la funcion que gestiona los datos del formulario
 
@@ -63,6 +84,25 @@ export const ExperiencesForm = () => {
     console.log("allUser 🤡", allUser);
   }, [allUser]);
 
+  useEffect(() => {
+    useErrorEvent(resEvents, setResEvents, setEvents);
+  }, [resEvents]);
+
+  useEffect(() => {
+    (async () => {
+      setResEvents(await getAll());
+    })();
+  }, []);
+
+  const handleEventChange = (e) => {
+    setSelectedEvent(e.target.value);
+  };
+
+  const experiencesEvent = experiences.filter(experience => 
+    experience.events && experience.events.includes(selectedEvent)
+  );
+
+
   //! 5) estados de navegacion
 
   if (ok) {
@@ -74,6 +114,17 @@ export const ExperiencesForm = () => {
       <div className="form-wrap">
         <div>
           <h1>Crear experiencia</h1>
+          {/* <div onClick={onToggleEvent} id="favorite-icon"> */}
+
+          <select onChange={onToggleEvent} value={selectedEvent}>
+        <option value="">Seleccione un evento</option>
+        {events.map(event => (
+          <option key={event._id} value={event._id}>
+            {event.name}
+          </option>
+        ))}
+      </select>
+
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
               <input
@@ -135,6 +186,8 @@ export const ExperiencesForm = () => {
           </li>
         ))}
       </ul>
-    </div>
+      
+      </div>
+    // </div>
   );
 };
