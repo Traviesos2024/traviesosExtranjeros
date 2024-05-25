@@ -1,18 +1,47 @@
-.country-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  margin-top: 20px;
-}
 
-.containerCountry {
-  display: flex;
-   justify-content: center; 
-  align-items: center; 
+#containerCountry {
+justify-content: center;
+align-items: center;
   height: 100vh; 
 
   & h1{
-    text-align: center;
-  
+    font-size: 50px;
+      font-weight: bold;
+      color: #6d71e5ff;
+  & h4{
+  font-weight: bold;
+  color: #6d71e5ff;
+   font-size: 30px;
+  }
+
   }
 }
+
+ .TarjetasCiudades {
+    display: grid;
+    grid-template-columns: repeat(2, 500px);
+    gap: 10px;
+    padding: 50px;
+    align-items: center;
+    justify-items: center;
+
+  }
+  
+  .TarjetasCiudades button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+ .TarjetasCiudades button img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.2s;
+  }
+  
+.TarjetasCiudadesbutton img:hover {
+    transform: scale(1.05);
+  }

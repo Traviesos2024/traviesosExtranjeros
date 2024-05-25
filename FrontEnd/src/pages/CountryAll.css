@@ -1,18 +1,18 @@
 /* Estilos para el contenedor principal */
-#containerCountry {
+#containerCountryAll {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   padding: 130px;
-  background-color: #000;
+  background-color: #ffffff;
   min-height: 30vh;
 }
 
 /* Estilos para el mensaje de carga */
-#containerCountry p {
+#containerCountryAll p {
   font-size: 1.5em;
-  color: #555;
+  color: #000000;
   text-align: center;
   margin-top: 20px;
 }

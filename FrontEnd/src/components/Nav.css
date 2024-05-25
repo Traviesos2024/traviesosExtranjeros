@@ -8,7 +8,6 @@
 }
 
 .navPrincipal button {
-  background-color: #e7cb57ff; 
   border: none;
   color: white;
   padding: 10px 20px;
@@ -21,10 +20,6 @@
 }
 
 .navPrincipal button:hover {
-  background-color: rgb(163, 142, 61);; 
-}
+  background-color: #e7cb57ff
 
-.navPrincipal button.active {
-  background-color: #f7fffe; 
-  color: #333; 
 }

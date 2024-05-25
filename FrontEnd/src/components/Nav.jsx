@@ -18,6 +18,9 @@ export const Nav = () => {
           <NavLink to="/country">
             <button>Paises</button>
           </NavLink>
+          <NavLink to="/followers">
+            <button>Amigos</button>
+          </NavLink>
           <NavLink to="/chats">
             <button>Chats</button>
           </NavLink>
@@ -38,22 +41,3 @@ export const Nav = () => {
     </>
   );
 };
-
-{
-  /* <>
-  <nav className="navPrincipal">
-    <NavLink to="/">
-      <button>Home</button>
-    </NavLink>
-    <NavLink to="/profile">
-      <button>Profile</button>
-    </NavLink>
-    <NavLink to="/country">
-      <button>Country</button>
-    </NavLink>
-    <NavLink to="/chats">
-      <button>Chats</button>
-    </NavLink>
-  </nav>
-</>; */
-}

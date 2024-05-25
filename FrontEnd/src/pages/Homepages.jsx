@@ -33,17 +33,17 @@ export const Homepages = () => {
   return (
     <main>
       <div className="homePage">
-        <h3 className="TituloViajeros">Viajeros Extranjeros</h3>
+        <h3 className="TituloViajeros">Traviesos Extranjeros 🌎</h3>
         <p className="parrafo">
           Conoce a amigos en tu nueva ciudad y crea experiencias inolvidables
         </p>
 
         <h2 className="tituloPaises">Países</h2>
         <p className="parrafo">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, ipsa
-          repellat recusandae tenetur adipisci nostrum distinctio perferendis
-          quo, voluptas, nam quam voluptatum neque iure expedita iste
-          consequatur harum corporis dignissimos?
+          Estos son los paises que tenemos disponibles para que puedas conocer
+          gente nueva. En cada país disponemos de ciudades disponibles con
+          multitud de eventos y actividades para que no estés solo en tu nueva
+          ciudad
         </p>
 
         <div id="containerHome">

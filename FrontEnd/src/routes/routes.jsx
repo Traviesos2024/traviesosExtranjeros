@@ -20,6 +20,7 @@ import {
   ChangePassword,
   CountryAll,
   EventDetallePage,
+  Followers,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -85,6 +86,14 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <EventsForm />
+          </Protected>
+        ),
+      },
+      {
+        path: "/followers",
+        element: (
+          <Protected>
+            <Followers />
           </Protected>
         ),
       },

@@ -1,4 +1,4 @@
-import { Citybyid, Eventos } from "../components";
+import { Citybyid } from "../components";
 
 export const CountryCity = () => {
   return (

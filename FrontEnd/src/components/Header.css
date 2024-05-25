@@ -1,43 +1,27 @@
 
 header {
-  background-color: #6d71e5ff; 
-  color: #ffffffff; 
-  padding: 20px;
+  background-color: rgb(255, 255, 255); 
+  color: rgb(0, 0, 0); 
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   & h1{
   font-size: 24px;
-  color:bisque
+  color:#6d71e5ff;
   }
 }
 
-.Botonesuser {
-  display: flex;
-}
-
-.Botonesuser a {
-  background-color: #e7cb57ff; /* Arylide yellow */
-  color: #ffffffff; /* White */
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  margin-right: 10px;
-  cursor: pointer;
-  text-decoration: none;
-}
 
 .Nav {
   display: flex;
   align-items: center;
 }
 
-.Nav a {
-  margin-right: 20px;
-  color: #ffffffff; /* White */
-  text-decoration: none;
-}
-
-.Nav a:hover {
-  color: #e7cb57ff; /* Arylide yellow */
+.logoViajeros{
+  height: 150px;
+  width: 150px;
+  border-radius: 30px;
+  padding:5px;
+  left: 30px;
 }

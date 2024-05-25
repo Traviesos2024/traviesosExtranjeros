@@ -18,3 +18,4 @@ export * from "./FormProfile";
 export * from "./UpdateUserProfile";
 export * from "./CountryAll";
 export * from "./EventDetallePage";
+export * from "./Followers";
