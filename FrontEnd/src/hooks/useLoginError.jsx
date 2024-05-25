@@ -13,6 +13,13 @@ export const useLoginError = (res, setRes, login, setLoginOk) => {
       country: res.data.user.country,
       city: res.data.user.city,
       age: res.data.user.age,
+      eventsOwner: res.data.user.eventsOwner,
+      experiencesOwner: res.data.user.experiencesOwner,
+      eventsFollow: res.data.user.eventsFollow,
+      eventsFav: res.data.user.eventsFav,
+      experiencesFav: res.data.user.experiencesFav,
+      followers: res.data.user.followers,
+      followed: res.data.user.followed,
       _id: res.data.user._id,
     };
 

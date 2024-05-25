@@ -15,7 +15,7 @@ export const NavProfile = () => {
         />
       </Link>
 
-      <Link to="/profile/">
+      <Link to="/profile/updateUser">
         <img
           src="https://res.cloudinary.com/dq186ej4c/image/upload/v1686125391/Change_User_icon-icons.com_55946_lypx2c.png"
           alt="go to change data profile"

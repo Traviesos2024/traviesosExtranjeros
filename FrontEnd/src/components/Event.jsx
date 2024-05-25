@@ -58,7 +58,7 @@ export const Event = ({
       <div className="card-padding">
         <p>{likes}</p>
         <div className="card-icons-wrapper">
-          <div onClick={onToggleLike} className="favorite-icon">
+          <div onClick={onToggleLike} id="favorite-icon">
             <span
               className={
                 item.likeEvent.includes(user._id)

@@ -1,293 +1,87 @@
-import { Outlet } from "react-router-dom";
-import { NavProfile } from "../components";
-import "./ProfilePage.css";
-
-export const ProfilePage = () => {
-  return (
-    <>
-      <NavProfile />
-      <Outlet />
-    </>
-  );
-};
-
-
-
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
+// import { Outlet } from "react-router-dom";
+// import { NavProfile } from "../components";
 // import "./ProfilePage.css";
-// const ProfilePage = () => {
-//   const [userData, setUserData] = useState({
-//     name: "",
-//     email: "",
-//     age: 0,
-//     city: "",
-//     country: "",
-//     password: "",
-//     image: null,
-//   });
 
-//   useEffect(() => {
-//     // Función asincrónica para obtener los datos del usuario desde el backend
-//     const fetchUserData = async () => {
-//       try {
-//         const response = await axios.get(
-//           "http://localhost:8081/api/v1/users/finById/:id"
-//         ); // Ruta para obtener los datos del perfil del usuario
-//         if (response.status === 200) {
-//           setUserData(response.data); // Establecer los datos del usuario en el estado
-//         }
-//       } catch (error) {
-//         console.error("Error fetching user data:", error);
-//         // Manejar el error adecuadamente
-//       }
-//     };
-
-//     fetchUserData(); // Llamar a la función para obtener los datos del usuario cuando el componente se monte
-//   }, []); //
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setUserData((prevState) => ({
-//       ...prevState,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleImageChange = (e) => {
-//     setUserData((prevState) => ({
-//       ...prevState,
-//       image: e.target.files[0],
-//     }));
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-
-//     try {
-//       const response = await axios.post("/update-profile", userData);
-//       if (response.status === 200) {
-//         alert("Profile updated successfully!");
-//       }
-//     } catch (error) {
-//       console.error("Error updating profile:", error);
-//       alert("An error occurred while updating your profile");
-//     }
-//   };
-
+// export const ProfilePage = () => {
 //   return (
-//     <div className="container">
-//       <h1>Tu perfil</h1>
-//       <form onSubmit={handleSubmit}>
-//         <label htmlFor="name">Name:</label>
-//         <input
-//           type="text"
-//           id="name"
-//           name="name"
-//           value={userData.name}
-//           onChange={handleChange}
-//           required
-//         />
-
-//         <label htmlFor="email">Email:</label>
-//         <input
-//           type="email"
-//           id="email"
-//           name="email"
-//           value={userData.email}
-//           onChange={handleChange}
-//           required
-//         />
-
-//         <label htmlFor="age">Age:</label>
-//         <input
-//           type="date"
-//           id="age"
-//           name="age"
-//           value={userData.age}
-//           onChange={handleChange}
-//           required
-//         />
-
-//         <label htmlFor="city">City:</label>
-//         <input
-//           type="text"
-//           id="city"
-//           name="city"
-//           value={userData.city}
-//           onChange={handleChange}
-//         />
-
-//         <label htmlFor="country">Country:</label>
-//         <input
-//           type="text"
-//           id="country"
-//           name="country"
-//           value={userData.country}
-//           onChange={handleChange}
-//         />
-
-//         <label htmlFor="password">New Password:</label>
-//         <input
-//           type="password"
-//           id="password"
-//           name="password"
-//           value={userData.password}
-//           onChange={handleChange}
-//         />
-
-//         <label htmlFor="image">Profile Image:</label>
-//         <input
-//           type="file"
-//           id="image"
-//           name="image"
-//           onChange={handleImageChange}
-//         />
-
-//         <button type="submit">Save Changes</button>
-//       </form>
-//     </div>
+//     <>
+//       <NavProfile />
+//       <Outlet />
+//     </>
 //   );
 // };
 
-// export default ProfilePage;
+import { NavProfile } from "../components";
+import "./ProfilePage.css";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+import { useErrorEvent } from "../hooks/useErrorEvent";
+import { getAll } from "../services/events.service";
+import { Event } from "../components";
 
+export const ProfilePage = ({ items }) => {
+  const { user } = useAuth();
+  console.log(user);
+  const [events, setEvents] = useState([]);
+  const [res, setRes] = useState({});
 
-// // import React, { useState, useEffect } from "react";
-// // import axios from "axios";
-// // import "./ProfilePage.css";
-// // const ProfilePage = () => {
-// //   const [userData, setUserData] = useState({
-// //     name: "",
-// //     email: "",
-// //     age: 0,
-// //     city: "",
-// //     country: "",
-// //     password: "",
-// //     image: null,
-// //   });
+  useEffect(() => {
+    (async () => {
+      setRes(await getAll());
+    })();
+  }, []);
 
-// //   useEffect(() => {
-// //     // Función asincrónica para obtener los datos del usuario desde el backend
-// //     const fetchUserData = async () => {
-// //       try {
-// //         const response = await axios.get(
-// //           "http://localhost:8081/api/v1/users/finById/:id"
-// //         ); // Ruta para obtener los datos del perfil del usuario
-// //         if (response.status === 200) {
-// //           setUserData(response.data); // Establecer los datos del usuario en el estado
-// //         }
-// //       } catch (error) {
-// //         console.error("Error fetching user data:", error);
-// //         // Manejar el error adecuadamente
-// //       }
-// //     };
+  useEffect(() => {
+    useErrorEvent(res, setRes, setEvents);
+  }, [res]);
 
-// //     fetchUserData(); // Llamar a la función para obtener los datos del usuario cuando el componente se monte
-// //   }, []); //
+  useEffect(() => {
+    console.log(events);
+  }, [events]);
 
-// //   const handleChange = (e) => {
-// //     const { name, value } = e.target;
-// //     setUserData((prevState) => ({
-// //       ...prevState,
-// //       [name]: value,
-// //     }));
-// //   };
+  return (
+    <>
+      <NavProfile />
+      <main>
+        <div className="homePage">
+          <h3 className="TituloViajeros">
+            ¡¡Hola {user.user}, aquí tienes todo tu contenido!!
+          </h3>
+          <h2 className="EventosHome">Eventos en {user.city.name}</h2>
+          <div>
+            {user.eventsFav && events.length > 0 ? (
+              events.likeEvent
+                .includes(user._id)
+                .map((item) => (
+                  <Event
+                    item={item}
+                    src={item?.image}
+                    name={item?.name}
+                    key={item._id}
+                    category={item?.category}
+                    date={item?.date}
+                    description={item?.description}
+                    cities={item?.cities?.map((city) => city.name)}
+                    eventId={item?._id}
+                    comments={item?.comments}
+                    setEvents={setEvents}
+                  />
+                ))
+            ) : (
+              <p>No hay eventos favoritos disponibles</p>
+            )}
+          </div>
 
-// //   const handleImageChange = (e) => {
-// //     setUserData((prevState) => ({
-// //       ...prevState,
-// //       image: e.target.files[0],
-// //     }));
-// //   };
-
-// //   const handleSubmit = async (e) => {
-// //     e.preventDefault();
-
-// //     try {
-// //       const response = await axios.post("/update-profile", userData);
-// //       if (response.status === 200) {
-// //         alert("Profile updated successfully!");
-// //       }
-// //     } catch (error) {
-// //       console.error("Error updating profile:", error);
-// //       alert("An error occurred while updating your profile");
-// //     }
-// //   };
-
-// //   return (
-// //     <div className="container">
-// //       <h1>Tu perfil</h1>
-// //       <form onSubmit={handleSubmit}>
-// //         <label htmlFor="name">Name:</label>
-// //         <input
-// //           type="text"
-// //           id="name"
-// //           name="name"
-// //           value={userData.name}
-// //           onChange={handleChange}
-// //           required
-// //         />
-
-// //         <label htmlFor="email">Email:</label>
-// //         <input
-// //           type="email"
-// //           id="email"
-// //           name="email"
-// //           value={userData.email}
-// //           onChange={handleChange}
-// //           required
-// //         />
-
-// //         <label htmlFor="age">Age:</label>
-// //         <input
-// //           type="number"
-// //           id="age"
-// //           name="age"
-// //           value={userData.age}
-// //           onChange={handleChange}
-// //           required
-// //         />
-
-// //         <label htmlFor="city">City:</label>
-// //         <input
-// //           type="text"
-// //           id="city"
-// //           name="city"
-// //           value={userData.city}
-// //           onChange={handleChange}
-// //         />
-
-// //         <label htmlFor="country">Country:</label>
-// //         <input
-// //           type="text"
-// //           id="country"
-// //           name="country"
-// //           value={userData.country}
-// //           onChange={handleChange}
-// //         />
-
-// //         <label htmlFor="password">New Password:</label>
-// //         <input
-// //           type="password"
-// //           id="password"
-// //           name="password"
-// //           value={userData.password}
-// //           onChange={handleChange}
-// //         />
-
-// //         <label htmlFor="image">Profile Image:</label>
-// //         <input
-// //           type="file"
-// //           id="image"
-// //           name="image"
-// //           onChange={handleImageChange}
-// //         />
-
-// //         <button type="submit">Save Changes</button>
-// //       </form>
-// //     </div>
-// //   );
-// // };
-
-// // export default ProfilePage;
+          <p className="parrafo">
+            Echa un vistazo de los nuevos eventos disponibles en{" "}
+            {user.city.name}
+          </p>
+          <button>
+            <Link to="/events">Eventos</Link>
+          </button>
+        </div>
+      </main>
+    </>
+  );
+};

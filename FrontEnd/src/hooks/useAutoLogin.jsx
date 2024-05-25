@@ -12,8 +12,23 @@ export const useAutoLogin = async (allUser, login) => {
     const sendData = await autologinUser(customFormData);
 
     if (sendData?.status == 200) {
-      const { name, email, image, check, gender, country, city, age } =
-        sendData?.data?.user;
+      const {
+        name,
+        email,
+        image,
+        check,
+        gender,
+        country,
+        city,
+        age,
+        eventsOwner,
+        experiencesOwner,
+        eventsFollow,
+        eventsFav,
+        experiencesFav,
+        followers,
+        followed,
+      } = sendData?.data?.user;
       const userCustom = {
         token: sendData.data.token,
         user: name,
@@ -24,6 +39,14 @@ export const useAutoLogin = async (allUser, login) => {
         country,
         city,
         age,
+        eventsOwner,
+        experiencesOwner,
+        eventsFollow,
+        eventsFav,
+        experiencesFav,
+        followers,
+        followed,
+
         _id: sendData.data.user._id,
       };
 
