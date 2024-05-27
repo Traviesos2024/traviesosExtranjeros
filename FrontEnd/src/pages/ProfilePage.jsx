@@ -4,10 +4,12 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useErrorEvent } from "../hooks/useErrorEvent";
-import { getAll } from "../services/events.service";
+import { eventById, getAll } from "../services/events.service";
 import { getAllExperiences } from "../services/experiences.service";
 import { Event } from "../components";
-import { useErrorExperience } from "../hooks";
+import { useErrorExperience, useErrorUser } from "../hooks";
+import { byId } from "../services/user.service";
+
 
 export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
@@ -15,7 +17,8 @@ export const ProfilePage = ({ item }) => {
   const [experiences, setExperiences] = useState([]);
   const [resEvents, setResEvents] = useState({});
   const [resExperiences, setResExperiences] = useState({});
-
+  const [resUser, setResUser] = useState([]);
+  const [userById, setUserById] = useState(null);
   useEffect(() => {
     (async () => {
       setResEvents(await getAll());
@@ -44,17 +47,20 @@ export const ProfilePage = ({ item }) => {
     console.log(events);
   }, [events]);
 
-  // Filtrar los eventos que están en la lista de likeEvent del usuario
-  const likedEvents = events.filter((event) =>
-    event.likeEvent.includes(user._id)
-  );
-  const followedEvents = events.filter((event) =>
-    event.eventFollowers.includes(user._id)
-  );
-  const experiencesLikes = experiences.filter(
-    (experience) => experience.likes && experience.likes.includes(user._id)
-  );
-  console.log("soy tu experiencia de la caca", experiencesLikes);
+  
+  useEffect(() => {
+    (async () => {
+      setResUser(await byId(user._id));
+    })();
+  }, []);
+
+  useEffect(() => {
+    useErrorUser(resUser, setResUser, setUserById);
+
+    console.log(resUser);
+  }, [resUser]);
+  console.log("aaaaahhhhhhhhhhhhh",resUser);
+
 
   return (
     <>
@@ -63,10 +69,33 @@ export const ProfilePage = ({ item }) => {
           <h3 className="TituloViajeros">
             ¡¡Hola {user.user}, aquí tienes todo tu contenido!!
           </h3>
+          <h2 className="EventosHome">{user.user}, aquí tienes los eventos que has creado</h2>
+          <div>
+            {userById != null ? (
+              userById.eventsOwner.map((item) => (
+                <Event
+                  item={item}
+                  src={item?.image}
+                  name={item?.name}
+                  key={item._id}
+                  category={item?.category}
+                  date={item?.date}
+                  description={item?.description}
+                  cities={item?.cities?.map((city) => city.name)}
+                  eventId={item?._id}
+                  comments={item?.comments}
+                  setEvents={setEvents}
+                />
+              ))
+            ) : (
+              <p>No hay eventos favoritos disponibles</p>
+            )}
+          </div>
           <h2 className="EventosHome">Eventos en {user.city.name}</h2>
           <div>
-            {likedEvents.length > 0 ? (
-              likedEvents.map((item) => (
+          
+            { userById != null ? (
+              userById.eventsFav.map((item) => (
                 <Event
                   item={item}
                   src={item?.image}
@@ -87,8 +116,8 @@ export const ProfilePage = ({ item }) => {
           </div>
           <h2 className="EventosHome">Eventos que sigues</h2>
           <div>
-            {followedEvents.length > 0 ? (
-              followedEvents.map((item) => (
+            {userById != null  ? (
+              userById.eventsFollow.map((item) => (
                 <Event
                   item={item}
                   src={item?.image}
@@ -109,8 +138,29 @@ export const ProfilePage = ({ item }) => {
           </div>
           <h2 className="EventosHome">Experiencias que te han gustado</h2>
           <div>
-            {experiencesLikes.length > 0 ? (
-              experiencesLikes.map((item) => (
+            {userById != null ? (
+              userById.experiencesOwner.map((item) => (
+                <Experience
+                  item={item}
+                  src={item?.image}
+                  name={item?.name}
+                  key={item._id}
+                  description={item?.description}
+                  likes={item?.likes}
+                  comments={item?.comments}
+                  events={item?.events}
+                  experienceId={item?._id}
+                  setExperiences={setExperiences}
+                />
+              ))
+            ) : (
+              <p>No hay experiencias que te hayan gustado disponibles</p>
+            )}
+          </div>
+          <h2 className="EventosHome">Experiencias que te gustan</h2>
+          <div>
+            {userById != null ? (
+              userById.experiencesFav.map((item) => (
                 <Experience
                   item={item}
                   src={item?.image}

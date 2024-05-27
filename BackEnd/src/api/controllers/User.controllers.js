@@ -728,7 +728,9 @@ const byId = async (req, res, next) => {
   try {
     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
     El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
-    const userById = await User.findById(req.params.id);
+    const userById = await User.findById(req.params.id).populate(
+      "city country eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav"
+    );
     if (userById) {
       // comprobamos si existe
       return res.status(200).json(userById); // mandamos un json con el objeto
@@ -1001,7 +1003,7 @@ const deleteUser = async (req, res, next) => {
                               console.log("😘", req.user.postedMessages);
                               return res.redirect(
                                 307,
-                                `http://localhost:8080/api/v1/users/redirect/message/${JSON.stringify(
+                                `http://localhost:8081/api/v1/users/redirect/message/${JSON.stringify(
                                   req.user.postedMessages
                                 )}`
                               );
@@ -1118,6 +1120,7 @@ const deleteMessageDeleteUser = async (req, res, next) => {
                 { comments: id },
                 { $pull: { comments: id } }
               );
+              return await res.status(200).json("delete ok");
             } catch (error) {
               return res.status(404).json({
                 error: " character updateMany  -- comments ",
@@ -1139,7 +1142,7 @@ const deleteMessageDeleteUser = async (req, res, next) => {
       }
     });
 
-    return await res.status(200).json("delete ok");
+    
   } catch (error) {
     return res.status(404).json(error.message);
   }
