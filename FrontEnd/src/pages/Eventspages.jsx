@@ -87,6 +87,7 @@ export const Eventspages = () => {
                 eventId={item?._id}
                 comments={item?.comments}
                 setEvents={setEvents}
+                // userName={item?.user}
               />
             ))
           : events.length > 0 &&

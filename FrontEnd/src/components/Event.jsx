@@ -20,6 +20,7 @@ export const Event = ({
   item,
   initialLikes,
   initialFollowers,
+  userName,
 }) => {
   const [open, setOpen] = useState(false);
   const { allUser, setAllUser, bridgeData, user } = useAuth();
@@ -69,6 +70,7 @@ export const Event = ({
             >
               favorite
             </span>
+            <span>{item.likeEvent.length}</span>
           </div>
           <p>{followed}</p>
           <div onClick={onToggleFollow} className="Check">
@@ -81,6 +83,7 @@ export const Event = ({
             >
               Check_box
             </span>
+            <span>{item.eventFollowers.length}</span>
           </div>
           <div className="comment-icon-padding">
             <span
@@ -91,9 +94,9 @@ export const Event = ({
             </span>
           </div>
           <div>
-          <button>
-          <Link to="/experiences">Ver experiencias</Link>
-        </button>
+            <button>
+              <Link to="/experiences">Ver experiencias</Link>
+            </button>
           </div>
         </div>
 
@@ -102,12 +105,14 @@ export const Event = ({
         <p>Fecha: {new Date(date).toLocaleString()}</p>
         <p>Descripción: {description}</p>
         <p>Ciudad: {cities}</p>
+        <p>Organizador: {userName}</p>
 
         <div className="card-comments-wrapper">
           {open ? (
             <>
               <Comments selectedRecipient={eventId} commentsProps={comments} />
               <div className="close-chat-wrapper">
+                {/* <span>{item.comments.length}</span> */}
                 <span
                   onClick={onToggleComments}
                   className="material-symbols-outlined"

@@ -15,3 +15,4 @@ export * from "./useErrorFollowEvent";
 export * from "./useErrorEvent";
 export * from "./useErrorLikeEvent";
 export * from "./useErrorUser";
+export * from "./useErrorUserAll";

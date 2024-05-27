@@ -729,7 +729,7 @@ const byId = async (req, res, next) => {
     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
     El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
     const userById = await User.findById(req.params.id).populate(
-      "city country eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav"
+      "city country eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav followers followed"
     );
     if (userById) {
       // comprobamos si existe
@@ -1141,8 +1141,6 @@ const deleteMessageDeleteUser = async (req, res, next) => {
         });
       }
     });
-
-    
   } catch (error) {
     return res.status(404).json(error.message);
   }

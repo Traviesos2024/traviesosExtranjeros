@@ -10,7 +10,6 @@ import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
 
-
 export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
@@ -47,7 +46,6 @@ export const ProfilePage = ({ item }) => {
     console.log(events);
   }, [events]);
 
-  
   useEffect(() => {
     (async () => {
       setResUser(await byId(user._id));
@@ -59,8 +57,7 @@ export const ProfilePage = ({ item }) => {
 
     console.log(resUser);
   }, [resUser]);
-  console.log("aaaaahhhhhhhhhhhhh",resUser);
-
+  console.log("aaaaahhhhhhhhhhhhh", resUser);
 
   return (
     <>
@@ -69,7 +66,9 @@ export const ProfilePage = ({ item }) => {
           <h3 className="TituloViajeros">
             ¡¡Hola {user.user}, aquí tienes todo tu contenido!!
           </h3>
-          <h2 className="EventosHome">{user.user}, aquí tienes los eventos que has creado</h2>
+          <h2 className="EventosHome">
+            {user.user}, aquí tienes los eventos que has creado
+          </h2>
           <div>
             {userById != null ? (
               userById.eventsOwner.map((item) => (
@@ -93,8 +92,7 @@ export const ProfilePage = ({ item }) => {
           </div>
           <h2 className="EventosHome">Eventos en {user.city.name}</h2>
           <div>
-          
-            { userById != null ? (
+            {userById != null ? (
               userById.eventsFav.map((item) => (
                 <Event
                   item={item}
@@ -116,7 +114,7 @@ export const ProfilePage = ({ item }) => {
           </div>
           <h2 className="EventosHome">Eventos que sigues</h2>
           <div>
-            {userById != null  ? (
+            {userById != null ? (
               userById.eventsFollow.map((item) => (
                 <Event
                   item={item}
