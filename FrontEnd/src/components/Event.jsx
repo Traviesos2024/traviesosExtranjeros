@@ -20,6 +20,7 @@ export const Event = ({
   item,
   initialLikes,
   initialFollowers,
+  userName,
 }) => {
   const [open, setOpen] = useState(false);
   const { allUser, setAllUser, bridgeData, user } = useAuth();
@@ -93,9 +94,9 @@ export const Event = ({
             </span>
           </div>
           <div>
-          <button>
-          <Link to="/experiences">Ver experiencias</Link>
-        </button>
+            <button>
+              <Link to="/experiences">Ver experiencias</Link>
+            </button>
           </div>
         </div>
 
@@ -104,6 +105,7 @@ export const Event = ({
         <p>Fecha: {new Date(date).toLocaleString()}</p>
         <p>Descripción: {description}</p>
         <p>Ciudad: {cities}</p>
+        <p>Organizador: {userName}</p>
 
         <div className="card-comments-wrapper">
           {open ? (
