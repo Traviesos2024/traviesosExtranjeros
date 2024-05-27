@@ -21,6 +21,7 @@ import {
   CountryAll,
   EventDetallePage,
   Followers,
+  UserAll,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -78,6 +79,14 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <Eventspages />
+          </Protected>
+        ),
+      },
+      {
+        path: "/usersAll",
+        element: (
+          <Protected>
+            <UserAll />
           </Protected>
         ),
       },

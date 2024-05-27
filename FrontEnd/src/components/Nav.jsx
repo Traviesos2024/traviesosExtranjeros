@@ -21,6 +21,9 @@ export const Nav = () => {
           <NavLink to="/followers">
             <button>Amigos</button>
           </NavLink>
+          <NavLink to="/usersAll">
+            <button>Usuarios</button>
+          </NavLink>
           <NavLink to="/chats">
             <button>Chats</button>
           </NavLink>

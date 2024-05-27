@@ -1,6 +1,6 @@
 import "./Country.css";
 import React, { useState, useEffect } from "react";
-import { countryById, getAllCountry } from "../services/country.service";
+import { countryById } from "../services/country.service";
 import { useErrorCountry } from "../hooks";
 import { Outlet, useParams } from "react-router-dom";
 import { Loader, CountryCard } from "../components";
