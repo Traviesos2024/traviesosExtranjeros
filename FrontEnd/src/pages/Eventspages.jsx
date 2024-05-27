@@ -4,7 +4,6 @@ import { Event, Input } from "../components";
 import { getAll } from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { useNavigate } from "react-router-dom";
-import { cityById } from "../services/city.service";
 
 export const Eventspages = () => {
   const [events, setEvents] = useState([]);
