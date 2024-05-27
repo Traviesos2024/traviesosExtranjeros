@@ -1,6 +1,9 @@
 .Check_box {
   color: rgb(0, 183, 255);
 }
+.person_add {
+  color: rgb(0, 255, 38);
+}
 
 #favorite {
   color: red;

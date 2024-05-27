@@ -14,13 +14,13 @@ export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
   const [experiences, setExperiences] = useState([]);
-  const [resEvents, setResEvents] = useState({});
+  const [res, setRes] = useState({});
   const [resExperiences, setResExperiences] = useState({});
   const [resUser, setResUser] = useState([]);
   const [userById, setUserById] = useState(null);
   useEffect(() => {
     (async () => {
-      setResEvents(await getAll());
+      setRes(await getAll());
     })();
   }, []);
 
@@ -39,8 +39,8 @@ export const ProfilePage = ({ item }) => {
   }, [experiences]);
 
   useEffect(() => {
-    useErrorEvent(resEvents, setResEvents, setEvents);
-  }, [resEvents]);
+    useErrorEvent(res, setRes, setEvents);
+  }, [res]);
 
   useEffect(() => {
     console.log(events);
@@ -66,9 +66,7 @@ export const ProfilePage = ({ item }) => {
           <h3 className="TituloViajeros">
             ¡¡Hola {user.user}, aquí tienes todo tu contenido!!
           </h3>
-          <h2 className="EventosHome">
-            {user.user}, aquí tienes los eventos que has creado
-          </h2>
+          <h2 className="EventosHome">Tus eventos creados</h2>
           <div>
             {userById != null ? (
               userById.eventsOwner.map((item) => (
@@ -87,10 +85,10 @@ export const ProfilePage = ({ item }) => {
                 />
               ))
             ) : (
-              <p>No hay eventos favoritos disponibles</p>
+              <p>No hay eventos creados disponibles</p>
             )}
           </div>
-          <h2 className="EventosHome">Eventos en {user.city.name}</h2>
+          <h2 className="EventosHome">Tus eventos favoritos</h2>
           <div>
             {userById != null ? (
               userById.eventsFav.map((item) => (
@@ -134,7 +132,7 @@ export const ProfilePage = ({ item }) => {
               <p>No hay eventos seguidos disponibles</p>
             )}
           </div>
-          <h2 className="EventosHome">Experiencias que te han gustado</h2>
+          <h2 className="EventosHome">Experiencias que has creado</h2>
           <div>
             {userById != null ? (
               userById.experiencesOwner.map((item) => (
@@ -152,7 +150,7 @@ export const ProfilePage = ({ item }) => {
                 />
               ))
             ) : (
-              <p>No hay experiencias que te hayan gustado disponibles</p>
+              <p>No has creado aún experiencias</p>
             )}
           </div>
           <h2 className="EventosHome">Experiencias que te gustan</h2>

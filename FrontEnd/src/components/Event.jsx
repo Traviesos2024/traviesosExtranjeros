@@ -6,6 +6,7 @@ import { toggleFollowEvent, toggleLikeEvent } from "../services/events.service";
 // import { useErrorLikeEvent, useErrorFollowEvent } from "../hooks"; // Importa un hook personalizado para manejar errores
 import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
 import { Link } from "react-router-dom";
+import { followUserToggle } from "../services/user.service";
 
 export const Event = ({
   name,
@@ -46,6 +47,17 @@ export const Event = ({
       res.status == 200 && setEvents(res.data.allEvent);
     } catch (error) {
       console.error("Error toggling like:", error);
+    }
+  };
+
+  // //! para seguir al usuario
+  const onToggleFollowUser = async (user) => {
+    try {
+      const res = await followUserToggle(idUserSeQuiereSeguir);
+      console.log("res", res);
+      res.status == 200 && setEvents(res.data.allEvent);
+    } catch (error) {
+      console.error("Error toggling follow:", error);
     }
   };
 
@@ -105,7 +117,18 @@ export const Event = ({
         <p>Fecha: {new Date(date).toLocaleString()}</p>
         <p>Descripción: {description}</p>
         <p>Ciudad: {cities}</p>
-        <p>Organizador: {userName}</p>
+        <div onClick={onToggleFollowUser} className="person_add">
+          Organizador: {userName}{" "}
+          <span
+            className={
+              user.followed.includes(user._id)
+                ? "material-symbols-outlined person_add"
+                : "material-symbols-outlined"
+            }
+          >
+            person_add
+          </span>
+        </div>
 
         <div className="card-comments-wrapper">
           {open ? (

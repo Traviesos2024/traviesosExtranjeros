@@ -14,8 +14,6 @@ export const ExperiencesPage = () => {
   const [resEvents, setResEvents] = useState({});
   const [events, setEvents] = useState([]);
 
-  
-
   useEffect(() => {
     (async () => {
       setRes(await getAllExperiences());
@@ -50,8 +48,11 @@ export const ExperiencesPage = () => {
     navigate("/ExperiencesForm");
   };
 
-  const experiencesEvent = experiences.filter(experience => experience.events.includes(events._id));
-
+  // const experiencesEvent = experiences.filter(experience => experience.events.includes(events._id));
+  const experiencesEvent = experiences.filter(
+    (experience) =>
+      Array.isArray(experience.events) && experience.events.includes(events._id)
+  );
 
   return (
     <div id="containerExperience">
@@ -63,7 +64,7 @@ export const ExperiencesPage = () => {
           .slice(0, 1000)
           .map((item) => (
             <Experience
-            item={item}
+              item={item}
               src={item?.image}
               name={item?.name}
               key={item.name}
@@ -72,7 +73,7 @@ export const ExperiencesPage = () => {
               comments={item?.comments}
               events={item?.events}
               experienceId={item?._id}
-              setExperiences = {setExperiences}
+              setExperiences={setExperiences}
             />
           ))}
     </div>
