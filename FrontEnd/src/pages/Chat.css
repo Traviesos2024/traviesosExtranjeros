@@ -57,6 +57,8 @@
   text-align: right;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   max-width: 20rem;
+  display: flex;
+  align-items: flex-end;
 }
 
 .my-text {
@@ -71,12 +73,16 @@
   color: #fff;
   border-radius: 0.5rem 0.2rem 0.2rem 0.5rem;
   height: fit-content;
+  min-height: 70px;
   width: fit-content;
+  min-width: 125px;
   padding: 0.5rem 1rem;
   margin: 0.12rem 0.5rem;
   text-align: right;
   box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
   max-width: 20rem;
+  display: flex;
+  align-items: flex-end;
 }
 
 form {
@@ -121,4 +127,31 @@ label {
 .chat-time {
   margin-top: auto;
   padding: 5px;
+}
+
+.messages-settings-wrapper {
+  position: absolute;
+  display: flex;
+  gap: 3px;
+  top: 8px;
+  left: 3%;
+}
+
+.messages-settings-actions {
+  display: flex;
+  gap: 3px;
+}
+
+.messages-settings {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.messages-actions-icon {
+  cursor: pointer;
+  color: white;
+}
+
+.messages-actions-icon:hover {
+  opacity: 0.7;
 }

@@ -3,7 +3,11 @@ import "./Chat.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
 import { getChatById } from "../services/chats.service";
-import { createMessage, toggleLikeMessage } from "../services/message.service";
+import {
+  createMessage,
+  toggleLikeMessage,
+  deleteMessage,
+} from "../services/message.service";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { getChatLastMessageHour } from "../utils";
@@ -19,6 +23,8 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef();
+  const [style, setStyle] = useState({ display: "none" });
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -93,13 +99,25 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
 
   async function onToggleLike(comment) {
     const updatedMessage = await toggleLikeMessage(comment._id);
-
+    console.log("ENTRA");
     let chatToUpdate = { ...chat };
     const indexOfMessageToReplace = chatToUpdate.messages.findIndex(
       (message) => message._id == updatedMessage.data.message._id
     );
     chatToUpdate.messages[indexOfMessageToReplace] =
       updatedMessage.data.message;
+
+    await setChat(chatToUpdate);
+  }
+  async function onDeleteMessage(messageToDelete) {
+    const updatedMessage = await deleteMessage(messageToDelete._id);
+
+    let chatToUpdate = { ...chat };
+    let messagesToUpdate = chatToUpdate.messages.filter(
+      (message) => message._id != messageToDelete._id
+    );
+    chatToUpdate.messages = messagesToUpdate;
+    updateChatHour(chatToUpdate);
 
     await setChat(chatToUpdate);
   }
@@ -126,6 +144,47 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                     : "friend-text-wrapper"
                 }
               >
+                {user._id == message.owner || user._id == message.owner._id ? (
+                  <div
+                    onMouseEnter={(e) => {
+                      setStyle({ display: "block" });
+                    }}
+                    onMouseLeave={(e) => {
+                      setStyle({ display: "none" });
+                    }}
+                    className="messages-settings-wrapper"
+                  >
+                    <span className="material-symbols-outlined messages-actions-icon">
+                      more_horiz
+                    </span>
+                    <div className="messages-settings-actions" style={style}>
+                      <span
+                        className={
+                          message?.likes?.find(
+                            (userFav) => userFav?._id == user._id
+                          )
+                            ? "material-symbols-outlined like "
+                            : "material-symbols-outlined messages-actions-icon"
+                        }
+                        onClick={() => onToggleLike(message)}
+                      >
+                        favorite
+                      </span>
+                      <span className="material-symbols-outlined messages-actions-icon">
+                        edit
+                      </span>
+                      <span
+                        onClick={() => onDeleteMessage(message)}
+                        className="material-symbols-outlined messages-actions-icon"
+                      >
+                        delete
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <div
                   className={
                     user._id == message.owner || user._id == message.owner._id
@@ -138,16 +197,6 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                 <small className="chat-time">
                   {getChatLastMessageHour(message?.createdAt)}
                 </small>
-                <span
-                  className={
-                    message?.likes?.find((userFav) => userFav?._id == user._id)
-                      ? "material-symbols-outlined like"
-                      : "material-symbols-outlined"
-                  }
-                  onClick={() => onToggleLike(message)}
-                >
-                  favorite
-                </span>
               </div>
             ))}
           </div>

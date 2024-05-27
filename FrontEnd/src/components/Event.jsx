@@ -121,7 +121,7 @@ export const Event = ({
           Organizador: {userName}{" "}
           <span
             className={
-              user.followed.includes(user._id)
+              user?.followed?.includes(user._id)
                 ? "material-symbols-outlined person_add"
                 : "material-symbols-outlined"
             }

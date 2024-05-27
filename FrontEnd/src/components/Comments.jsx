@@ -2,7 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import "./Comments.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
-import { createMessage, toggleLikeMessage } from "../services/message.service";
+import {
+  createMessage,
+  toggleLikeMessage,
+  deleteMessage,
+} from "../services/message.service";
 import { getChatLastMessageHour } from "../utils";
 import { useNavigate } from "react-router-dom";
 import { getChatByUser, createEmptyChat } from "../services/chats.service";
@@ -21,6 +25,7 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef();
   const navigate = useNavigate();
+  const [style, setStyle] = useState({ display: "none" });
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -114,6 +119,17 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
 
     setComments(commentsToUpdate);
   }
+
+  async function onDeleteMessage(commentToDelete) {
+    const updatedMessage = await deleteMessage(commentToDelete._id);
+
+    let commentsToUpdate = [...comments];
+    commentsToUpdate = commentsToUpdate.filter(
+      (comment) => comment._id != commentToDelete._id
+    );
+
+    setComments(commentsToUpdate);
+  }
   return (
     <>
       <div className="chat-wrapper">
@@ -135,21 +151,49 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                       : "friend-text"
                   }
                 >
-                  <h5 onClick={() => onClickUserName(comment?.owner._id)}>
-                    {comment?.owner.name}:
-                  </h5>
-                  <span
-                    className={
-                      comment?.likes?.find(
-                        (userFav) => userFav?._id == user._id
-                      )
-                        ? "material-symbols-outlined like"
-                        : "material-symbols-outlined"
-                    }
-                    onClick={() => onToggleLike(comment)}
-                  >
-                    favorite
-                  </span>
+                  <div className="comments-header">
+                    <div>
+                      <h5 onClick={() => onClickUserName(comment?.owner._id)}>
+                        {comment?.owner.name}:
+                      </h5>
+                    </div>
+                    <div
+                      onMouseEnter={(e) => {
+                        setStyle({ display: "block" });
+                      }}
+                      onMouseLeave={(e) => {
+                        setStyle({ display: "none" });
+                      }}
+                      className="comments-settings-wrapper"
+                    >
+                      <div className="comments-settings-actions" style={style}>
+                        <span
+                          className={
+                            comment?.likes?.find(
+                              (userFav) => userFav?._id == user._id
+                            )
+                              ? "material-symbols-outlined like comments-actions-icon"
+                              : "material-symbols-outlined comments-actions-icon"
+                          }
+                          onClick={() => onToggleLike(comment)}
+                        >
+                          favorite
+                        </span>
+                        <span className="material-symbols-outlined comments-actions-icon">
+                          edit
+                        </span>
+                        <span
+                          onClick={() => onDeleteMessage(comment)}
+                          className="material-symbols-outlined comments-actions-icon"
+                        >
+                          delete
+                        </span>
+                      </div>
+                      <span className="material-symbols-outlined comments-actions-icon">
+                        more_vert
+                      </span>
+                    </div>
+                  </div>
 
                   <div className="comment-and-hour">
                     <p> {comment?.content}</p>
