@@ -69,6 +69,7 @@ export const Event = ({
             >
               favorite
             </span>
+            <span>{item.likeEvent.length}</span>
           </div>
           <p>{followed}</p>
           <div onClick={onToggleFollow} className="Check">
@@ -81,6 +82,7 @@ export const Event = ({
             >
               Check_box
             </span>
+            <span>{item.eventFollowers.length}</span>
           </div>
           <div className="comment-icon-padding">
             <span
@@ -108,6 +110,7 @@ export const Event = ({
             <>
               <Comments selectedRecipient={eventId} commentsProps={comments} />
               <div className="close-chat-wrapper">
+                {/* <span>{item.comments.length}</span> */}
                 <span
                   onClick={onToggleComments}
                   className="material-symbols-outlined"
