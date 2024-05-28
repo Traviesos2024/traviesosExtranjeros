@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { eventById, getAll } from "../services/events.service";
-import { getAllExperiences } from "../services/experiences.service";
+import { deleteExperience, getAllExperiences } from "../services/experiences.service";
 import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
@@ -74,6 +74,19 @@ export const ProfilePage = ({ item }) => {
     }
   };
 
+  const handleDeleteExperience = async (experienceId) => {
+    try {
+      await deleteExperience(experienceId);
+      setUserById((prevUser) => ({
+        ...prevUser,
+        eventsOwner: prevUser.eventsOwner.filter(
+          (experience) => experience._id !== experienceId
+        ),
+      }));
+    } catch (error) {
+      console.error("Error al eliminar el evento:", error);
+    }
+  };
   return (
     <>
       <main>
