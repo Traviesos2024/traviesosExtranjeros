@@ -92,79 +92,58 @@ const deleteChat = async (req, res, next) => {
         console.log("ENTRA DELETE");
 
         try {
-          const removeMessageFromExperience = await Experience.updateMany(
-            { message: { $in: chat.messages } },
-            { $pull: { message: { $in: chat.messages } } }
+          await User.updateMany(
+            { messagesFav: { $in: chat.messages } },
+            { $pull: { messagesFav: { $in: chat.messages } } }
           );
+          await User.updateMany({
+            $pull: { postedMessages: { $in: chat.messages } },
+          });
+          await User.updateMany({
+            $pull: { commentsPublicByOther: { $in: chat.messages } },
+          });
+          await User.updateMany({ chats: id }, { $pull: { chats: id } });
+
           try {
-            const removeMessageFromChat = await Chat.updateMany(
-              { message: { $in: chat.messages } },
-              { $pull: { message: { $in: chat.messages } } }
-            );
-
+            const messagesDelete = await Message.deleteMany({
+              _id: { $in: chat.messages },
+            });
             try {
-              const removeMessageFromEvent = await Event.updateMany(
-                { message: { $in: chat.messages } },
-                { $pull: { message: { $in: chat.messages } } }
-              );
-
-              try {
-                await User.updateMany(
-                  { messagesFav: { $in: chat.messages } },
-                  { $pull: { messagesFav: { $in: chat.messages } } }
-                );
-                await User.updateMany(
-                  { postedMessages: { $in: chat.messages } },
-                  { $pull: { postedMessages: { $in: chat.messages } } }
-                );
-                await User.updateMany(
-                  { commentsPublicByOther: { $in: chat.messages } },
-                  { $pull: { commentsPublicByOther: { $in: chat.messages } } }
-                );
-                await User.updateMany({ chats: id }, { $pull: { chats: id } });
-
-                try {
-                  const messagesDelete = await Message.deleteMany({
-                    id: { $in: chat.messages },
-                  });
-                  await Message.deleteMany();
-                  try {
-                    const chatDelete = await Chat.findByIdAndDelete(id);
-                    // lo buscamos para vr si sigue existiendo o no
-                    const finByIdChat = await Chat.findById(id);
-                    return res.status(finByIdChat ? 404 : 200).json({
-                      deleteTest: finByIdChat ? false : true,
-                    });
-                  } catch (error) {
-                    return res.status(404).json(error.message);
-                  }
-                } catch (error) {
-                  return res.status(404).json({
-                    error: "error catch delete messages",
-                    message: error.message,
-                  });
-                }
-              } catch (error) {
-                return res.status(404).json({
-                  error: "error catch update User",
-                  message: error.message,
-                });
-              }
-            } catch (error) {
-              return res.status(404).json({
-                error: "error catch update Event",
-                message: error.message,
+              const chatDelete = await Chat.findByIdAndDelete(id);
+              // lo buscamos para ver si sigue existiendo o no
+              const finByIdChat = await Chat.findById(id);
+              return res.status(finByIdChat ? 404 : 200).json({
+                deleteTest: finByIdChat ? false : true,
               });
+            } catch (error) {
+              return res.status(404).json(error.message);
             }
           } catch (error) {
             return res.status(404).json({
-              error: "error catch update Chat",
+              error: "error catch delete messages",
               message: error.message,
             });
           }
         } catch (error) {
           return res.status(404).json({
-            error: "error catch update Experience",
+            error: "error catch update User",
+            message: error.message,
+          });
+        }
+      } else {
+        try {
+          await User.updateMany({ chats: id }, { $pull: { chats: id } });
+          try {
+            const chatDelete = await Chat.findByIdAndDelete(id);
+          } catch (error) {
+            return res.status(404).json({
+              error: "error delete chat",
+              message: error.message,
+            });
+          }
+        } catch (error) {
+          return res.status(404).json({
+            error: "error delete chat from user/s",
             message: error.message,
           });
         }

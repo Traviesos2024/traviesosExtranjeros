@@ -3,7 +3,7 @@ import { ChatPage } from "./index";
 import "./ChatList.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
-import { getChatByUser } from "../services/chats.service";
+import { getChatByUser, deleteChat } from "../services/chats.service";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getChatLastMessageHour } from "../utils";
 export const ChatListPage = () => {
@@ -71,6 +71,16 @@ export const ChatListPage = () => {
     chatsToUpdate[indexOfChatToReplace] = chatToUpdate;
     setChats(chatsToUpdate);
   }
+  async function onDeleteChat(chatToDelete) {
+    const chatDeleted = await deleteChat(chatToDelete._id);
+    let chatsToUpdate = chats.filter((chat) => chat._id != chatToDelete._id);
+    if (chatsToUpdate.length > 0) {
+      setSelectedChat(chatsToUpdate[0]._id);
+    } else {
+      setSelectedChat(null);
+    }
+    setChats(chatsToUpdate);
+  }
 
   return (
     <>
@@ -78,7 +88,7 @@ export const ChatListPage = () => {
         <div className="chats-list-wrapper">
           <h2>Chats</h2>
           {chats && chats.length > 0 ? (
-            <div>
+            <>
               {chats.map((chat) => (
                 <div
                   className={
@@ -106,14 +116,25 @@ export const ChatListPage = () => {
                     </h3>
                     <p>{chat.messages.at(-1)?.content}</p>
                   </div>
-                  <small className="chats-time">
-                    {chat.messages.at(-1)?.createdAt
-                      ? getChatLastMessageHour(chat.messages.at(-1)?.createdAt)
-                      : ""}
-                  </small>
+                  <div className="chat-delete-and-hour-wrapper">
+                    <span
+                      onClick={() => onDeleteChat(chat)}
+                      className="material-symbols-outlined delete-chat-icon"
+                    >
+                      delete
+                    </span>
+
+                    <small className="chats-time">
+                      {chat.messages.at(-1)?.createdAt
+                        ? getChatLastMessageHour(
+                            chat.messages.at(-1)?.createdAt
+                          )
+                        : ""}
+                    </small>
+                  </div>
                 </div>
               ))}
-            </div>
+            </>
           ) : (
             <h3>You have no chats</h3>
           )}
