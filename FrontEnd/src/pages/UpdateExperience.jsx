@@ -1,7 +1,7 @@
 // impor * "./UpdateExperience.css"
 
 import { useForm } from "react-hook-form";
-import { NavProfile } from "../components";
+import { FigureExperience, NavProfile } from "../components";
 import "./FormProfile.css";
 import { Uploadfile } from "../components";
 import { useAuth } from "../context/authContext";
@@ -69,7 +69,7 @@ export const UpdateExperience = () => {
       <NavProfile />
       <div className="containerProfile">
       <div className="containerDataNoChange">
-          <FigureExperience experience={experience} />
+          <FigureExperience experience={idExperience} />
         </div>
         <div className="form-wrap formProfile">
           <h1>Change your data profile ♻</h1>
