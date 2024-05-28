@@ -742,6 +742,7 @@ const byId = async (req, res, next) => {
         populate: [
           { path: "likeEvent", model: User },
           { path: "cities", model: City },
+          { path: "eventOwner", model: User },
         ],
       })
       .populate({
@@ -749,6 +750,7 @@ const byId = async (req, res, next) => {
         populate: [
           { path: "eventFollowers", model: User },
           { path: "cities", model: City },
+          { path: "eventOwner", model: User },
         ],
       })
       .populate("city country experiencesOwner experiencesFav");

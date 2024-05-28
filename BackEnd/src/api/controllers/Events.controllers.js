@@ -143,6 +143,7 @@ const getAll = async (req, res, next) => {
   try {
     const allEvent = await Event.find()
       .populate("experience")
+      .populate("eventOwner")
       .populate("cities")
       .populate({
         path: "comments",

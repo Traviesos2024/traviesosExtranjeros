@@ -83,10 +83,11 @@ export const Eventspages = () => {
                 category={item?.category}
                 date={item?.date}
                 description={item?.description}
-                cities={item?.cities?.map((city) => city.name)}
+                cities={item?.cities[0]}
                 eventId={item?._id}
                 comments={item?.comments}
                 setEvents={setEvents}
+                eventOwner={item?.eventOwner.name}
                 // userName={item?.user}
               />
             ))
@@ -100,10 +101,11 @@ export const Eventspages = () => {
                 category={item?.category}
                 date={item?.date}
                 description={item?.description}
-                cities={item?.cities?.map((city) => city.name)}
+                cities={item?.cities[0]}
                 eventId={item?._id}
                 comments={item?.comments}
                 setEvents={setEvents}
+                eventOwner={item?.eventOwner.name}
               />
             ))}
       </div>

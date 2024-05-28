@@ -37,6 +37,7 @@ export const HomeLogadoPage = ({ items }) => {
         <h2 className="EventosHome">
           ¿Quieres ver lo que se cuece en {user.city.name}?
         </h2>
+        {console.log("events", events)}
         <div>
           {events.length > 0 &&
             events
@@ -54,6 +55,7 @@ export const HomeLogadoPage = ({ items }) => {
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
+                  eventOwner={item?.eventOwner.name}
                 />
               ))}
         </div>

@@ -58,14 +58,15 @@ export const ProfilePage = ({ item }) => {
 
     console.log(resUser);
   }, [resUser]);
-  console.log("aaaaahhhhhhhhhhhhh", resUser);
 
-   const handleDelete = async (eventId) => {
+  const handleDelete = async (eventId) => {
     try {
       await deleteEvent(eventId);
       setUserById((prevUser) => ({
         ...prevUser,
-        eventsOwner: prevUser.eventsOwner.filter(event => event._id !== eventId),
+        eventsOwner: prevUser.eventsOwner.filter(
+          (event) => event._id !== eventId
+        ),
       }));
     } catch (error) {
       console.error("Error al eliminar el evento:", error);
@@ -99,7 +100,7 @@ export const ProfilePage = ({ item }) => {
                   eventOwner={item?.eventOwner.name}
                   setUserById={setUserById}
                   userById={userById}
-                  handleDelete={handleDelete} 
+                  handleDelete={handleDelete}
                 />
               ))
             ) : (
@@ -122,7 +123,7 @@ export const ProfilePage = ({ item }) => {
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
-                  setUserById={setUserById}
+                  eventOwner={item?.eventOwner.name}
                 />
               ))
             ) : (
@@ -145,7 +146,7 @@ export const ProfilePage = ({ item }) => {
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
-                  setUserById={setUserById}
+                  eventOwner={item?.eventOwner.name}
                 />
               ))
             ) : (
