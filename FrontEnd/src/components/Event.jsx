@@ -119,7 +119,7 @@ export const Event = ({
         <p>Categoría: {category}</p>
         <p>Fecha: {new Date(date).toLocaleString()}</p>
         <p>Descripción: {description}</p>
-        <p>Ciudad: {cities[0].name}</p>
+        <p>Ciudad: {cities?.name}</p>
         <div>
           <div></div>
 
