@@ -9,6 +9,7 @@ import { getAllExperiences } from "../services/experiences.service";
 import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
+import { deleteEvent } from "../services/events.service";
 
 export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
@@ -59,6 +60,18 @@ export const ProfilePage = ({ item }) => {
   }, [resUser]);
   console.log("aaaaahhhhhhhhhhhhh", resUser);
 
+   const handleDelete = async (eventId) => {
+    try {
+      await deleteEvent(eventId);
+      setUserById((prevUser) => ({
+        ...prevUser,
+        eventsOwner: prevUser.eventsOwner.filter(event => event._id !== eventId),
+      }));
+    } catch (error) {
+      console.error("Error al eliminar el evento:", error);
+    }
+  };
+
   return (
     <>
       <main>
@@ -86,6 +99,7 @@ export const ProfilePage = ({ item }) => {
                   eventOwner={item?.eventOwner.name}
                   setUserById={setUserById}
                   userById={userById}
+                  handleDelete={handleDelete} 
                 />
               ))
             ) : (
