@@ -39,6 +39,9 @@ export const HomeLogadoPage = ({ items }) => {
         </h2>
         {console.log("events", events)}
         <div>
+          <button>
+            <Link to="/events">Ver más</Link>
+          </button>
           {events.length > 0 &&
             events
               .slice(-5)
@@ -51,7 +54,7 @@ export const HomeLogadoPage = ({ items }) => {
                   category={item?.category}
                   date={item?.date}
                   description={item?.description}
-                  cities={item?.cities[0]}
+                  cities={item?.cities?.map((city) => city.name)}
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
@@ -59,13 +62,9 @@ export const HomeLogadoPage = ({ items }) => {
                 />
               ))}
         </div>
-
         <p className="parrafo">
           Echa un vistazo de los nuevos eventos disponibles en {user.city.name}
         </p>
-        <button>
-          <Link to="/events">Eventos</Link>
-        </button>
       </div>
     </main>
   );

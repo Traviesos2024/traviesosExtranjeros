@@ -22,6 +22,8 @@ import {
   EventDetallePage,
   Followers,
   UserAll,
+  UpdateEvent,
+  UpdateExperience,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -79,6 +81,22 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <Eventspages />
+          </Protected>
+        ),
+      },
+      {
+        path: "/events/updateEvent",
+        element: (
+          <Protected>
+            <UpdateEvent />
+          </Protected>
+        ),
+      },
+      {
+        path: "/experiences/update",
+        element: (
+          <Protected>
+            <UpdateExperience />
           </Protected>
         ),
       },

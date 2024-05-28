@@ -18,7 +18,8 @@ export const Experience = ({
   experienceId,
   userId,
   setExperiences,
-  item
+  item,
+  handleDeleteExperience,
 }) => {
   const [open, setOpen] = useState(false);
   const { allUser, setAllUser, bridgeData, user } = useAuth();
@@ -54,6 +55,13 @@ export const Experience = ({
           favorite
         </span>
       </div>
+      {handleDeleteExperience && ( 
+            <button onClick={() => handleDeleteExperience(experienceId)}>
+              <span class="material-symbols-outlined">
+                delete
+              </span>
+            </button>
+          )}
       <p>{events}</p>
       <div>
         <h4 onClick={onToggle}>Comments</h4>
