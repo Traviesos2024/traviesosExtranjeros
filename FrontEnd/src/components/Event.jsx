@@ -13,6 +13,7 @@ export const Event = ({
   src,
   category,
   cities,
+  setUserById,
   date,
   description,
   eventId,
@@ -21,7 +22,8 @@ export const Event = ({
   item,
   initialLikes,
   initialFollowers,
-  userName,
+  eventOwner,
+  userById,
 }) => {
   const [open, setOpen] = useState(false);
   const { allUser, setAllUser, bridgeData, user } = useAuth();
@@ -51,11 +53,12 @@ export const Event = ({
   };
 
   // //! para seguir al usuario
-  const onToggleFollowUser = async (user) => {
+  const onToggleFollowUser = async (idUserSeQuiereSeguir) => {
+    console.log("entro");
     try {
       const res = await followUserToggle(idUserSeQuiereSeguir);
       console.log("res", res);
-      res.status == 200 && setEvents(res.data.allEvent);
+      res.status == 200 && setUserById(res.data.authUser);
     } catch (error) {
       console.error("Error toggling follow:", error);
     }
@@ -111,20 +114,35 @@ export const Event = ({
             </button>
           </div>
         </div>
-
+        {console.log("eventOwner", cities)}
         <p>Evento: {name}</p>
         <p>Categoría: {category}</p>
         <p>Fecha: {new Date(date).toLocaleString()}</p>
         <p>Descripción: {description}</p>
-        <p>Ciudad: {cities}</p>
-        <div onClick={onToggleFollowUser} className="person_add">
-          Organizador: {userName}{" "}
+        <p>Ciudad: {cities[0].name}</p>
+        <div>
+          <div></div>
+
+          <p>
+            Organizador:{" "}
+            <span
+              className={
+                userById?.followed?.includes(user._id)
+                  ? "material-symbols-outlined person_add"
+                  : "material-symbols-outlined"
+              }
+            >
+              {eventOwner}
+            </span>
+          </p>
+
           <span
             className={
-              user?.followed?.includes(user._id)
+              userById?.followed?.includes(user._id)
                 ? "material-symbols-outlined person_add"
                 : "material-symbols-outlined"
             }
+            onClick={() => onToggleFollowUser(item.eventOwner._id)}
           >
             person_add
           </span>

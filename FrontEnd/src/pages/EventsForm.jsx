@@ -15,7 +15,7 @@ export const EventsForm = () => {
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
   const [ok, setOk] = useState(false);
-  const { allUser, setAllUser, bridgeData } = useAuth();
+  const { user, allUser, setAllUser, bridgeData } = useAuth();
   const [events, setEvents] = useState([]);
 
   const [cities, setCities] = useState([]);
@@ -38,6 +38,7 @@ export const EventsForm = () => {
         ...formData,
         image: inputFile[0],
         cities: city,
+        eventOwner: user._id,
       };
       //llamada al backend
       setSend(true);

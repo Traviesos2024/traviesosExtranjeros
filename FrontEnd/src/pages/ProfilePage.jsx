@@ -66,6 +66,7 @@ export const ProfilePage = ({ item }) => {
           <h3 className="TituloViajeros">
             ¡¡Hola {user.user}, aquí tienes todo tu contenido!!
           </h3>
+
           <h2 className="EventosHome">Tus eventos creados</h2>
           <div>
             {userById != null ? (
@@ -78,10 +79,13 @@ export const ProfilePage = ({ item }) => {
                   category={item?.category}
                   date={item?.date}
                   description={item?.description}
-                  cities={item?.cities?.map((city) => city.name)}
+                  cities={item?.cities}
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
+                  eventOwner={item?.eventOwner.name}
+                  setUserById={setUserById}
+                  userById={userById}
                 />
               ))
             ) : (
@@ -104,6 +108,7 @@ export const ProfilePage = ({ item }) => {
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
+                  setUserById={setUserById}
                 />
               ))
             ) : (
@@ -126,6 +131,7 @@ export const ProfilePage = ({ item }) => {
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
+                  setUserById={setUserById}
                 />
               ))
             ) : (
@@ -147,6 +153,7 @@ export const ProfilePage = ({ item }) => {
                   events={item?.events}
                   experienceId={item?._id}
                   setExperiences={setExperiences}
+                  setUserById={setUserById}
                 />
               ))
             ) : (
@@ -168,6 +175,7 @@ export const ProfilePage = ({ item }) => {
                   events={item?.events}
                   experienceId={item?._id}
                   setExperiences={setExperiences}
+                  setUserById={setUserById}
                 />
               ))
             ) : (
