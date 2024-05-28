@@ -19,3 +19,5 @@ export * from "./CardCitiesGallery";
 export * from "./Input";
 export * from "./EventDetalle";
 export * from "./CardUser";
+export * from "./FigureExperience";
+export * from "./FigureEvent";

@@ -16,6 +16,7 @@ const Events = require("../models/Events.model");
 const Experience = require("../models/Experience.model");
 const Message = require("../models/Message.model");
 const Chat = require("../models/Chat.model");
+const City = require("../models/City.models");
 
 //! -----------------------------------------------------------------------
 //? ------------------------utils - middlewares - states ------------------
@@ -728,9 +729,31 @@ const byId = async (req, res, next) => {
   try {
     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
     El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
-    const userById = await User.findById(req.params.id).populate(
-      "city country eventsOwner eventsFav eventsFollow experiencesOwner experiencesFav followers followed"
-    );
+    const userById = await User.findById(req.params.id)
+      .populate({
+        path: "eventsOwner",
+        populate: [
+          { path: "eventOwner", model: User },
+          { path: "cities", model: City },
+        ],
+      })
+      .populate({
+        path: "eventsFav",
+        populate: [
+          { path: "likeEvent", model: User },
+          { path: "cities", model: City },
+          { path: "eventOwner", model: User },
+        ],
+      })
+      .populate({
+        path: "eventsFollow",
+        populate: [
+          { path: "eventFollowers", model: User },
+          { path: "cities", model: City },
+          { path: "eventOwner", model: User },
+        ],
+      })
+      .populate("city country experiencesOwner experiencesFav");
     if (userById) {
       // comprobamos si existe
       return res.status(200).json(userById); // mandamos un json con el objeto
@@ -828,7 +851,17 @@ const followUserToggle = async (req, res, next) => {
 
           return res.status(200).json({
             action: "he dejado de seguirlo",
-            authUser: await User.findById(req.user._id),
+            authUser: await User.findById(req.user._id)
+              .populate({
+                path: "eventsOwner",
+                populate: [
+                  { path: "eventOwner", model: User },
+                  { path: "cities", model: City },
+                ],
+              })
+              .populate(
+                "city country eventsFav eventsFollow experiencesOwner experiencesFav"
+              ),
             userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
           });
         } catch (error) {
@@ -867,7 +900,17 @@ const followUserToggle = async (req, res, next) => {
 
           return res.status(200).json({
             action: "Lo empiezo a seguir de seguirlo",
-            authUser: await User.findById(req.user._id),
+            authUser: await User.findById(req.user._id)
+              .populate({
+                path: "eventsOwner",
+                populate: [
+                  { path: "eventOwner", model: User },
+                  { path: "cities", model: City },
+                ],
+              })
+              .populate(
+                "city country eventsFav eventsFollow experiencesOwner experiencesFav"
+              ),
             userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
           });
         } catch (error) {

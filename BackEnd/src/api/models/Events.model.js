@@ -9,7 +9,7 @@ const EventSchema = new mongoose.Schema(
     name: { type: String, required: true, unique: false },
     category: {
       type: String,
-       enum: ["Deportes", "Música", "Gastronomía", "Otros..."],
+      enum: ["Deportes", "Música", "Gastronomía", "Otros..."],
     },
     image: { type: String, require: true },
     description: {
@@ -22,6 +22,7 @@ const EventSchema = new mongoose.Schema(
     experience: [{ type: mongoose.Schema.Types.ObjectId, ref: "Experience" }],
     likeEvent: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     eventFollowers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    eventOwner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     cities: [{ type: mongoose.Schema.Types.ObjectId, ref: "City" }],
   },
   {

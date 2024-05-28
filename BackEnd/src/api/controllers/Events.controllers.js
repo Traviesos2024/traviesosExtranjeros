@@ -1,6 +1,6 @@
 const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const enumOk = require("../../utils/enumOk");
-const Events = require("../models/Events.model");
+
 const User = require("../models/User.model");
 const City = require("../models/City.models");
 const Experience = require("../models/Experience.model");
@@ -26,12 +26,12 @@ const createEvent = async (req, res, next) => {
      * creacion del controlador
      */
 
-    await Events.syncIndexes();
+    await Event.syncIndexes();
     //! ------> INSTANCIAR UN NUEVO CHARACTER
     /** vamos a instanciar un nuevo character y le metemos como info incial lo que recibimos
      * por la req.body
      */
-    const newEvent = new Events(req.body);
+    const newEvent = new Event(req.body);
 
     //! -------> VALORAR SI HEMOS RECIBIDO UNA IMAGEN O NO
     /** Si recibimos la imagen tenemos que meter la url en el objeto creado arriba con la
@@ -60,12 +60,18 @@ const createEvent = async (req, res, next) => {
             await User.findByIdAndUpdate(req.user._id, {
               $push: { eventsOwner: saveEvent._id },
             });
-            return res.status(200).json(saveEvent);
+            const eventFinal = await Event.findById(saveEvent).populate(
+              "eventOwner"
+            );
+            return res.status(200).json(eventFinal);
           } catch (error) {
             console.log(error.message);
-            return res.status(404).json("No se ha podido actualizar el usuario con el evento creado");
+            return res
+              .status(404)
+              .json(
+                "No se ha podido actualizar el usuario con el evento creado"
+              );
           }
-          
         } catch (error) {
           console.log(error.message);
           return res.status(404).json("error general update city");
@@ -103,7 +109,7 @@ const createEvent = async (req, res, next) => {
 const getByCategory = async (req, res, next) => {
   try {
     const { category } = req.params;
-    const eventByCategory = await Events.findByCategory(category);
+    const eventByCategory = await Event.findByCategory(category);
     if (eventByCategory) {
       return res.status(200).json(eventByCategory);
     } else {
@@ -120,7 +126,7 @@ const getByCategory = async (req, res, next) => {
 const getByCity = async (req, res, next) => {
   try {
     const { city } = req.params;
-    const eventByCity = await Events.find({ cities: city }).populate("cities");
+    const eventByCity = await Event.find({ cities: city }).populate("cities");
     if (eventByCity) {
       return res.status(200).json(eventByCity);
     } else {
@@ -135,8 +141,9 @@ const getByCity = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const allEvent = await Events.find()
+    const allEvent = await Event.find()
       .populate("experience")
+      .populate("eventOwner")
       .populate("cities")
       .populate({
         path: "comments",
@@ -163,7 +170,7 @@ const getByName = async (req, res, next) => {
     const { name } = req.params;
 
     /// nos devuelve un array de elementos
-    const eventByName = await Events.find({ name });
+    const eventByName = await Event.find({ name });
     if (characterByName.length > 0) {
       return res.status(200).json(eventByName);
     } else {
@@ -191,15 +198,15 @@ const toggleLikeEvent = async (req, res, next) => {
         });
 
         try {
-          await Events.findByIdAndUpdate(idEvent, {
+          await Event.findByIdAndUpdate(idEvent, {
             $pull: { likeEvent: _id },
           });
 
           return res.status(200).json({
             action: "disliked",
             user: await User.findById(_id),
-            events: await Events.findById(idEvent),
-            allEvent: await Events.find(),
+            events: await Event.findById(idEvent),
+            allEvent: await Event.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -220,15 +227,15 @@ const toggleLikeEvent = async (req, res, next) => {
         });
 
         try {
-          await Events.findByIdAndUpdate(idEvent, {
+          await Event.findByIdAndUpdate(idEvent, {
             $push: { likeEvent: _id },
           });
 
           return res.status(200).json({
             action: "like",
             user: await User.findById(_id),
-            events: await Events.findById(idEvent),
-            allEvent: await Events.find(),
+            events: await Event.findById(idEvent),
+            allEvent: await Event.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -262,15 +269,15 @@ const toggleFollowEvent = async (req, res, next) => {
         });
 
         try {
-          await Events.findByIdAndUpdate(idEvent, {
+          await Event.findByIdAndUpdate(idEvent, {
             $pull: { eventFollowers: _id },
           });
 
           return res.status(200).json({
             action: "unfollow",
             user: await User.findById(_id),
-            events: await Events.findById(idEvent),
-            allEvent: await Events.find(),
+            events: await Event.findById(idEvent),
+            allEvent: await Event.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -291,15 +298,15 @@ const toggleFollowEvent = async (req, res, next) => {
         });
 
         try {
-          await Events.findByIdAndUpdate(idEvent, {
+          await Event.findByIdAndUpdate(idEvent, {
             $push: { eventFollowers: _id },
           });
 
           return res.status(200).json({
             action: "follow",
             user: await User.findById(_id),
-            events: await Events.findById(idEvent),
-            allEvent: await Events.find(),
+            events: await Event.findById(idEvent),
+            allEvent: await Event.find(),
           });
         } catch (error) {
           return res.status(404).json({
@@ -326,7 +333,7 @@ const toggleCity = async (req, res, next) => {
     const { idCity, idEvent } = req.params;
     // Obtener los objetos City y Event por sus IDs
     const city = await City.findById(idCity);
-    const event = await Events.findById(idEvent);
+    const event = await Event.findById(idEvent);
 
     if (!city || !event) {
       return res.status(404).json({ error: "Ciudad o evento no encontrado" });
@@ -336,7 +343,7 @@ const toggleCity = async (req, res, next) => {
     if (event.cities.includes(idCity)) {
       try {
         // Actualizar el evento y eliminar la ciudad
-        await Events.findByIdAndUpdate(idEvent, { $pull: { cities: idCity } });
+        await Event.findByIdAndUpdate(idEvent, { $pull: { cities: idCity } });
         console.log("borrado el evento");
 
         try {
@@ -345,7 +352,7 @@ const toggleCity = async (req, res, next) => {
           console.log("borrada la ciudad");
           return res.status(200).json({
             action: "delete",
-            cities: await Events.findById(idEvent).populate("cities"),
+            cities: await Event.findById(idEvent).populate("cities"),
             events: await City.findById(idCity).populate("events"),
           });
         } catch (error) {
@@ -363,7 +370,7 @@ const toggleCity = async (req, res, next) => {
     } else {
       try {
         // Actualizar el evento y agregar la ciudad
-        await Events.findByIdAndUpdate(idEvent, { $push: { cities: idCity } });
+        await Event.findByIdAndUpdate(idEvent, { $push: { cities: idCity } });
         console.log("actualizado el evento");
 
         try {
@@ -372,7 +379,7 @@ const toggleCity = async (req, res, next) => {
           console.log("actualizada la ciudad");
           return res.status(200).json({
             action: "events",
-            cities: await Events.findById(idEvent).populate("cities"),
+            cities: await Event.findById(idEvent).populate("cities"),
             events: await City.findById(idCity).populate("events"),
           });
         } catch (error) {
@@ -424,9 +431,9 @@ const updateEvent = async (req, res, next) => {
   let catchImg = req.file?.path;
 
   try {
-    await Events.syncIndexes();
+    await Event.syncIndexes();
     const { idEvent } = req.params;
-    const event = await Events.findById(idEvent);
+    const event = await Event.findById(idEvent);
     if (event) {
       //*eventByTypeByType//
       const oldImg = event.image;
@@ -450,7 +457,7 @@ const updateEvent = async (req, res, next) => {
       }
 
       try {
-        await Events.findByIdAndUpdate(idEvent, customBody);
+        await Event.findByIdAndUpdate(idEvent, customBody);
         if (req.file?.path) {
           deleteImgCloudinary(oldImg);
         }
@@ -522,7 +529,7 @@ const updateEvent = async (req, res, next) => {
 
 const sortByDate = async (req, res) => {
   try {
-    const events = await Events.find().sort({ date: 1 });
+    const events = await Event.find().sort({ date: 1 });
     return res.status(200).json({ events });
   } catch (error) {
     return res.status(500).json("error.message");
@@ -534,10 +541,10 @@ const sortByDate = async (req, res) => {
 const deleteEvent = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const event = await Events.findById(id);
+    const event = await Event.findById(id);
     if (event) {
       // lo buscamos para vr si sigue existiendo o no
-      const findByTypeEvent = await Events.findById(id);
+      const findByTypeEvent = await Event.findById(id);
 
       try {
         const test = await Experience.updateMany(
@@ -552,7 +559,7 @@ const deleteEvent = async (req, res, next) => {
             { $pull: { eventsFav: id } }
           );
 
-          await Events.findByIdAndDelete(id);
+          await Event.findByIdAndDelete(id);
 
           return res.status(200).json({
             deleteTest: true,
