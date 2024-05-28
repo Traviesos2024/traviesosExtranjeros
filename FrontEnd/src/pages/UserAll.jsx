@@ -24,7 +24,7 @@ export const UserAll = () => {
   return (
     <div id="containerCountryAll">
       {users.length !== 0 ? (
-        users.map((item) => <CardUser data={item} key={item._id} />)
+        users.data.map((item) => <CardUser data={item} key={item._id} />)
       ) : (
         <p>Cargando...</p>
       )}
