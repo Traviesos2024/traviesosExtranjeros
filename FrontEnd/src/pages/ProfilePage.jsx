@@ -79,7 +79,7 @@ export const ProfilePage = ({ item }) => {
                   category={item?.category}
                   date={item?.date}
                   description={item?.description}
-                  cities={item?.cities}
+                  cities={item?.cities[0]}
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
@@ -104,7 +104,7 @@ export const ProfilePage = ({ item }) => {
                   category={item?.category}
                   date={item?.date}
                   description={item?.description}
-                  cities={item?.cities?.map((city) => city.name)}
+                  cities={item?.cities[0]}
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
@@ -127,7 +127,7 @@ export const ProfilePage = ({ item }) => {
                   category={item?.category}
                   date={item?.date}
                   description={item?.description}
-                  cities={item?.cities?.map((city) => city.name)}
+                  cities={item?.cities[0]}
                   eventId={item?._id}
                   comments={item?.comments}
                   setEvents={setEvents}
