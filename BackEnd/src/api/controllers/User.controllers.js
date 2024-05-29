@@ -740,7 +740,7 @@ const byId = async (req, res, next) => {
       .populate({
         path: "eventsFav",
         populate: [
-          { path: "likeEvent", model: User },
+          // { path: "likeEvent", model: User },
           { path: "cities", model: City },
           { path: "eventOwner", model: User },
         ],
@@ -748,7 +748,7 @@ const byId = async (req, res, next) => {
       .populate({
         path: "eventsFollow",
         populate: [
-          { path: "eventFollowers", model: User },
+          // { path: "eventFollowers", model: User },
           { path: "cities", model: City },
           { path: "eventOwner", model: User },
         ],
@@ -773,7 +773,7 @@ const byId = async (req, res, next) => {
 const getAll = async (req, res, next) => {
   try {
     // creamos una constante, apuntamos al modelo y hacemos un find. Esto devuelve un array
-    const getAllUser = await User.find();
+    const getAllUser = await User.find().populate("city");
     if (getAllUser.length === 0) {
       // comprobamos si el getAll ha encontrado alguno, si no tiene ninguno, retornamos no encontrados
       return res.status(404).json("no encontrados");

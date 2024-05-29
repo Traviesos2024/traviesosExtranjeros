@@ -1,0 +1,13 @@
+.material-symbols-outlined {
+  font-size: 24px; /* Tamaño mediano para los iconos */
+  margin: 0 10px; /* Espacio entre los iconos */
+  color: black; /* Color inicial de los iconos */
+}
+
+.material-symbols-outlined:hover {
+  color: #e7cb57ff;; 
+}
+
+.material-symbols-outlined.active {
+  color: #6d71e5ff
+}

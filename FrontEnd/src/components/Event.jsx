@@ -63,6 +63,9 @@ export const Event = ({
 
   return (
     <figure key={eventId} className="card">
+      <Link to={`/events/${item._id}`}>
+        <img src={src} alt={name} width={350} height={200} />
+      </Link>
       <img src={src} alt={name} width={350} height={200} />
       <div className="card-padding">
         <p>{likes}</p>
@@ -127,7 +130,7 @@ export const Event = ({
             Organizador:{" "}
             <span
               className={
-                userById?.followed?.includes(user._id)
+                userById?.followed?.includes(item.eventOwner._id)
                   ? "material-symbols-outlined person_add"
                   : "material-symbols-outlined"
               }
@@ -137,7 +140,7 @@ export const Event = ({
           </p>
           <span
             className={
-              userById?.followed?.includes(user._id)
+              userById?.followed?.includes(item.eventOwner._id)
                 ? "material-symbols-outlined person_add"
                 : "material-symbols-outlined"
             }

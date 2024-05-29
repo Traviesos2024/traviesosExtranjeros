@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/authContext";
+import "./ProfileButton.css";
 export const ProfileButton = () => {
   const { user, login, logout } = useAuth();
   return (
@@ -17,7 +18,6 @@ export const ProfileButton = () => {
             <span className="material-symbols-outlined" onClick={logout}>
               logout
             </span>
-            {/* <button onClick={logout}>Cerrar sesión</button> */}
           </NavLink>
         </>
       ) : (
@@ -27,7 +27,6 @@ export const ProfileButton = () => {
           </NavLink>
           <NavLink to="/register">
             <span class="material-symbols-outlined">location_away</span>
-            {/* <button>Nuevo usuario</button> */}
           </NavLink>
         </>
       )}

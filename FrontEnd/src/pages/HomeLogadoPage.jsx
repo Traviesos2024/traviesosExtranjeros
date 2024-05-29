@@ -62,9 +62,6 @@ export const HomeLogadoPage = ({ items }) => {
                 />
               ))}
         </div>
-        <p className="parrafo">
-          Echa un vistazo de los nuevos eventos disponibles en {user.city.name}
-        </p>
       </div>
     </main>
   );

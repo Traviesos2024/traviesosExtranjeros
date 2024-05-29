@@ -4,6 +4,7 @@ import { cityById } from "../services/city.service";
 import { useErrorCity } from "../hooks";
 import { Loader } from "./Loader";
 import { Eventos } from "./Eventos";
+import "./Citybyid.css";
 
 export const Citybyid = () => {
   const [city, setCity] = useState(null);
@@ -26,10 +27,10 @@ export const Citybyid = () => {
     <div>
       {city != null ? (
         <figure id="cityId">
-          <img src={city.image} />
+          <img src={city.image} className="imagen" />
           <h2>{city.name}</h2>
           <p>{city.description}</p>
-          <p>{city?.country[0].name}</p>
+          {/* <p>{city?.country[0].name}</p> */}
           {city.events.map((item) => (
             <Eventos
               src={item.image}

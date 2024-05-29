@@ -24,26 +24,27 @@ export const Followers = ({}) => {
 
   return (
     <>
-      <div>
+      <div id="containerCountryAll">
         <h3>Seguidos</h3>
         {userById != null ? (
-          <ul>
+          <>
             {userById.followed.map((item, index) => (
-              <li key={index}>{item.name}</li>
+              <CardUser data={item} key={item._id} />
+              //   <li key={index}>{item.name}</li>
             ))}
-          </ul>
+          </>
         ) : (
           <p>No sigues a nadie</p>
         )}
       </div>
-      <div>
+      <div id="containerCountryAll">
         <h3>Seguidores</h3>
         {userById != null ? (
-          <ul>
+          <>
             {userById.followers.map((item, index) => (
-              <li key={index}>{item.name}</li>
+              <CardUser data={item} key={item._id} />
             ))}
-          </ul>
+          </>
         ) : (
           <p>No tienes seguidores</p>
         )}
