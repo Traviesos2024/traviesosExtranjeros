@@ -12,6 +12,9 @@
   height: 250px;
   margin: 10px;
   transition: transform 0.2s;
+  & p{
+    line-height: 0.7;
+  }
 }
 
 .cardUser img {
