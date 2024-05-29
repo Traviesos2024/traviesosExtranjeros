@@ -409,9 +409,12 @@ const eventById = async (req, res, next) => {
     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
     El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
     const { idEvent } = req.params;
-    const eventById = await Event.findById(idEvent).populate(
-      "name experience cities"
-    );
+    const eventById = await Event.findById(idEvent)
+      .populate("name experience cities")
+      .populate({
+        path: "comments",
+        populate: [{ path: "owner" }, { path: "likes" }],
+      });
 
     if (eventById) {
       // comprobamos si existe

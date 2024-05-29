@@ -152,20 +152,18 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                   }
                 >
                   <div className="comments-header">
-                    <div>
-                      <h5 onClick={() => onClickUserName(comment?.owner._id)}>
-                        {comment?.owner.name}:
-                      </h5>
-                    </div>
                     <div
                       onMouseEnter={(e) => {
-                        setStyle({ display: "block" });
+                        setStyle({ display: "flex" });
                       }}
                       onMouseLeave={(e) => {
                         setStyle({ display: "none" });
                       }}
                       className="comments-settings-wrapper"
                     >
+                      <span className="material-symbols-outlined comments-actions-icon">
+                        more_horiz
+                      </span>
                       <div className="comments-settings-actions" style={style}>
                         <span
                           className={
@@ -189,10 +187,10 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                           delete
                         </span>
                       </div>
-                      <span className="material-symbols-outlined comments-actions-icon">
-                        more_vert
-                      </span>
                     </div>
+                    <h5 onClick={() => onClickUserName(comment?.owner._id)}>
+                      {comment?.owner.name}:
+                    </h5>
                   </div>
 
                   <div className="comment-and-hour">

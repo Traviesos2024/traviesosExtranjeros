@@ -1,0 +1,8 @@
+.title-and-icons-wrapper {
+  display: flex;
+}
+
+.comment-icon-padding {
+  display: flex;
+  align-items: center;
+}
