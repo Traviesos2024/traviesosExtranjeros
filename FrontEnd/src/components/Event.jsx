@@ -24,7 +24,10 @@ export const Event = ({
   userById,
   handleDelete,
   handleUpdate,
+  
 }) => {
+  console.log('Event item:', item);
+  console.log('Event userById:', userById);
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
   const [likes, setLikes] = useState(initialLikes);
@@ -33,7 +36,9 @@ export const Event = ({
   const onToggleLike = async () => {
     try {
       const res = await toggleLikeEvent(eventId);
-      res.status === 200 && setEvents(res.data.allEvent);
+      if (res.status === 200) {setEvents(res.data.allEvent);
+        setLikes(res.data.updatedLikesCount);  
+        console.log('Toggle Like Response:', res.data)}
     } catch (error) {
       console.error("Error toggling like:", error);
     }
@@ -42,7 +47,10 @@ export const Event = ({
   const onToggleFollow = async () => {
     try {
       const res = await toggleFollowEvent(eventId);
-      res.status === 200 && setEvents(res.data.allEvent);
+      if (res.status === 200) {setEvents(res.data.allEvent);
+        setFollowed(res.data.updatedFollowersCount); 
+        console.log('Toggle Follow Response:', res.data)
+      }
     } catch (error) {
       console.error("Error toggling follow:", error);
     }
