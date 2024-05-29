@@ -34,7 +34,14 @@ export const EventDetalle = () => {
               navigate(`/${event.cities[0].name}/${event.cities[0]._id}`)
             }
           >
-            Atrás
+            Ciudad del evento
+          </button>
+          <button
+            onClick={() =>
+              navigate("/profile")
+            }
+          >
+            Mi perfil
           </button>
         </figure>
       ) : (

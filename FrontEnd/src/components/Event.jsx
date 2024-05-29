@@ -65,7 +65,6 @@ export const Event = ({
       <Link to={`/events/${item._id}`}>
         <img src={src} alt={name} width={350} height={200} />
       </Link>
-      <img src={src} alt={name} width={350} height={200} />
       <div className="card-padding">
         <p>{likes}</p>
         <div className="card-icons-wrapper">
@@ -94,19 +93,19 @@ export const Event = ({
             </span>
             <span>{item.eventFollowers.length}</span>
           </div>
-          <div className="comment-icon-padding">
+          {/* <div className="comment-icon-padding">
             <span
               className="material-symbols-outlined"
               onClick={onToggleComments}
             >
               mode_comment
             </span>
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <button>
               <Link to="/experiences">Ver experiencias</Link>
             </button>
-          </div>
+          </div> */}
           {handleDelete && (
             <button onClick={() => handleDelete(eventId)}>
               <span class="material-symbols-outlined">delete</span>
@@ -116,8 +115,9 @@ export const Event = ({
         <p>Evento: {name}</p>
         <p>Categoría: {category}</p>
         <p>Fecha: {new Date(date).toLocaleString()}</p>
-        <p>Descripción: {description}</p>
         <p>Ciudad: {cities?.name}</p>
+        {/* <p>Descripción: {description}</p>
+        
         <div>
           <p>
             Organizador:{" "}
@@ -130,8 +130,8 @@ export const Event = ({
             >
               {eventOwner}
             </span>
-          </p>
-          <span
+          </p> */}
+          {/* <span
             className={
               userById?.followed?.includes(item.eventOwner._id)
                 ? "material-symbols-outlined person_add"
@@ -140,8 +140,8 @@ export const Event = ({
             onClick={() => onToggleFollowUser(item.eventOwner._id)}
           >
             person_add
-          </span>
-        </div>
+          </span> */}
+        {/* </div>
         <div className="card-comments-wrapper">
           {open ? (
             <>
@@ -158,7 +158,7 @@ export const Event = ({
           ) : (
             ""
           )}
-        </div>
+        </div> */}
       </div>
     </figure>
   );

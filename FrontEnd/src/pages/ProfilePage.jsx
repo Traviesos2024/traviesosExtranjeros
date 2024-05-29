@@ -10,6 +10,8 @@ import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
 import { deleteEvent } from "../services/events.service";
+// import { followUserToggle } from "../services/user.service";
+
 
 export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
@@ -26,6 +28,15 @@ export const ProfilePage = ({ item }) => {
   }, []);
 
   useEffect(() => {
+    useErrorEvent(res, setRes, setEvents);
+    // console.log("setEveents", setEvents)
+  }, [res]);
+
+  useEffect(() => {
+    console.log("events", events);
+  }, [events]);
+
+  useEffect(() => {
     (async () => {
       setResExperiences(await getAllExperiences());
     })();
@@ -39,19 +50,12 @@ export const ProfilePage = ({ item }) => {
     console.log(experiences);
   }, [experiences]);
 
-  useEffect(() => {
-    useErrorEvent(res, setRes, setEvents);
-  }, [res]);
-
-  useEffect(() => {
-    console.log(events);
-  }, [events]);
-
+ 
   useEffect(() => {
     (async () => {
       setResUser(await byId(user._id));
-    })();
-  }, []);
+    })(user);
+  }, [user]);
 
   useEffect(() => {
     useErrorUser(resUser, setResUser, setUserById);
@@ -72,7 +76,7 @@ export const ProfilePage = ({ item }) => {
       console.error("Error al eliminar el evento:", error);
     }
   };
-
+ 
   const handleDeleteExperience = async (experienceId) => {
     try {
       await deleteExperience(experienceId);
@@ -105,15 +109,15 @@ export const ProfilePage = ({ item }) => {
                   key={item._id}
                   category={item?.category}
                   date={item?.date}
-                  description={item?.description}
-                  cities={item?.cities[0]}
-                  eventId={item?._id}
-                  comments={item?.comments}
-                  setEvents={setEvents}
-                  eventOwner={item?.eventOwner.name}
-                  setUserById={setUserById}
-                  userById={userById}
-                  handleDelete={handleDelete}
+                  // description={item?.description}
+                  // cities={item?.cities[0]}
+                  // eventId={item?._id}
+                  // comments={item?.comments}
+                  // setEvents={setEvents}
+                  // eventOwner={item?.eventOwner.name}
+                  // setUserById={setUserById}
+                  // userById={userById}
+                  // handleDelete={handleDelete}
                 />
               ))
             ) : (
@@ -131,12 +135,12 @@ export const ProfilePage = ({ item }) => {
                   key={item._id}
                   category={item?.category}
                   date={item?.date}
-                  description={item?.description}
-                  cities={item?.cities[0]}
-                  eventId={item?._id}
-                  comments={item?.comments}
-                  setEvents={setEvents}
-                  eventOwner={item?.eventOwner.name}
+                  // description={item?.description}
+                  // cities={item?.cities[0]}
+                  // eventId={item?._id}
+                  // comments={item?.comments}
+                  // setEvents={setEvents}
+                  // eventOwner={item?.eventOwner.name}
                 />
               ))
             ) : (

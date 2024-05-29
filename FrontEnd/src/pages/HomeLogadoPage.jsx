@@ -19,8 +19,13 @@ export const HomeLogadoPage = ({ items }) => {
   }, []);
 
   useEffect(() => {
-    useErrorEvent(res, setRes, setEvents);
-  }, [res]);
+    useErrorEvent(res, setRes, (fetchedEvents) => {
+      const filteredEvents = fetchedEvents.filter((event) =>
+        event.cities.some((city) => city.name === user.city.name)
+      );
+      setEvents(filteredEvents);
+    });
+  }, [res, user.city.name]);
 
   useEffect(() => {
     console.log(events);
@@ -33,8 +38,7 @@ export const HomeLogadoPage = ({ items }) => {
         <p className="parrafo">
           Aquí tienes los eventos más destacados de tu ciudad...
         </p>
-
-        <h2 className="EventosHome">
+<h2 className="EventosHome">
           ¿Quieres ver lo que se cuece en {user.city.name}?
         </h2>
         {console.log("events", events)}
