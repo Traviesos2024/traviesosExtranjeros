@@ -1,20 +1,21 @@
 // import * "./UpdateEvent.css"
 
 import { useForm } from "react-hook-form";
-import { NavProfile } from "../components";
+import { FigureEvent, NavProfile } from "../components";
 import "./FormProfile.css";
 import { Uploadfile } from "../components";
 import { useAuth } from "../context/authContext";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
 import { updateEvent } from "../services/events.service";
-import { useUpdateError } from "../hooks";
+import { useErrorEvent, useUpdateError } from "../hooks";
 
 export const UpdateEvent = () => {
   const { user, setUser, logout } = useAuth();
   const { handleSubmit, register } = useForm();
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
+  const [events, setEvents] = useState([]);
 
   const defaultData = {
     name: user?.user,
@@ -63,16 +64,24 @@ export const UpdateEvent = () => {
     useUpdateError(res, setRes, setUser, logout);
   }, [res]);
 
+  useEffect(() => {
+    useErrorEvent(res, setRes, setEvents);
+  }, [res]);
+
+   useEffect(() => {
+    console.log(events);
+  }, [events]);
+
   return (
     <>
       <NavProfile />
       <div className="containerProfile">
         <div className="containerDataNoChange">
-          <FigureEvent event={event} />
+          <FigureEvent events={events} />
         </div>
         <div className="form-wrap formProfile">
-          <h1>Change your data event ♻</h1>
-          <p>Please, enter your new data event</p>
+          <h1>Modificacion del evento ♻</h1>
+          <p>Por favor, actualiza los datos de tu evento</p>
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
               <input
@@ -81,17 +90,17 @@ export const UpdateEvent = () => {
                 id="name"
                 name="name"
                 autoComplete="false"
-                defaultValue={defaultData?.name}
+                defaultValue={defaultData?.events?.name}
                 {...register("name")}
               />
               <label htmlFor="custom-input" className="custom-placeholder">
-                Username
+              Nombre del Evento 
               </label>
             </div>
 
             <div className="user_container form-group">
               <input
-                className="input_user"
+                className="input_events"
                 type="text"
                 id="description"
                 name="description"

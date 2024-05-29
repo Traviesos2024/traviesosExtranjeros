@@ -86,6 +86,12 @@ export const ProfilePage = ({ item }) => {
       console.error("Error al eliminar el evento:", error);
     }
   };
+
+  const handleUpdate = (eventId) => {
+   
+    console.log("Evento actualizado:", eventId);
+  };
+
   return (
     <>
       <main>
@@ -114,6 +120,7 @@ export const ProfilePage = ({ item }) => {
                   setUserById={setUserById}
                   userById={userById}
                   handleDelete={handleDelete}
+                  handleUpdate={handleUpdate}
                 />
               ))
             ) : (
