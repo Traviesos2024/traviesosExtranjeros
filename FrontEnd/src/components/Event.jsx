@@ -62,6 +62,9 @@ export const Event = ({
 
   return (
     <figure key={eventId} className="card">
+      <Link to={`/events/${item._id}`}>
+        <img src={src} alt={name} width={350} height={200} />
+      </Link>
       <img src={src} alt={name} width={350} height={200} />
       <div className="card-padding">
         <p>{likes}</p>

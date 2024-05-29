@@ -1,0 +1,39 @@
+#cityId {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.imagen {
+  width: 100vw;
+  height: auto;
+}
+
+#cityId h2 {
+  font-size: 4em;
+  color: #6d71e5ff;
+  margin: 20px 0;
+}
+
+#cityId p {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+#cityId .city-description {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+#cityId .city-country {
+  font-size: 1em;
+  margin: 10px 0;
+}
+
+
+
+
+
+
