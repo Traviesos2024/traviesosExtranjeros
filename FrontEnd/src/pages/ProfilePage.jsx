@@ -115,7 +115,6 @@ export const ProfilePage = ({ item }) => {
                   key={item._id}
                   category={item?.category}
                   date={item?.date}
-<<<<<<< HEAD
                   // description={item?.description}
                   // cities={item?.cities[0]}
                   // eventId={item?._id}
@@ -125,7 +124,6 @@ export const ProfilePage = ({ item }) => {
                   // setUserById={setUserById}
                   // userById={userById}
                   // handleDelete={handleDelete}
-=======
                   description={item?.description}
                   cities={item?.cities[0]}
                   eventId={item?._id}
@@ -136,7 +134,6 @@ export const ProfilePage = ({ item }) => {
                   userById={userById}
                   handleDelete={handleDelete}
                   handleUpdate={handleUpdate}
->>>>>>> df48cb68b450f091269547e072fe715354f24475
                 />
               ))
             ) : (
