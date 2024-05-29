@@ -7,8 +7,11 @@
 }
 
 .imagen {
-  width: 100vw;
-  height: auto;
+  width: 700px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.2s;
 }
 
 #cityId h2 {
@@ -31,9 +34,3 @@
   font-size: 1em;
   margin: 10px 0;
 }
-
-
-
-
-
-

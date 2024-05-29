@@ -8,8 +8,7 @@
 
 #containerCountry h1 {
   font-size: 3em;
-  color:  #6d71e5ff
-  margin-bottom: 20px;
+  color: #6d71e5ff;
 }
 
 #containerCountry p {
@@ -21,37 +20,36 @@
 
 #containerCountry h4 {
   font-size: 1.5em;
-  color:  #6d71e5ff
+  color: #6d71e5ff;
   font-weight: bold;
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
- .TarjetasCiudades {
-    display: grid;
-    grid-template-columns: repeat(2, 500px);
-    gap: 10px;
-    padding: 50px;
-    align-items: center;
-    justify-items: center;
+.TarjetasCiudades {
+  display: grid;
+  grid-template-columns: repeat(2, 500px);
+  gap: 10px;
+  padding: 50px;
+  align-items: center;
+  justify-items: center;
+}
 
-  }
-  
-  .TarjetasCiudades button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-  
- .TarjetasCiudades button img {
-    width: 400px;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 10px;
-    transition: transform 0.2s;
-  }
-  
+.TarjetasCiudades button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.TarjetasCiudades button img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
 .TarjetasCiudadesbutton img:hover {
-    transform: scale(2.05);
-  }
+  transform: scale(2.05);
+}
