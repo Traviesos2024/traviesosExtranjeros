@@ -1,44 +1,52 @@
 import "./Event.css";
 import { Comments } from "./index";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toggleFollowEvent, toggleLikeEvent } from "../services/events.service";
 import { useAuth } from "../context/authContext";
 import { Link, NavLink } from "react-router-dom";
 import { followUserToggle } from "../services/user.service";
 
 export const Event = ({
-  name,
-  src,
-  category,
-  cities,
-  setUserById,
-  date,
-  description,
-  eventId,
-  comments,
+  renderData,
   setEvents,
-  item,
-  initialLikes,
-  initialFollowers,
-  eventOwner,
-  userById,
+  profile,
   handleDelete,
   handleUpdate,
-  
+  userAuth,
 }) => {
-  console.log('Event item:', item);
-  console.log('Event userById:', userById);
-  const [open, setOpen] = useState(false);
-  const { user } = useAuth();
-  const [likes, setLikes] = useState(initialLikes);
-  const [followed, setFollowed] = useState(initialFollowers);
+  const {
+    _id,
+    image,
+    name,
+    likeEvent,
+    eventFollowers,
+    category,
+    date,
+    cities,
+    eventOwner,
+  } = renderData;
 
+  console.log("render data", renderData);
+  const [open, setOpen] = useState(false);
+  const spanFollowRef = useRef(null);
+  const { user } = useAuth();
   const onToggleLike = async () => {
     try {
-      const res = await toggleLikeEvent(eventId);
-      if (res.status === 200) {setEvents(res.data.allEvent);
-        setLikes(res.data.updatedLikesCount);  
-        console.log('Toggle Like Response:', res.data)}
+      const res = await toggleLikeEvent(_id);
+      if (res.status === 200) {
+        console.log(res.data);
+        //! siguiente linea no SE TOCA!!!
+        if (profile) {
+          setEvents(res.data.user);
+        } else {
+          const filteredEvents = res.data.allEvent.filter((event) =>
+            event.cities.some((city) => city.name === userAuth.city.name)
+          );
+          console.log(filteredEvents);
+          setEvents(filteredEvents);
+        }
+        console.log("Toggle Like Response:", res.data);
+      }
     } catch (error) {
       console.error("Error toggling like:", error);
     }
@@ -46,22 +54,54 @@ export const Event = ({
 
   const onToggleFollow = async () => {
     try {
-      const res = await toggleFollowEvent(eventId);
-      if (res.status === 200) {setEvents(res.data.allEvent);
-        setFollowed(res.data.updatedFollowersCount); 
-        console.log('Toggle Follow Response:', res.data)
+      const res = await toggleFollowEvent(_id);
+      console.log("res", res);
+
+      if (profile) {
+        setEvents(res.data.user);
+      } else {
+        const filteredEvents = res.data.allEvent.filter((event) =>
+          event.cities.some((city) => city.name === userAuth.city.name)
+        );
+        console.log(filteredEvents);
+        setEvents(filteredEvents);
       }
+      console.log("Toggle Follow Response:", res.data);
     } catch (error) {
       console.error("Error toggling follow:", error);
     }
   };
 
   const onToggleFollowUser = async (idUserSeQuiereSeguir) => {
+    const classCustomOptimistic =
+      spanFollowRef.current.className == "material-symbols-outlined person_add"
+        ? "material-symbols-outlined"
+        : "material-symbols-outlined person_add";
+    spanFollowRef.current.className = classCustomOptimistic;
+    console.log(eventOwner._id);
     try {
       const res = await followUserToggle(idUserSeQuiereSeguir);
-      res.status === 200 && setUserById(res.data.authUser);
+
+      if (profile) {
+        res.status === 200 && setEvents(res.data.authUser);
+      } else {
+        if (res.status === 200) {
+          const filteredEvents = res.data.allEvent.filter((event) =>
+            event.cities.some((city) => city.name === userAuth.city.name)
+          );
+          console.log(filteredEvents);
+          setEvents(filteredEvents);
+        }
+      }
     } catch (error) {
       console.error("Error toggling follow:", error);
+
+      let classCustomOptimistic =
+        spanFollowRef.current.className ==
+        "material-symbols-outlined person_add"
+          ? "material-symbols-outlined"
+          : "material-symbols-outlined person_add";
+      spanFollowRef.current.className = classCustomOptimistic;
     }
   };
 
@@ -70,110 +110,69 @@ export const Event = ({
   };
 
   return (
-    <figure key={eventId} className="card">
-      <Link to={`/events/${item._id}`}>
-        <img src={src} alt={name} width={350} height={200} />
+    <figure key={_id} className="card">
+      <Link to={`/events/${_id}`}>
+        <img src={image} alt={name} width={350} height={200} />
       </Link>
       <div className="card-padding">
-        <p>{likes}</p>
         <div className="card-icons-wrapper">
           <div onClick={onToggleLike} id="favorite-icon">
             <span
               className={
-                item.likeEvent.includes(user._id)
+                likeEvent.includes(user._id)
                   ? "material-symbols-outlined favorite"
                   : "material-symbols-outlined"
               }
             >
               favorite
             </span>
-            <span>{item.likeEvent.length}</span>
+            <span>{likeEvent.length}</span>
           </div>
-          <p>{followed}</p>
+
           <div onClick={onToggleFollow} className="Check">
             <span
               className={
-                item.eventFollowers.includes(user._id)
+                eventFollowers.includes(user._id)
                   ? "material-symbols-outlined Check_box"
                   : "material-symbols-outlined"
               }
             >
               Check_box
             </span>
-            <span>{item.eventFollowers.length}</span>
+            <span>{eventFollowers.length}</span>
           </div>
-          {/* <div className="comment-icon-padding">
-            <span
-              className="material-symbols-outlined"
-              onClick={onToggleComments}
-            >
-              mode_comment
-            </span>
-          </div> */}
-          {/* <div>
-            <button>
-              <Link to="/experiences">Ver experiencias</Link>
-            </button>
-          </div> */}
+
           {handleDelete && (
-            <button onClick={() => handleDelete(eventId)}>
+            <button onClick={() => handleDelete(_id)}>
               <span class="material-symbols-outlined">delete</span>
             </button>
           )}
-          {handleUpdate && ( 
-          <NavLink to="/events/updateEvent">
-             <span class="material-symbols-outlined">update</span>
-          </NavLink>
+          {handleUpdate && (
+            <NavLink to="/events/updateEvent">
+              <span class="material-symbols-outlined">update</span>
+            </NavLink>
           )}
-
         </div>
         <p>Evento: {name}</p>
         <p>Categoría: {category}</p>
         <p>Fecha: {new Date(date).toLocaleString()}</p>
-        <p>Ciudad: {cities?.name}</p>
-        {/* <p>Descripción: {description}</p>
-        
-        <div>
-          <p>
-            Organizador:{" "}
-            <span
-              className={
-                userById?.followed?.includes(item.eventOwner._id)
-                  ? "material-symbols-outlined person_add"
-                  : "material-symbols-outlined"
-              }
-            >
-              {eventOwner}
-            </span>
-          </p> */}
-          {/* <span
-            className={
-              userById?.followed?.includes(item.eventOwner._id)
-                ? "material-symbols-outlined person_add"
-                : "material-symbols-outlined"
-            }
-            onClick={() => onToggleFollowUser(item.eventOwner._id)}
-          >
-            person_add
-          </span> */}
-        {/* </div>
-        <div className="card-comments-wrapper">
-          {open ? (
-            <>
-              <Comments selectedRecipient={eventId} commentsProps={comments} />
-              <div className="close-chat-wrapper">
-                <span
-                  onClick={onToggleComments}
-                  className="material-symbols-outlined"
-                >
-                  close
-                </span>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
-        </div> */}
+        <p>Ciudad: {cities[0]?.name}</p>
+        <p>
+          Organizador: {console.log("😋", eventOwner._id)}
+          <span ref={spanFollowRef}>{eventOwner?.name}</span>
+        </p>
+
+        <span
+          ref={spanFollowRef}
+          className={
+            userAuth?.followed?.includes(eventOwner._id)
+              ? "material-symbols-outlined person_add"
+              : "material-symbols-outlined"
+          }
+          onClick={() => onToggleFollowUser(eventOwner._id)}
+        >
+          person_add
+        </span>
       </div>
     </figure>
   );

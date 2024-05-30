@@ -5,52 +5,54 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { eventById, getAll } from "../services/events.service";
-import { deleteExperience, getAllExperiences } from "../services/experiences.service";
+import {
+  deleteExperience,
+  getAllExperiences,
+} from "../services/experiences.service";
 import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
 import { deleteEvent } from "../services/events.service";
 // import { followUserToggle } from "../services/user.service";
 
-
 export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
   const [events, setEvents] = useState([]);
-  const [experiences, setExperiences] = useState([]);
   const [res, setRes] = useState({});
+  const [experiences, setExperiences] = useState([]);
   const [resExperiences, setResExperiences] = useState({});
   const [resUser, setResUser] = useState([]);
   const [userById, setUserById] = useState(null);
-  useEffect(() => {
-    (async () => {
-      setRes(await getAll());
-    })();
-  }, []);
 
-  useEffect(() => {
-    useErrorEvent(res, setRes, setEvents);
-    // console.log("setEveents", setEvents)
-  }, [res]);
+  // useEffect(() => {
+  //   (async () => {
+  //     setRes(await getAll());
+  //   })();
+  // }, []);
 
-  useEffect(() => {
-    console.log("events", events);
-  }, [events]);
+  // useEffect(() => {
+  //   useErrorEvent(res, setRes, setEvents);
+  //   // console.log("setEveents", setEvents)
+  // }, [res]);
 
-  useEffect(() => {
-    (async () => {
-      setResExperiences(await getAllExperiences());
-    })();
-  }, []);
+  // useEffect(() => {
+  //   console.log("events", events);
+  // }, [events]);
 
-  useEffect(() => {
-    useErrorExperience(resExperiences, setResExperiences, setExperiences);
-  }, [resExperiences]);
+  // useEffect(() => {
+  //   (async () => {
+  //     setResExperiences(await getAllExperiences());
+  //   })();
+  // }, []);
 
-  useEffect(() => {
-    console.log(experiences);
-  }, [experiences]);
+  // useEffect(() => {
+  //   useErrorExperience(resExperiences, setResExperiences, setExperiences);
+  // }, [resExperiences]);
 
- 
+  // useEffect(() => {
+  //   console.log(experiences);
+  // }, [experiences]);
+
   useEffect(() => {
     (async () => {
       setResUser(await byId(user._id));
@@ -59,9 +61,11 @@ export const ProfilePage = ({ item }) => {
 
   useEffect(() => {
     useErrorUser(resUser, setResUser, setUserById);
-
-    console.log(resUser);
   }, [resUser]);
+
+  useEffect(() => {
+    console.log(userById);
+  }, [userById]);
 
   const handleDelete = async (eventId) => {
     try {
@@ -76,7 +80,7 @@ export const ProfilePage = ({ item }) => {
       console.error("Error al eliminar el evento:", error);
     }
   };
- 
+
   const handleDeleteExperience = async (experienceId) => {
     try {
       await deleteExperience(experienceId);
@@ -92,7 +96,6 @@ export const ProfilePage = ({ item }) => {
   };
 
   const handleUpdate = (eventId) => {
-   
     console.log("Evento actualizado:", eventId);
   };
 
@@ -109,31 +112,13 @@ export const ProfilePage = ({ item }) => {
             {userById != null ? (
               userById.eventsOwner.map((item) => (
                 <Event
-                  item={item}
-                  src={item?.image}
-                  name={item?.name}
+                  renderData={item}
                   key={item._id}
-                  category={item?.category}
-                  date={item?.date}
-                  // description={item?.description}
-                  // cities={item?.cities[0]}
-                  // eventId={item?._id}
-                  // comments={item?.comments}
-                  // setEvents={setEvents}
-                  // eventOwner={item?.eventOwner.name}
-                  // setUserById={setUserById}
-                  // userById={userById}
-                  // handleDelete={handleDelete}
-                  description={item?.description}
-                  cities={item?.cities[0]}
-                  eventId={item?._id}
-                  comments={item?.comments}
-                  setEvents={setEvents}
-                  eventOwner={item?.eventOwner.name}
-                  setUserById={setUserById}
-                  userById={userById}
+                  setEvents={setUserById}
+                  profile={true}
                   handleDelete={handleDelete}
                   handleUpdate={handleUpdate}
+                  userAuth={userById}
                 />
               ))
             ) : (
@@ -145,18 +130,11 @@ export const ProfilePage = ({ item }) => {
             {userById != null ? (
               userById.eventsFav.map((item) => (
                 <Event
-                  item={item}
-                  src={item?.image}
-                  name={item?.name}
+                  renderData={item}
                   key={item._id}
-                  category={item?.category}
-                  date={item?.date}
-                  // description={item?.description}
-                  // cities={item?.cities[0]}
-                  // eventId={item?._id}
-                  // comments={item?.comments}
-                  // setEvents={setEvents}
-                  // eventOwner={item?.eventOwner.name}
+                  setEvents={setUserById}
+                  profile={true}
+                  userAuth={userById}
                 />
               ))
             ) : (
@@ -168,18 +146,11 @@ export const ProfilePage = ({ item }) => {
             {userById != null ? (
               userById.eventsFollow.map((item) => (
                 <Event
-                  item={item}
-                  src={item?.image}
-                  name={item?.name}
+                  renderData={item}
                   key={item._id}
-                  category={item?.category}
-                  date={item?.date}
-                  description={item?.description}
-                  cities={item?.cities[0]}
-                  eventId={item?._id}
-                  comments={item?.comments}
-                  setEvents={setEvents}
-                  eventOwner={item?.eventOwner.name}
+                  setEvents={setUserById}
+                  profile={true}
+                  userAuth={userById}
                 />
               ))
             ) : (
@@ -188,7 +159,7 @@ export const ProfilePage = ({ item }) => {
           </div>
           <h2 className="EventosHome">Experiencias que has creado</h2>
           <div>
-            {userById != null ? (
+            {/**userById != null ? (
               userById.experiencesOwner.map((item) => (
                 <Experience
                   item={item}
@@ -206,11 +177,11 @@ export const ProfilePage = ({ item }) => {
               ))
             ) : (
               <p>No has creado aún experiencias</p>
-            )}
+            )*/}
           </div>
           <h2 className="EventosHome">Experiencias que te gustan</h2>
           <div>
-            {userById != null ? (
+            {/*userById != null ? (
               userById.experiencesFav.map((item) => (
                 <Experience
                   item={item}
@@ -228,7 +199,7 @@ export const ProfilePage = ({ item }) => {
               ))
             ) : (
               <p>No hay experiencias que te hayan gustado disponibles</p>
-            )}
+            )*/}
           </div>
           <p className="parrafo">
             Echa un vistazo de los nuevos eventos disponibles en{" "}

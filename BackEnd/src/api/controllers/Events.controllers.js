@@ -151,7 +151,7 @@ const getAll = async (req, res, next) => {
       });
     /** el find nos devuelve un array */
     if (allEvent.length > 0) {
-      return res.status(200).json(allEvent);
+      return res.status(200).json({ allEvent });
     } else {
       return res.status(404).json("no se han encontrado characters");
     }
@@ -204,9 +204,33 @@ const toggleLikeEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "disliked",
-            user: await User.findById(_id),
+            user: await User.findById(_id)
+              .populate({
+                path: "eventsOwner",
+                populate: [
+                  { path: "eventOwner", model: User },
+                  { path: "cities", model: City },
+                ],
+              })
+              .populate({
+                path: "eventsFav",
+                populate: [
+                  // { path: "likeEvent", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "eventsFollow",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate("city country experiencesOwner experiencesFav"),
             events: await Event.findById(idEvent),
-            allEvent: await Event.find(),
+            allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -233,9 +257,33 @@ const toggleLikeEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "like",
-            user: await User.findById(_id),
+            user: await User.findById(_id)
+              .populate({
+                path: "eventsOwner",
+                populate: [
+                  { path: "eventOwner", model: User },
+                  { path: "cities", model: City },
+                ],
+              })
+              .populate({
+                path: "eventsFav",
+                populate: [
+                  // { path: "likeEvent", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "eventsFollow",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate("city country experiencesOwner experiencesFav"),
             events: await Event.findById(idEvent),
-            allEvent: await Event.find(),
+            allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -275,9 +323,33 @@ const toggleFollowEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "unfollow",
-            user: await User.findById(_id),
+            user: await User.findById(_id)
+              .populate({
+                path: "eventsOwner",
+                populate: [
+                  { path: "eventOwner", model: User },
+                  { path: "cities", model: City },
+                ],
+              })
+              .populate({
+                path: "eventsFav",
+                populate: [
+                  // { path: "likeEvent", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "eventsFollow",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate("city country experiencesOwner experiencesFav"),
             events: await Event.findById(idEvent),
-            allEvent: await Event.find(),
+            allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -304,9 +376,33 @@ const toggleFollowEvent = async (req, res, next) => {
 
           return res.status(200).json({
             action: "follow",
-            user: await User.findById(_id),
+            user: await User.findById(_id)
+              .populate({
+                path: "eventsOwner",
+                populate: [
+                  { path: "eventOwner", model: User },
+                  { path: "cities", model: City },
+                ],
+              })
+              .populate({
+                path: "eventsFav",
+                populate: [
+                  // { path: "likeEvent", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "eventsFollow",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate("city country experiencesOwner experiencesFav"),
             events: await Event.findById(idEvent),
-            allEvent: await Event.find(),
+            allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
           return res.status(404).json({
