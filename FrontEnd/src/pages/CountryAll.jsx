@@ -29,7 +29,7 @@ export const CountryAll = () => {
       {countries.length !== 0 ? (
         countries.map((item) => <CardCountryHome data={item} key={item._id} />)
       ) : (
-        <p>Cargando...</p>
+        <p>Cargando..</p>
       )}
     </div>
   );
