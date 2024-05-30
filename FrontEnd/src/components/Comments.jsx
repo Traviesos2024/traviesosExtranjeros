@@ -6,6 +6,7 @@ import {
   createMessage,
   toggleLikeMessage,
   deleteMessage,
+  updateMessage,
 } from "../services/message.service";
 import { getChatLastMessageHour } from "../utils";
 import { useNavigate } from "react-router-dom";
@@ -20,6 +21,8 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
   const [ok, setOk] = useState(false);
   const { allUser, setAllUser, bridgeData } = useAuth();
   const [comments, setComments] = useState([]);
+  const [commentContent, setCommentContent] = useState("");
+  const [commentToModify, setCommentToModify] = useState(undefined);
   const [res, setRes] = useState({});
   const user = JSON.parse(localStorage.getItem("user"));
   const [isLoading, setIsLoading] = useState(true);
@@ -69,22 +72,6 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
     return <h1>cargando...</h1>;
   }
 
-  const formSubmit = async (formData) => {
-    const customFormData = {
-      ...formData,
-      type: "public",
-    };
-    //llamada al backend
-    setSend(true);
-
-    const newComment = await createMessage(selectedRecipient, customFormData);
-
-    setComments([...comments, newComment.data.recipient.comments.at(-1)]);
-    setRes(newComment.data);
-    setSend(false);
-    reset();
-  };
-
   async function onClickUserName(commentOwnerId) {
     const chatsResponse = await getChatByUser(user._id);
 
@@ -108,6 +95,7 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
       });
     }
   }
+
   async function onToggleLike(comment) {
     const updatedMessage = await toggleLikeMessage(comment._id);
 
@@ -130,6 +118,71 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
 
     setComments(commentsToUpdate);
   }
+
+  function onSetCommentToModify(commentToModify) {
+    setCommentToModify(commentToModify);
+    setCommentContent(commentToModify.content);
+  }
+
+  const formSubmit = async (formData) => {
+    if (commentToModify) {
+      modifyComment(formData);
+    } else {
+      createComment(formData);
+    }
+  };
+
+  async function createComment(formData) {
+    const customFormData = {
+      ...formData,
+      type: "public",
+    };
+    //llamada al backend
+    setSend(true);
+
+    const newComment = await createMessage(selectedRecipient, customFormData);
+
+    setComments([...comments, newComment.data.recipient.comments.at(-1)]);
+    setRes(newComment.data);
+    setCommentContent("");
+    setSend(false);
+    reset();
+  }
+
+  async function modifyComment(formData) {
+    const customFormData = {
+      ...formData,
+      type: "public",
+    };
+    //llamada al backend
+    setSend(true);
+
+    const commentModified = await updateMessage(
+      commentToModify._id,
+      customFormData
+    );
+
+    commentToModify.content = commentContent;
+
+    let commentsToUpdate = [...comments];
+    const indexOfMessageToReplace = commentsToUpdate.findIndex(
+      (message) => message._id == commentToModify._id
+    );
+    commentsToUpdate[indexOfMessageToReplace] = commentToModify;
+
+    setComments(commentsToUpdate);
+    setRes(commentModified.data);
+    setCommentToModify(undefined);
+    setCommentContent("");
+    setSend(false);
+    reset();
+  }
+
+  const onTodoChange = (event) => {
+    setCommentContent(event.target.value);
+    setValue("content", event.target.value);
+  };
+
   return (
     <>
       <div className="chat-wrapper">
@@ -177,7 +230,10 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                         >
                           favorite
                         </span>
-                        <span className="material-symbols-outlined comments-actions-icon">
+                        <span
+                          className="material-symbols-outlined comments-actions-icon"
+                          onClick={() => onSetCommentToModify(comment)}
+                        >
                           edit
                         </span>
                         <span
@@ -207,12 +263,17 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
           <h3>No comments</h3>
         )}
         <div ref={messagesEndRef} />
-        <form id="formularios" onSubmit={handleSubmit(formSubmit)}>
+        <form
+          id="formulario"
+          onSubmit={handleSubmit(formSubmit)}
+          onChange={onTodoChange}
+        >
           <label htmlFor="content">Escribe tu mensaje:</label>
           <textarea
             id="content"
             className="textarea-message"
             name="content"
+            value={commentContent}
             {...register("content", { required: true })}
             required
           />

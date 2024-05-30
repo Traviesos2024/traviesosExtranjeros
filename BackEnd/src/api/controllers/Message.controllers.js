@@ -463,7 +463,9 @@ const updateMessage = async (req, res, next) => {
 
         // ...> Se busca el elemento actualizado a través de la ID
 
-        const messageByIdUpdate = await Message.findById(id);
+        const messageByIdUpdate = await Message.findById(id)
+          .populate("likes")
+          .populate("owner");
 
         // ......> Se coge el req.body y vamos a sacarle las claves para saber que elementos nos ha dicho de actualizar
         const elementUpdate = Object.keys(req.body);
