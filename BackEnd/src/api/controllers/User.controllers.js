@@ -12,7 +12,7 @@ dotenv.config();
 //? ------------------------------modelos----------------------------------
 //! -----------------------------------------------------------------------
 const User = require("../models/User.model");
-const Events = require("../models/Events.model");
+const Event = require("../models/Events.model");
 const Experience = require("../models/Experience.model");
 const Message = require("../models/Message.model");
 const Chat = require("../models/Chat.model");
@@ -859,10 +859,25 @@ const followUserToggle = async (req, res, next) => {
                   { path: "cities", model: City },
                 ],
               })
-              .populate(
-                "city country eventsFav eventsFollow experiencesOwner experiencesFav"
-              ),
+              .populate({
+                path: "eventsFav",
+                populate: [
+                  // { path: "likeEvent", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "eventsFollow",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate("city country experiencesOwner experiencesFav"),
             userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+            allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -908,10 +923,25 @@ const followUserToggle = async (req, res, next) => {
                   { path: "cities", model: City },
                 ],
               })
-              .populate(
-                "city country eventsFav eventsFollow experiencesOwner experiencesFav"
-              ),
+              .populate({
+                path: "eventsFav",
+                populate: [
+                  // { path: "likeEvent", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "eventsFollow",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate("city country experiencesOwner experiencesFav"),
             userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
+            allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -981,7 +1011,7 @@ const deleteUser = async (req, res, next) => {
           );
           try {
             //* 1) likes ---> Events
-            await Events.updateMany(
+            await Event.updateMany(
               { likeEvent: _id },
               { $pull: { likeEvent: _id } }
             );
@@ -1039,7 +1069,7 @@ const deleteUser = async (req, res, next) => {
 
                             try {
                               // 10) eventos follow --> eventos
-                              await Events.deleteMany({
+                              await Event.deleteMany({
                                 eventFollow: _id,
                               });
                               //! ----------REDIRECT--------------------------
@@ -1159,7 +1189,7 @@ const deleteMessageDeleteUser = async (req, res, next) => {
             );
 
             try {
-              await Events.updateMany(
+              await Event.updateMany(
                 { comments: id },
                 { $pull: { comments: id } }
               );
