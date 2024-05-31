@@ -2,28 +2,63 @@
 
 import "./Experience.css";
 import { Comments } from "./index";
-import { useErrorExperience } from "../hooks"; // Importa un hook personalizado para manejar errores
 import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
-import { useState, useEffect } from "react";
-import axios from 'axios';
+import { useState, useRef} from "react";
 import { toggleLikeExperience } from "../services/experiences.service"; // Importar la función de servicio
 
 export const Experience = ({
-  name,
-  src,
-  description,
-  initialLikes,
-  comments,
-  events,
-  experienceId,
-  userId,
+  // name,
+  // src,
+  // description,
+  // initialLikes,
+  // comments,
+  // events,
+  // experienceId,
+  // userId,
   setExperiences,
-  item,
+  profile,
+  // item,
   handleDeleteExperience,
+  renderData,
+  userAuth,
 }) => {
+  const {
+    _id,
+    image,
+    name,
+    likes,
+    events,
+    description,
+    
+  } = renderData;
+  console.log("render data", renderData);
+
+
   const [open, setOpen] = useState(false);
-  const { allUser, setAllUser, bridgeData, user } = useAuth();
-  const [likes, setLikes] = useState(initialLikes); // Estado de likes
+  const spanFollowRef = useRef(null);
+  const { user } = useAuth();
+  const onToggleLike = async () => {
+    try {
+      const res = await toggleLikeExperience(_id);
+      if (res.status === 200) {
+        console.log("respuesta data", res.data);
+        //! siguiente linea no SE TOCA!!!
+        if (profile) {
+          setExperiences(res.data.events);
+        } else {
+          const filteredExperiences = res.data.allExperience.filter((experience) =>
+            experience.events.some(() => events.name === userAuth.experience.name)
+          );
+          console.log("experiencias filtradas", filteredExperiences);
+          setExperiences(filteredExperiences);
+        }
+        console.log("Toggle Like Response:", res.data);
+      }
+    } catch (error) {
+      console.error("Error toggling like:", error);
+
+    }
+  };
   
   // Obtener el estado del like del backend cuando el componente se monte
   
@@ -33,25 +68,25 @@ export const Experience = ({
     setOpen(!open);
   };
 
-  const onToggleLike = async (experiences) => {
-    try {
-      const res = await toggleLikeExperience(experienceId);
-      console.log("res", res)
-      res.status == 200 && 
-      setExperiences(res.data.allExperience)
-    } catch (error) {
-      console.error("Error toggling like:", error);
-    };
-  };
+  // const onToggleLike = async (experiences) => {
+  //   try {
+  //     const res = await toggleLikeExperience(experienceId);
+  //     console.log("res", res)
+  //     res.status == 200 && 
+  //     setExperiences(res.data.allExperience)
+  //   } catch (error) {
+  //     console.error("Error toggling like:", error);
+  //   };
+  // };
   
   return (
-    <figure>
-      <img src={src} alt={name} width={350} height={200} />
-      <p>{name}</p>
+    <figure key={_id}>
+      <img src={image} alt={name} width={350} height={200} />
+      {/* <p>{name}</p>
       <p>{description}</p>
-      <p>{likes}</p>
+      <p>{likes}</p> */}
       <div onClick={onToggleLike} className="favorite-icon">
-        <span className={item.likes.includes(user._id)? 'material-symbols-outlined favorite' : 'material-symbols-outlined'}>
+        <span className={likes.includes(user._id)? 'material-symbols-outlined favorite' : 'material-symbols-outlined'}>
           favorite
         </span>
       </div>
@@ -62,7 +97,10 @@ export const Experience = ({
               </span>
             </button>
           )}
-      <p>{events}</p>
+      <p>Experiencia: {name}</p>
+        <p>Descripción: {description}</p>
+        <p>Evento: {events.name}</p>
+        
       <div>
         <h4 onClick={onToggle}>Comments</h4>
         {open ? (

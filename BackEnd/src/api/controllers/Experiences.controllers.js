@@ -5,7 +5,7 @@ const Chat = require("../models/Chat.model");
 const Events = require("../models/Events.model");
 
 //! -------------create new experiencie ----------------
-
+//? EL ID DE LA EXPERIENCIA QUE HAS CREADO METERLO EN EL EVENTO AL QUE PERTENCE
 const createExperience = async (req, res, next) => {
   try {
     await Experience.syncIndexes();
