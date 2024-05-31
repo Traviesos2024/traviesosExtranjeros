@@ -218,18 +218,31 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                         more_horiz
                       </span>
                       <div className="comments-settings-actions" style={style}>
-                        <span
-                          className={
-                            comment?.likes?.find(
-                              (userFav) => userFav?._id == user._id
-                            )
-                              ? "material-symbols-outlined like comments-actions-icon"
-                              : "material-symbols-outlined comments-actions-icon"
-                          }
-                          onClick={() => onToggleLike(comment)}
-                        >
-                          favorite
-                        </span>
+                        <div className="comments-likes-wrapper">
+                          <span
+                            className={
+                              comment?.likes?.find(
+                                (userFav) => userFav?._id == user._id
+                              )
+                                ? "material-symbols-outlined like comments-actions-icon"
+                                : "material-symbols-outlined comments-actions-icon"
+                            }
+                            onClick={() => onToggleLike(comment)}
+                          >
+                            favorite
+                          </span>
+                          <p
+                            className={
+                              comment?.likes?.length > 9
+                                ? "comments-likes-counter"
+                                : "comments-likes-counter comments-likes-counter-2"
+                            }
+                          >
+                            {comment?.likes?.length > 0
+                              ? comment?.likes?.length
+                              : ""}
+                          </p>
+                        </div>
                         <span
                           className="material-symbols-outlined comments-actions-icon"
                           onClick={() => onSetCommentToModify(comment)}

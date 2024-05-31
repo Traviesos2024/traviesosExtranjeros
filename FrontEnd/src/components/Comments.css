@@ -160,3 +160,19 @@ label {
 h5 {
   text-align: left;
 }
+
+.comments-likes-wrapper {
+  position: relative;
+}
+
+.comments-likes-counter {
+  position: absolute;
+  top: 12px;
+  right: -5px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.comments-likes-counter-2 {
+  right: 2px;
+}
