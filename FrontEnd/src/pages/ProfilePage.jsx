@@ -13,46 +13,13 @@ import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
 import { deleteEvent } from "../services/events.service";
-// import { followUserToggle } from "../services/user.service";
 
 export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
-  const [events, setEvents] = useState([]);
-  const [res, setRes] = useState({});
-  const [experiences, setExperiences] = useState([]);
-  const [resExperiences, setResExperiences] = useState({});
   const [resUser, setResUser] = useState([]);
   const [userById, setUserById] = useState(null);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     setRes(await getAll());
-  //   })();
-  // }, []);
-
-  // useEffect(() => {
-  //   useErrorEvent(res, setRes, setEvents);
-  //   // console.log("setEveents", setEvents)
-  // }, [res]);
-
-  // useEffect(() => {
-  //   console.log("events", events);
-  // }, [events]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     setResExperiences(await getAllExperiences());
-  //   })();
-  // }, []);
-
-  // useEffect(() => {
-  //   useErrorExperience(resExperiences, setResExperiences, setExperiences);
-  // }, [resExperiences]);
-
-  // useEffect(() => {
-  //   console.log(experiences);
-  // }, [experiences]);
-
+  
   useEffect(() => {
     (async () => {
       setResUser(await byId(user._id));
