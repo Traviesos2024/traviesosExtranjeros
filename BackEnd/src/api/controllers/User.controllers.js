@@ -753,7 +753,21 @@ const byId = async (req, res, next) => {
           { path: "eventOwner", model: User },
         ],
       })
-      .populate("city country experiencesOwner experiencesFav");
+      .populate({
+        path: "experiencesFav",
+        populate: [
+          // { path: "eventFollowers", model: User },
+          { path: "events", model: Event },
+        ],
+      })
+      .populate({
+        path: "experiencesOwner",
+        populate: [
+          // { path: "eventFollowers", model: User },
+          { path: "events", model: Event },
+        ],
+      })
+      .populate("city country");
     if (userById) {
       // comprobamos si existe
       return res.status(200).json(userById); // mandamos un json con el objeto

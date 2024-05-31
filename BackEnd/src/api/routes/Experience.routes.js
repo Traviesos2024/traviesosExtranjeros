@@ -15,7 +15,7 @@ const ExperienceRoutes = express.Router();
 ExperienceRoutes.patch("/like/:idExperience", [isAuth], toggleLikeExperience);
 // ExperienceRoutes.patch("/addEvent/:idExperience", [isAuth], toggleEvent);
 ExperienceRoutes.patch(
-  "/experience/:idExperience/events/:idEvent",
+  "/events/:idEvent/experience/:idExperience",
   [isAuth],
   toggleEvent
 );
