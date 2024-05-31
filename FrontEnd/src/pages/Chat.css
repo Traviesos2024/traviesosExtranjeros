@@ -27,19 +27,20 @@
   flex-direction: column;
 }
 
-.my-text-wrapper {
+.my-text-message-wrapper {
   display: flex;
   justify-content: left;
   width: 100%;
+  position: relative;
 }
 
-.friend-text-wrapper {
+.friend-text-message-wrapper {
   display: flex;
   justify-content: right;
   width: 100%;
 }
 
-.friend-text {
+.friend-message-text {
   background: linear-gradient(
       180deg,
       rgb(87, 100, 101) 0%,
@@ -61,7 +62,7 @@
   align-items: flex-end;
 }
 
-.my-text {
+.my-text-message {
   background: linear-gradient(
       180deg,
       rgba(139, 47, 184, 1) 0%,
@@ -134,7 +135,7 @@ label {
   display: flex;
   gap: 3px;
   top: 8px;
-  left: 3%;
+  left: 10px;
 }
 
 .messages-settings-actions {
@@ -150,8 +151,13 @@ label {
 .messages-actions-icon {
   cursor: pointer;
   color: white;
+  margin: 0px;
 }
 
 .messages-actions-icon:hover {
   opacity: 0.7;
+}
+
+.icon-no-margin {
+  margin: 0px;
 }

@@ -27,6 +27,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
   const [style, setStyle] = useState({ display: "none" });
   const [messageContent, setMessageContent] = useState("");
   const [messageToModify, setMessageToModify] = useState(undefined);
+  const [hoveredElement, setHoveredElement] = useState(undefined);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
@@ -189,30 +190,37 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                 key={message._id}
                 className={
                   user._id == message.owner || user._id == message.owner._id
-                    ? "my-text-wrapper"
-                    : "friend-text-wrapper"
+                    ? "my-text-message-wrapper"
+                    : "friend-text-message-wrapper"
                 }
               >
                 {user._id == message.owner || user._id == message.owner._id ? (
                   <div
                     onMouseEnter={(e) => {
-                      setStyle({ display: "block" });
+                      setHoveredElement(message?._id);
                     }}
                     onMouseLeave={(e) => {
-                      setStyle({ display: "none" });
+                      setHoveredElement(undefined);
                     }}
                     className="messages-settings-wrapper"
                   >
                     <span className="material-symbols-outlined messages-actions-icon">
                       more_horiz
                     </span>
-                    <div className="messages-settings-actions" style={style}>
+                    <div
+                      className="messages-settings-actions"
+                      style={
+                        hoveredElement == message?._id
+                          ? { display: "flex" }
+                          : { display: "none" }
+                      }
+                    >
                       <span
                         className={
                           message?.likes?.find(
                             (userFav) => userFav?._id == user._id
                           )
-                            ? "material-symbols-outlined like "
+                            ? "material-symbols-outlined like icon-no-margin"
                             : "material-symbols-outlined messages-actions-icon"
                         }
                         onClick={() => onToggleLike(message)}
@@ -240,8 +248,8 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                 <div
                   className={
                     user._id == message.owner || user._id == message.owner._id
-                      ? "my-text"
-                      : "friend-text"
+                      ? "my-text-message"
+                      : "friend-message-text"
                   }
                 >
                   {message.content}
