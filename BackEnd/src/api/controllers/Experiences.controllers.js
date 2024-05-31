@@ -111,7 +111,8 @@ const toggleLikeExperience = async (req, res, next) => {
             action: "disliked",
             user: await User.findById(_id).populate("experiencesFav"),
             experience: await Experience.findById(idExperience).populate(
-              "likes"
+              "likes events"
+            
             ),
             allExperience: await Experience.find(),
           });
@@ -144,7 +145,7 @@ const toggleLikeExperience = async (req, res, next) => {
             action: "like",
             user: await User.findById(_id).populate("experiencesFav"),
             experience: await Experience.findById(idExperience).populate(
-              "likes"
+              "likes events"
             ),
             allExperience: await Experience.find(),
           });
