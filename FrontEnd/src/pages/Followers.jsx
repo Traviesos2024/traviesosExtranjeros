@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
+import { CardUser } from "../components";
 
 export const Followers = ({}) => {
   const { user } = useAuth();

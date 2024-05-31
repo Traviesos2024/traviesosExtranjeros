@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useErrorUser } from "../hooks";
 import { getAll } from "../services/user.service";
 import { CardUser } from "../components/CardUser";
