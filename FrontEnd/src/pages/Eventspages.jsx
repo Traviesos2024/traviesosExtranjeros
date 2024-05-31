@@ -4,17 +4,10 @@ import { Event, Input } from "../components";
 import { getAll } from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { useNavigate } from "react-router-dom";
-import { byId } from "../services/user.service";
-import { useAuth } from "../context/authContext";
 
 export const Eventspages = () => {
-  const { user } = useAuth();
-  console.log("user", user);
   const [events, setEvents] = useState([]);
   const [res, setRes] = useState({});
-  const [resById, setResById] = useState({});
-
-  const [userById, setUserById] = useState(null);
   const [valueInput, setValueInput] = useState(() => {
     return localStorage.getItem("input")
       ? JSON.parse(localStorage.getItem("input"))
@@ -24,41 +17,40 @@ export const Eventspages = () => {
   const eliminarDiacriticos = (texto) => {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
+
   useEffect(() => {
     setData(() => {
-      const filter = events.filter((event) =>
-        event.cities?.some((city) =>
-          eliminarDiacriticos(city.name.toLowerCase()).includes(
-            eliminarDiacriticos(valueInput.toLowerCase())
+      if (events && events.allEvent?.length > 0) {
+        // Check if events is defined and is an array
+        const filter = events.allEvent?.filter((event) =>
+          event.cities?.some((city) =>
+            eliminarDiacriticos(city.name.toLowerCase()).includes(
+              eliminarDiacriticos(valueInput.toLowerCase())
+            )
           )
-        )
-      );
+        );
 
-      localStorage.setItem("input", JSON.stringify(valueInput.toLowerCase()));
+        localStorage.setItem("input", JSON.stringify(valueInput.toLowerCase()));
 
-      return filter;
+        return filter;
+      }
+
+      return [];
     });
-
-    return () => {};
   }, [valueInput]);
 
   useEffect(() => {
     (async () => {
       setRes(await getAll());
-      setResById(await byId(user._id));
     })();
   }, []);
 
   useEffect(() => {
-    resById?.status == 200 && setUserById(resById.data);
-  }, [resById]);
+    useErrorEvent(res, setRes, setEvents);
+  }, [res]);
 
   useEffect(() => {
-    useErrorEvent(res, setRes, setEvents, user?.city?.name);
-  }, [res, user.city.name]);
-
-  useEffect(() => {
-    console.log(events);
+    console.log("👽", events);
   }, [events]);
 
   const navigate = useNavigate();
@@ -67,17 +59,18 @@ export const Eventspages = () => {
     navigate("/EventsForm");
   };
 
+  const handleInputChange = (event) => {
+    setValueInput(event.target.value);
+  };
+
   return (
     <div id="containerEvent">
       <button onClick={handleClick}> ✒️ CREA TU EVENTO </button>
-      <br></br>{" "}
+      <br></br>
       <Input
         setValueInput={setValueInput}
-        value={
-          localStorage.getItem("input")
-            ? JSON.parse(localStorage.getItem("input"))
-            : ""
-        }
+        value={valueInput}
+        onChange={handleInputChange} // Update state when input changes
       />
       <hr />
       <br></br>
@@ -87,20 +80,19 @@ export const Eventspages = () => {
               <Event
                 renderData={item}
                 key={item._id}
-                setEvents={setEvents}
+                setEvents={setData}
                 profile={false}
-                userAuth={userById}
+                // userAuth={userById}
               />
             ))
-          : events.length > 0 &&
-            userById != null &&
-            events.map((item) => (
+          : events.allEvent?.length > 0 &&
+            events.allEvent?.map((item) => (
               <Event
                 renderData={item}
                 key={item._id}
                 setEvents={setEvents}
                 profile={false}
-                userAuth={userById}
+                // userAuth={userById}
               />
             ))}
       </div>

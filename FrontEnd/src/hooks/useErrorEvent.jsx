@@ -1,14 +1,10 @@
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
 
-export const useErrorEvent = (res, setRes, setData, cityName) => {
+export const useErrorEvent = (res, setRes, setData) => {
   // 200 --> lo que vamos es hacer setear la data en el setData
   if (res?.status == 200) {
-    const filteredEvents = res.data.allEvent.filter((event) =>
-      event.cities.some((city) => city.name === cityName)
-    );
-
     console.log("esta todo correcto");
-    setData(filteredEvents);
+    setData(res.data);
     setRes(() => ({}));
   }
 
@@ -22,7 +18,4 @@ export const useErrorEvent = (res, setRes, setData, cityName) => {
     });
     setRes(() => ({}));
   }
-  /// para el resto de errores lanzamos un modal diciendo tenemos un error
-
-  // res.response.status
 };
