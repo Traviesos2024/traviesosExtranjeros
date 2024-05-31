@@ -97,9 +97,9 @@ export const Experience = ({
               </span>
             </button>
           )}
-      <p>Experiencia: {name}</p>
+      <h3>{name}</h3>
         <p>Descripción: {description}</p>
-        <p>Evento: {events.name}</p>
+        {/* <p>Evento: {events.name}</p> */}
         
       <div>
         <h4 onClick={onToggle}>Comments</h4>

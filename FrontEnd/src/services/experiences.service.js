@@ -48,7 +48,7 @@ export const toggleLikeExperience = async (idExperience) => {
 
 export const toggleEvent = async (idExperience, idEvent) => {
   return APITraviesos.patch(
-    `/experiences/experience/${idExperience}/events/${idEvent}`,
+    `/experiences/events/${idEvent}/experience/${idExperience}`,
     {
       headers: {
         Authorization: `Bearer ${updateToken()}`,

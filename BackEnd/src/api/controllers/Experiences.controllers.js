@@ -2,62 +2,65 @@ const { deleteImgCloudinary } = require("../../middleware/files.middleware");
 const Experience = require("../models/Experience.model");
 const User = require("../models/User.model");
 const Chat = require("../models/Chat.model");
-const Events = require("../models/Events.model");
+const Event = require("../models/Events.model");
 
 //! -------------create new experiencie ----------------
-//? EL ID DE LA EXPERIENCIA QUE HAS CREADO METERLO EN EL EVENTO AL QUE PERTENCE
+
 const createExperience = async (req, res, next) => {
+  let catchImg = req.file?.path;
+
   try {
     await Experience.syncIndexes();
+    const newExperience = new Experience(req.body);
 
-    /** hacemos una instancia del modelo, por el body tengo el name y la descripción*/
-    const customBody = {
-      name: req.body?.name,
-      description: req.body?.description,
-      image: req.file?.path,
-    };
-    const newExperiencie = new Experience(customBody);
-    console.log(newExperiencie);
-    const savedExperience = await newExperiencie.save();
-
-    // Obtener el ID de la experiencia creada
-    const idExperience = savedExperience._id;
-
-    // Verificar si el usuario está autenticado
-    if (!req.user) {
-      return res.status(401).json({ error: "Usuario no autenticado" });
+    if (req.file) {
+      newExperience.image = catchImg;
+    } else {
+      newExperience.image =
+        "https://res.cloudinary.com/dyl5cabrr/image/upload/v1714138030/ac5016f6-7afd-43f8-9d87-f38c82e5a9f1_16-9-discover-aspect-ratio_default_0_gkuvqg.jpg";
     }
 
-    try {
-      const userId = req.user._id;
+    const saveExperience = await newExperience.save();
+    if (saveExperience) {
+      try {
+        const updatedEvent = await Event.findByIdAndUpdate(req.body.events, {
+          $push: { experience: saveExperience._id },
+        });
 
-      // Actualizar la clave experiencesOwner del usuario con el ID de la experiencia
-      await User.findByIdAndUpdate(userId, {
-        $push: { experiencesOwner: idExperience },
-      });
+        if (!updatedEvent) {
+          throw new Error('No se encontró el evento para actualizar.');
+        }
 
-      // Devolver el usuario actualizado
-      const updatedUser = await User.findById(userId).populate(
-        "experiencesOwner"
-      );
+        const updatedUser = await User.findByIdAndUpdate(req.user._id, {
+          $push: { experiencesOwner: saveExperience._id },
+        });
 
-      return res.status(200).json({
-        action: "update",
-        user: updatedUser,
-      });
-    } catch (error) {
-      return res.status(404).json({
-        error: "No se ha actualizado la experiencia creada - user",
-        message: error.message,
-      });
+        if (!updatedUser) {
+          throw new Error('No se encontró el usuario para actualizar.');
+        }
+
+        const experienceFinal = await Experience.findById(saveExperience).populate("events");
+        return res.status(200).json(experienceFinal);
+      } catch (error) {
+        console.log(error.message);
+        return res.status(404).json({
+          message: "Error actualizando el evento o usuario con la experiencia creada.",
+          error: error.message,
+        });
+      }
+    } else {
+      return res.status(404).json("No se ha podido guardar el elemento en la DB ❌");
     }
   } catch (error) {
+    req.file?.path && deleteImgCloudinary(catchImg);
     return res.status(404).json({
-      error: "error catch create experience",
-      message: error.message,
+      message: "Error en el creado del elemento",
+      error: error.message,
     });
   }
 };
+
+
 //! -------------------get all------------------------------
 
 const getAllExperiences = async (req, res, next) => {
@@ -173,7 +176,7 @@ const toggleEvent = async (req, res, next) => {
 
     // Obtener los objetos experience y Event por sus IDs
     const experience = await Experience.findById(idExperience);
-    const event = await Events.findById(idEvent);
+    const event = await Event.findById(idEvent);
 
     if (!experience || !event) {
       return res
@@ -181,22 +184,22 @@ const toggleEvent = async (req, res, next) => {
         .json({ error: "Experiencia o evento no encontrado" });
     }
 
-    if (event.experience.includes(idExperience)) {
+    if (experience.events.includes(idEvent)) {
       try {
         // Actualizar el evento y eliminar la experiencia
-        await Events.findByIdAndUpdate(idEvent, {
-          $pull: { experience: idExperience },
+        await Experience.findByIdAndUpdate(idExperience, {
+          $pull: { events: idEvent },
         });
 
         try {
           // Actualizar la experiencia y eliminar el evento
-          await Experience.findByIdAndUpdate(idExperience, {
-            $pull: { events: idEvent },
+          await Event.findByIdAndUpdate(idEvent, {
+            $pull: { experience: idExperience },
           });
 
           return res.status(200).json({
             action: "delete",
-            experience: await Events.findById(idEvent).populate("experience"),
+            experience: await Event.findById(idEvent).populate("experience"),
             events: await Experience.findById(idExperience).populate("events"),
           });
         } catch (error) {
@@ -214,19 +217,19 @@ const toggleEvent = async (req, res, next) => {
     } else {
       try {
         // Actualizar el evento y agregar la ciudad
-        await Events.findByIdAndUpdate(idEvent, {
-          $push: { experience: idExperience },
+        await Experience.findByIdAndUpdate(idExperience, {
+          $push: { events: idEvent },
         });
 
         try {
           // Actualizar la ciudad y agregar el evento
-          await Experience.findByIdAndUpdate(idExperience, {
-            $push: { events: idEvent },
+          await Event.findByIdAndUpdate(idEvent, {
+            $push: { experience: idExperience },
           });
 
           return res.status(200).json({
             action: "events",
-            experience: await Events.findById(idEvent).populate("experience"),
+            experience: await Event.findById(idEvent).populate("experience"),
             events: await Experience.findById(idExperience).populate("events"),
           });
         } catch (error) {
@@ -321,7 +324,7 @@ const deleteExperience = async (req, res, next) => {
 
     // Eliminamos la experiencia del modelo de eventos si está vinculada
     try {
-      await Events.updateMany(
+      await Event.updateMany(
         { experience: idExperience },
         { $pull: { experience: idExperience } }
       );

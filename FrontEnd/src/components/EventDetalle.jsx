@@ -496,7 +496,7 @@ export const EventDetalle = () => {
             Ciudad del evento
           </button>
           <button onClick={() => navigate("/profile")}>Mi perfil</button>
-          <button onClick={() => navigate(`/ExperiencesForm`)}>
+          <button onClick={() => navigate(`/events/${eventoById._id}/ExperiencesForm`)}>
             Crear Experiencia
           </button>
           <div className="experiences">
@@ -521,8 +521,8 @@ export const EventDetalle = () => {
                   key={item._id}
                   setEvents={setEventById}
                   profile={true}
-                  handleDeleteExperience={handleDeleteExperience}
-                  handleUpdate={handleUpdate}
+                  // handleDeleteExperience={handleDeleteExperience}
+                  // handleUpdate={handleUpdate}
                   userAuth={eventoById}
                 />
               ))
