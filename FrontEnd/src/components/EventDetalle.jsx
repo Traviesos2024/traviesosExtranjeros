@@ -381,7 +381,7 @@
 //           </button>
 //           <div className="experiences">
 //             <h3>Experiencias</h3>
-  
+
 //             {/* {experiences.length > 0 ? (
 //               experiences.map((experience) => (
 //                 <div key={experience._id} className="experience">
@@ -389,7 +389,7 @@
 //                   <p>{experience.description}</p>
 //                   <p>{new Date(experience.date).toLocaleString()}</p>
 //                 </div>
-                
+
 //               ))
 //             ) : (
 //               <p>No hay experiencias para este evento.</p>
@@ -459,11 +459,22 @@ export const EventDetalle = () => {
             <h2>{eventoById.name}</h2>
             <div className="comment-icon-padding">
               <span
-                className="material-symbols-outlined"
+                className="material-symbols-outlined event-comment-experience-icon"
                 onClick={onToggleComments}
               >
                 mode_comment
               </span>
+              <p
+                className={
+                  eventoById?.comments?.length > 9
+                    ? "comments-likes-counter"
+                    : "comments-likes-counter comments-likes-counter-2"
+                }
+              >
+                {eventoById?.comments?.length
+                  ? eventoById?.comments?.length
+                  : ""}
+              </p>
             </div>
           </div>
           <p>{eventoById.description}</p>
@@ -490,7 +501,9 @@ export const EventDetalle = () => {
           </div>
           <button
             onClick={() =>
-              navigate(`/${eventoById.cities[0].name}/${eventoById.cities[0]._id}`)
+              navigate(
+                `/${eventoById.cities[0].name}/${eventoById.cities[0]._id}`
+              )
             }
           >
             Ciudad del evento
@@ -537,6 +550,3 @@ export const EventDetalle = () => {
     </div>
   );
 };
-
-
-

@@ -176,3 +176,10 @@ h5 {
 .comments-likes-counter-2 {
   right: 2px;
 }
+
+.friend-like-wrapper {
+  position: absolute;
+  left: -55px;
+  bottom: -26px;
+  color: black;
+}

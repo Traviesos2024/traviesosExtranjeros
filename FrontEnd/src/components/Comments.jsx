@@ -28,7 +28,7 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef();
   const navigate = useNavigate();
-  const [style, setStyle] = useState({ display: "none" });
+  const [hoveredElement, setHoveredElement] = useState(undefined);
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -205,61 +205,97 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
                   }
                 >
                   <div className="comments-header">
-                    <div
-                      onMouseEnter={(e) => {
-                        setStyle({ display: "flex" });
-                      }}
-                      onMouseLeave={(e) => {
-                        setStyle({ display: "none" });
-                      }}
-                      className="comments-settings-wrapper"
-                    >
-                      <span className="material-symbols-outlined comments-actions-icon">
-                        more_horiz
-                      </span>
-                      <div className="comments-settings-actions" style={style}>
-                        <div className="comments-likes-wrapper">
+                    <>
+                      {user._id == comment?.owner ||
+                      user._id == comment?.owner._id ? (
+                        <div
+                          onMouseEnter={(e) => {
+                            setHoveredElement(comment?._id);
+                          }}
+                          onMouseLeave={(e) => {
+                            setHoveredElement(undefined);
+                          }}
+                          className="comments-settings-wrapper"
+                        >
+                          <span className="material-symbols-outlined comments-actions-icon">
+                            more_horiz
+                          </span>
+
+                          <div
+                            className="comments-settings-actions"
+                            style={
+                              hoveredElement == comment?._id
+                                ? { display: "flex" }
+                                : { display: "none" }
+                            }
+                          >
+                            <div className="comments-likes-wrapper">
+                              <span
+                                className={
+                                  comment?.likes?.find(
+                                    (userFav) => userFav?._id == user._id
+                                  )
+                                    ? "material-symbols-outlined like comments-actions-icon"
+                                    : "material-symbols-outlined comments-actions-icon"
+                                }
+                                onClick={() => onToggleLike(comment)}
+                              >
+                                favorite
+                              </span>
+                              <p
+                                className={
+                                  comment?.likes?.length > 9
+                                    ? "comments-likes-counter"
+                                    : "comments-likes-counter comments-likes-counter-2"
+                                }
+                              >
+                                {comment?.likes?.length > 0
+                                  ? comment?.likes?.length
+                                  : ""}
+                              </p>
+                            </div>
+                            <span
+                              className="material-symbols-outlined comments-actions-icon"
+                              onClick={() => onSetCommentToModify(comment)}
+                            >
+                              edit
+                            </span>
+                            <span
+                              onClick={() => onDeleteMessage(comment)}
+                              className="material-symbols-outlined comments-actions-icon"
+                            >
+                              delete
+                            </span>
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </>
+                    <h5 onClick={() => onClickUserName(comment?.owner._id)}>
+                      {comment?.owner.name}:
+                    </h5>
+
+                    <>
+                      {user._id != comment?.owner._id ? (
+                        <div className="friend-like-wrapper">
                           <span
                             className={
-                              comment?.likes?.find(
-                                (userFav) => userFav?._id == user._id
+                              comment.likes.find(
+                                (userFav) => userFav._id == user._id
                               )
-                                ? "material-symbols-outlined like comments-actions-icon"
-                                : "material-symbols-outlined comments-actions-icon"
+                                ? "material-symbols-outlined like"
+                                : "material-symbols-outlined"
                             }
                             onClick={() => onToggleLike(comment)}
                           >
                             favorite
                           </span>
-                          <p
-                            className={
-                              comment?.likes?.length > 9
-                                ? "comments-likes-counter"
-                                : "comments-likes-counter comments-likes-counter-2"
-                            }
-                          >
-                            {comment?.likes?.length > 0
-                              ? comment?.likes?.length
-                              : ""}
-                          </p>
                         </div>
-                        <span
-                          className="material-symbols-outlined comments-actions-icon"
-                          onClick={() => onSetCommentToModify(comment)}
-                        >
-                          edit
-                        </span>
-                        <span
-                          onClick={() => onDeleteMessage(comment)}
-                          className="material-symbols-outlined comments-actions-icon"
-                        >
-                          delete
-                        </span>
-                      </div>
-                    </div>
-                    <h5 onClick={() => onClickUserName(comment?.owner._id)}>
-                      {comment?.owner.name}:
-                    </h5>
+                      ) : (
+                        ""
+                      )}
+                    </>
                   </div>
 
                   <div className="comment-and-hour">
