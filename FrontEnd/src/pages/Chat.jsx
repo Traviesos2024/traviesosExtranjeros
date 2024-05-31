@@ -7,6 +7,7 @@ import {
   createMessage,
   toggleLikeMessage,
   deleteMessage,
+  updateMessage,
 } from "../services/message.service";
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -24,6 +25,8 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
   const [isLoading, setIsLoading] = useState(true);
   const messagesEndRef = useRef();
   const [style, setStyle] = useState({ display: "none" });
+  const [messageContent, setMessageContent] = useState("");
+  const [messageToModify, setMessageToModify] = useState(undefined);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({
@@ -75,6 +78,14 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
   }
 
   const formSubmit = async (formData) => {
+    if (messageToModify) {
+      modifyMessage(formData);
+    } else {
+      createMessagePost(formData);
+    }
+  };
+
+  const createMessagePost = async (formData) => {
     const customFormData = {
       ...formData,
       type: "private",
@@ -92,14 +103,51 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
     await setChat(chat);
     setRes(newMessage.data);
     setSend(false);
-
+    setMessageContent("");
     updateChatHour(chat);
     reset();
   };
 
-  async function onToggleLike(comment) {
-    const updatedMessage = await toggleLikeMessage(comment._id);
-    console.log("ENTRA");
+  async function modifyMessage(formData) {
+    const customFormData = {
+      ...formData,
+      type: "public",
+    };
+    //llamada al backend
+    setSend(true);
+
+    const messageModified = await updateMessage(
+      messageToModify._id,
+      customFormData
+    );
+
+    messageToModify.content = messageContent;
+
+    let chatToUpdate = { ...chat };
+    const indexOfMessageToReplace = chatToUpdate.messages.findIndex(
+      (message) => message._id == messageToModify._id
+    );
+    chatToUpdate.messages[indexOfMessageToReplace] = messageToModify;
+
+    await setChat(chatToUpdate);
+    setMessageToModify(undefined);
+    setMessageContent("");
+    setSend(false);
+    reset();
+  }
+
+  const onTodoChange = (event) => {
+    setMessageContent(event.target.value);
+    setValue("content", event.target.value);
+  };
+
+  function onSetMessageToModify(messageToModify) {
+    setMessageToModify(messageToModify);
+    setMessageContent(messageToModify.content);
+  }
+
+  async function onToggleLike(message) {
+    const updatedMessage = await toggleLikeMessage(message._id);
     let chatToUpdate = { ...chat };
     const indexOfMessageToReplace = chatToUpdate.messages.findIndex(
       (message) => message._id == updatedMessage.data.message._id
@@ -109,6 +157,7 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
 
     await setChat(chatToUpdate);
   }
+
   async function onDeleteMessage(messageToDelete) {
     const updatedMessage = await deleteMessage(messageToDelete._id);
 
@@ -170,7 +219,10 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                       >
                         favorite
                       </span>
-                      <span className="material-symbols-outlined messages-actions-icon">
+                      <span
+                        className="material-symbols-outlined messages-actions-icon"
+                        onClick={() => onSetMessageToModify(message)}
+                      >
                         edit
                       </span>
                       <span
@@ -204,12 +256,17 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
           <h3>You have no messages</h3>
         )}
         <div ref={messagesEndRef} />
-        <form id="formularios" onSubmit={handleSubmit(formSubmit)}>
+        <form
+          id="formularios"
+          onSubmit={handleSubmit(formSubmit)}
+          onChange={onTodoChange}
+        >
           <label htmlFor="content">Escribe tu mensaje:</label>
           <textarea
             id="content"
             className="textarea-message"
             name="content"
+            value={messageContent}
             {...register("content", { required: true })}
             required
           />
