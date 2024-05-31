@@ -7,14 +7,14 @@ const Event = require("../models/Events.model");
 //! -------------create new experiencie ----------------
 
 const createExperience = async (req, res, next) => {
-  let catchImg = req.file?.path;
+  // let catchImg = req.file?.path;
 
   try {
     await Experience.syncIndexes();
     const newExperience = new Experience(req.body);
 
     if (req.file) {
-      newExperience.image = catchImg;
+      newExperience.image = req.file?.path;
     } else {
       newExperience.image =
         "https://res.cloudinary.com/dyl5cabrr/image/upload/v1714138030/ac5016f6-7afd-43f8-9d87-f38c82e5a9f1_16-9-discover-aspect-ratio_default_0_gkuvqg.jpg";
@@ -28,7 +28,7 @@ const createExperience = async (req, res, next) => {
         });
 
         if (!updatedEvent) {
-          throw new Error('No se encontró el evento para actualizar.');
+          throw new Error("No se encontró el evento para actualizar.");
         }
 
         const updatedUser = await User.findByIdAndUpdate(req.user._id, {
@@ -36,20 +36,25 @@ const createExperience = async (req, res, next) => {
         });
 
         if (!updatedUser) {
-          throw new Error('No se encontró el usuario para actualizar.');
+          throw new Error("No se encontró el usuario para actualizar.");
         }
 
-        const experienceFinal = await Experience.findById(saveExperience).populate("events");
+        const experienceFinal = await Experience.findById(
+          saveExperience
+        ).populate("events");
         return res.status(200).json(experienceFinal);
       } catch (error) {
         console.log(error.message);
         return res.status(404).json({
-          message: "Error actualizando el evento o usuario con la experiencia creada.",
+          message:
+            "Error actualizando el evento o usuario con la experiencia creada.",
           error: error.message,
         });
       }
     } else {
-      return res.status(404).json("No se ha podido guardar el elemento en la DB ❌");
+      return res
+        .status(404)
+        .json("No se ha podido guardar el elemento en la DB ❌");
     }
   } catch (error) {
     req.file?.path && deleteImgCloudinary(catchImg);
@@ -59,7 +64,6 @@ const createExperience = async (req, res, next) => {
     });
   }
 };
-
 
 //! -------------------get all------------------------------
 
@@ -112,7 +116,6 @@ const toggleLikeExperience = async (req, res, next) => {
             user: await User.findById(_id).populate("experiencesFav"),
             experience: await Experience.findById(idExperience).populate(
               "likes events"
-            
             ),
             allExperience: await Experience.find(),
           });
