@@ -19,7 +19,6 @@ export const ProfilePage = ({ item }) => {
   const [resUser, setResUser] = useState([]);
   const [userById, setUserById] = useState(null);
 
-  
   useEffect(() => {
     (async () => {
       setResUser(await byId(user._id));
@@ -174,6 +173,9 @@ export const ProfilePage = ({ item }) => {
           </p>
           <button>
             <Link to="/events">Eventos</Link>
+          </button>
+          <button>
+            <Link to="/createCountry"> Añadir nuevo país</Link>
           </button>
         </div>
       </main>

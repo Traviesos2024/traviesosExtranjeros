@@ -24,6 +24,7 @@ import {
   UserAll,
   UpdateEvent,
   UpdateExperience,
+  CreateCountryForm,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -191,6 +192,14 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <ChatPage />
+          </Protected>
+        ),
+      },
+      {
+        path: "/createCountry",
+        element: (
+          <Protected>
+            <CreateCountryForm />
           </Protected>
         ),
       },
