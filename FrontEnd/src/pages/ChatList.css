@@ -60,6 +60,11 @@
   .chatPage-wrapper {
     display: none;
   }
+  .chat-list-chat-content-message {
+    text-overflow: ellipsis;
+    max-width: 200px !important;
+    overflow: hidden;
+  }
 }
 
 .delete-chat-icon {
@@ -71,4 +76,10 @@
   margin-left: auto;
   display: flex;
   flex-direction: column;
+}
+
+.chat-list-chat-content-message {
+  text-overflow: ellipsis;
+  max-width: 300px;
+  overflow: hidden;
 }

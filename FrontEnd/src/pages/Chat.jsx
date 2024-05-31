@@ -242,7 +242,18 @@ export const ChatPage = ({ selectedChat, updateChatHour }) => {
                     </div>
                   </div>
                 ) : (
-                  ""
+                  <span
+                    className={
+                      message?.likes?.find(
+                        (userFav) => userFav?._id == user._id
+                      )
+                        ? "material-symbols-outlined like friend-like"
+                        : "material-symbols-outlined friend-like"
+                    }
+                    onClick={() => onToggleLike(message)}
+                  >
+                    favorite
+                  </span>
                 )}
 
                 <div

@@ -55,10 +55,12 @@ export const ChatListPage = () => {
   }
 
   function selectChat(chat) {
+    console.log(window.innerWidth);
     if (chat) {
       if (window.innerWidth > 760) {
         setSelectedChat(chat._id);
       } else {
+        console.log("ENTRA");
         navigate(`/chat/${chat._id}`);
       }
     }
@@ -114,7 +116,9 @@ export const ChatListPage = () => {
                         ? chat.userTwo?.name
                         : chat.userOne?.name}
                     </h3>
-                    <p>{chat.messages.at(-1)?.content}</p>
+                    <p className="chat-list-chat-content-message">
+                      {chat.messages.at(-1)?.content}
+                    </p>
                   </div>
                   <div className="chat-delete-and-hour-wrapper">
                     <span
