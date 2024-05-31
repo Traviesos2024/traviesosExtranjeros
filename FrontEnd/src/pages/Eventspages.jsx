@@ -4,10 +4,17 @@ import { Event, Input } from "../components";
 import { getAll } from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { useNavigate } from "react-router-dom";
+import { byId } from "../services/user.service";
+import { useAuth } from "../context/authContext";
 
 export const Eventspages = () => {
+  const { user } = useAuth();
+  console.log("user", user);
   const [events, setEvents] = useState([]);
   const [res, setRes] = useState({});
+  const [resById, setResById] = useState({});
+
+  const [userById, setUserById] = useState(null);
   const [valueInput, setValueInput] = useState(() => {
     return localStorage.getItem("input")
       ? JSON.parse(localStorage.getItem("input"))
@@ -19,9 +26,6 @@ export const Eventspages = () => {
   };
   useEffect(() => {
     setData(() => {
-      // const filter = events.cities.filter((item) =>
-      //   item.name.toLowerCase().includes(valueInput.toLowerCase())
-      // );
       const filter = events.filter((event) =>
         event.cities?.some((city) =>
           eliminarDiacriticos(city.name.toLowerCase()).includes(
@@ -41,12 +45,17 @@ export const Eventspages = () => {
   useEffect(() => {
     (async () => {
       setRes(await getAll());
+      setResById(await byId(user._id));
     })();
   }, []);
 
   useEffect(() => {
-    useErrorEvent(res, setRes, setEvents);
-  }, [res]);
+    resById?.status == 200 && setUserById(resById.data);
+  }, [resById]);
+
+  useEffect(() => {
+    useErrorEvent(res, setRes, setEvents, user?.city?.name);
+  }, [res, user.city.name]);
 
   useEffect(() => {
     console.log(events);
@@ -61,7 +70,7 @@ export const Eventspages = () => {
   return (
     <div id="containerEvent">
       <button onClick={handleClick}> ✒️ CREA TU EVENTO </button>
-      <br></br>
+      <br></br>{" "}
       <Input
         setValueInput={setValueInput}
         value={
@@ -76,36 +85,22 @@ export const Eventspages = () => {
         {data.length > 0
           ? data.map((item) => (
               <Event
-                item={item}
-                src={item?.image}
-                name={item?.name}
+                renderData={item}
                 key={item._id}
-                category={item?.category}
-                date={item?.date}
-                description={item?.description}
-                cities={item?.cities[0]}
-                eventId={item?._id}
-                comments={item?.comments}
                 setEvents={setEvents}
-                eventOwner={item?.eventOwner.name}
-                // userName={item?.user}
+                profile={false}
+                userAuth={userById}
               />
             ))
           : events.length > 0 &&
+            userById != null &&
             events.map((item) => (
               <Event
-                item={item}
-                src={item?.image}
-                name={item?.name}
+                renderData={item}
                 key={item._id}
-                category={item?.category}
-                date={item?.date}
-                description={item?.description}
-                cities={item?.cities[0]}
-                eventId={item?._id}
-                comments={item?.comments}
                 setEvents={setEvents}
-                eventOwner={item?.eventOwner.name}
+                profile={false}
+                userAuth={userById}
               />
             ))}
       </div>
