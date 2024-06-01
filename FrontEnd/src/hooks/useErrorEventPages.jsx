@@ -1,14 +1,14 @@
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
 
-export const useErrorEvent = (resData, setResData, setData) => {
+export const useErrorEventPages = (res, setRes, setEvents) => {
   // 200 --> lo que vamos es hacer setear la data en el setData
-  if (resData?.status == 200) {
+  if (res?.status == 200) {
     console.log("esta todo correcto");
-    setData(resData.data);
-    setResData(() => ({}));
+    setEvents(res.data);
+    setRes(() => ({}));
   }
 
-  if (resData?.response?.status == 404 || resData?.response?.status == 500) {
+  if (res?.response?.status == 404 || res?.response?.status == 500) {
     Swal.fire({
       icon: "error",
       title: "Oops...",
@@ -16,6 +16,6 @@ export const useErrorEvent = (resData, setResData, setData) => {
       showConfirmButton: false,
       timer: 1500,
     });
-    setResData(() => ({}));
+    setRes(() => ({}));
   }
 };

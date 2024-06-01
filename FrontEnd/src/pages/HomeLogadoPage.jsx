@@ -61,6 +61,7 @@ export const HomeLogadoPage = () => {
                 key={item._id}
                 setEvents={setEvents}
                 profile={false}
+                home={true}
                 userAuth={userById}
               />
             ))}

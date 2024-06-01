@@ -4,10 +4,22 @@ import { Event, Input } from "../components";
 import { getAll } from "../services/events.service";
 import { useErrorEvent } from "../hooks/useErrorEvent";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/authContext";
+import { byId } from "../services/user.service";
+import { useErrorEventPages } from "../hooks";
 
 export const Eventspages = () => {
+
+  const { user } = useAuth();
+
   const [events, setEvents] = useState([]);
   const [res, setRes] = useState({});
+  const [resData, setResData] = useState({});
+
+  const [resById, setResById] = useState({});
+  const [userById, setUserById] = useState(null);
+
+
   const [valueInput, setValueInput] = useState(() => {
     return localStorage.getItem("input")
       ? JSON.parse(localStorage.getItem("input"))
@@ -17,6 +29,17 @@ export const Eventspages = () => {
   const eliminarDiacriticos = (texto) => {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   };
+
+  useEffect(() => {
+    (async () => {
+      setRes(await getAll());
+      setResById(await byId(user._id));
+    })();
+  }, []);
+
+  useEffect(() => {
+    resById?.status == 200 && setUserById(resById.data);
+  }, [resById]);
 
   useEffect(() => {
     setData(() => {
@@ -46,7 +69,11 @@ export const Eventspages = () => {
   }, []);
 
   useEffect(() => {
-    useErrorEvent(res, setRes, setEvents);
+    useErrorEvent(resData, setResData, setData);
+  }, [resData]);
+
+  useEffect(() => {
+    useErrorEventPages(res, setRes, setEvents);
   }, [res]);
 
   useEffect(() => {
@@ -82,17 +109,20 @@ export const Eventspages = () => {
                 key={item._id}
                 setEvents={setData}
                 profile={false}
-                // userAuth={userById}
+                home={false}
+                userAuth={userById}
               />
             ))
           : events.allEvent?.length > 0 &&
+          userById != null &&
             events.allEvent?.map((item) => (
               <Event
                 renderData={item}
                 key={item._id}
                 setEvents={setEvents}
                 profile={false}
-                // userAuth={userById}
+                home={false}
+                userAuth={userById}
               />
             ))}
       </div>

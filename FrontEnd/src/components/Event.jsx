@@ -10,6 +10,7 @@ export const Event = ({
   renderData,
   setEvents,
   profile,
+  home,
   handleDelete,
   handleUpdate,
   userAuth,
@@ -38,12 +39,16 @@ export const Event = ({
         //! siguiente linea no SE TOCA!!!
         if (profile) {
           setEvents(res.data.user);
-        } else {
+        } else if (home) {
           const filteredEvents = res.data.allEvent.filter((event) =>
             event.cities.some((city) => city.name === userAuth.city.name)
           );
           console.log(filteredEvents);
           setEvents(filteredEvents);
+        } else {
+          
+          console.log("Estoy pasando por aqui 🎃",res.data.user);
+          setEvents(res.data.events);
         }
         console.log("Toggle Like Response:", res.data);
       }
