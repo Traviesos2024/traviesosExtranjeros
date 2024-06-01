@@ -3,11 +3,11 @@ import "./ProfilePage.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import { useErrorEvent } from "../hooks/useErrorEvent";
-import { eventById, getAll } from "../services/events.service";
+// import { useErrorEvent } from "../hooks/useErrorEvent";
+// import { eventById, getAll } from "../services/events.service";
 import {
   deleteExperience,
-  getAllExperiences,
+  // getAllExperiences,
 } from "../services/experiences.service";
 import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
@@ -125,48 +125,36 @@ export const ProfilePage = ({ item }) => {
           </div>
           <h2 className="EventosHome">Experiencias que has creado</h2>
           <div>
-            {/**userById != null ? (
+            {userById != null ? (
               userById.experiencesOwner.map((item) => (
                 <Experience
-                  item={item}
-                  src={item?.image}
-                  name={item?.name}
-                  key={item._id}
-                  description={item?.description}
-                  likes={item?.likes}
-                  comments={item?.comments}
-                  events={item?.events}
-                  experienceId={item?._id}
-                  setExperiences={setExperiences}
-                  setUserById={setUserById}
+                renderData={item}
+                key={item._id}
+                setEvents={setUserById}
+                profile={true}
+                userAuth={userById}
                 />
               ))
             ) : (
               <p>No has creado aún experiencias</p>
-            )*/}
+            )}
           </div>
-          <h2 className="EventosHome">Experiencias que te gustan</h2>
+          {/* <h2 className="EventosHome">Experiencias que te gustan</h2>
           <div>
-            {/*userById != null ? (
+            {userById != null ? (
               userById.experiencesFav.map((item) => (
                 <Experience
-                  item={item}
-                  src={item?.image}
-                  name={item?.name}
-                  key={item._id}
-                  description={item?.description}
-                  likes={item?.likes}
-                  comments={item?.comments}
-                  events={item?.events}
-                  experienceId={item?._id}
-                  setExperiences={setExperiences}
-                  setUserById={setUserById}
+                renderData={item}
+                key={item._id}
+                setEvents={setUserById}
+                profile={true}
+                userAuth={userById}
                 />
               ))
             ) : (
               <p>No hay experiencias que te hayan gustado disponibles</p>
-            )*/}
-          </div>
+            )}
+          </div> */}
           <p className="parrafo">
             Echa un vistazo de los nuevos eventos disponibles en{" "}
             {user.city.name}
