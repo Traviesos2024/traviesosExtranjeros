@@ -41,6 +41,7 @@ main {
   overflow-y: scroll;
   overflow-x: hidden;
   scrollbar-width: none;
+  margin: 1.5rem;
 }
 
 .card-padding {

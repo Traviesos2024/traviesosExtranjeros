@@ -51,8 +51,9 @@ export const Experience = ({
   };
 
   return (
-    <figure key={_id}>
+    <figure key={_id} className="card">
       <img src={image} alt={name} width={350} height={200} />
+
       {/* <p>{name}</p>
       <p>{description}</p>
       <p>{likes}</p> */}
