@@ -1,4 +1,5 @@
 import { createContext, useState, useMemo, useContext } from 'react'
+import { createCountry } from '../services/country.service';
 
 //* CREO EL CONTEXTO
 const AuthContext = createContext();
@@ -16,6 +17,7 @@ export const AuthContextProvider = ({ children }) => {
             user = null
         } */
     })
+    
 
         //! estado allUser - con la info del lcoalStorage del register
         const [ allUser, setAllUser ] = useState({
@@ -27,6 +29,8 @@ export const AuthContextProvider = ({ children }) => {
                 }
             }
         })
+
+        const [deleteUser, setDeleteUser] = useState(false);
 
         //! funcion puente - por si se pierde la info del register, por problemas de asincronia
         const bridgeData = (state) => {
@@ -65,7 +69,9 @@ export const AuthContextProvider = ({ children }) => {
         allUser,
         setAllUser,
         bridgeData,
-    }), [user, allUser])
+        deleteUser,
+        isSuperAdmin: user?.rol === 'superadmin',
+    }), [user, allUser, deleteUser])
 
     //! esta funcion devuelve el contexto para usar en main
     return <AuthContext.Provider value={value}> { children } </AuthContext.Provider>

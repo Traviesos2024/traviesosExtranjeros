@@ -139,22 +139,6 @@ export const ProfilePage = ({ item }) => {
               <p>No has creado aún experiencias</p>
             )}
           </div>
-          {/* <h2 className="EventosHome">Experiencias que te gustan</h2>
-          <div>
-            {userById != null ? (
-              userById.experiencesFav.map((item) => (
-                <Experience
-                renderData={item}
-                key={item._id}
-                setEvents={setUserById}
-                profile={true}
-                userAuth={userById}
-                />
-              ))
-            ) : (
-              <p>No hay experiencias que te hayan gustado disponibles</p>
-            )}
-          </div> */}
           <p className="parrafo">
             Echa un vistazo de los nuevos eventos disponibles en{" "}
             {user.city.name}

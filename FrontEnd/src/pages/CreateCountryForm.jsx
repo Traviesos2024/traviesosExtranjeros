@@ -69,7 +69,7 @@ export const CreateCountryForm = () => {
 
   //! 7) Estados de navegación
   if (ok) {
-    return <Navigate to="createCountry" />;
+    return <Navigate to="/country" />;
   }
 
   return (
@@ -83,7 +83,7 @@ export const CreateCountryForm = () => {
             id="name"
             name="name"
             autoComplete="off"
-            placeholder="Alemania"
+            placeholder=""
             {...register("name", { required: true })}
           />
           <label htmlFor="custom-input" className="custom-placeholder">
