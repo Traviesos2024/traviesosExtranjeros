@@ -5,10 +5,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 // import { useErrorEvent } from "../hooks/useErrorEvent";
 // import { eventById, getAll } from "../services/events.service";
-import {
-  deleteExperience,
-  // getAllExperiences,
-} from "../services/experiences.service";
+import { deleteExperience } from "../services/experiences.service";
 import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
@@ -52,7 +49,7 @@ export const ProfilePage = ({ item }) => {
       await deleteExperience(experienceId);
       setUserById((prevUser) => ({
         ...prevUser,
-        eventsOwner: prevUser.eventsOwner.filter(
+        experiencesOwner: prevUser.experiencesOwner.filter(
           (experience) => experience._id !== experienceId
         ),
       }));
@@ -63,6 +60,9 @@ export const ProfilePage = ({ item }) => {
 
   const handleUpdate = (eventId) => {
     console.log("Evento actualizado:", eventId);
+  };
+  const handleUpdateExperience = (experienceId) => {
+    console.log("Experiencia actualizada:", experienceId);
   };
 
   return (
@@ -128,11 +128,13 @@ export const ProfilePage = ({ item }) => {
             {userById != null ? (
               userById.experiencesOwner.map((item) => (
                 <Experience
-                renderData={item}
-                key={item._id}
-                setEvents={setUserById}
-                profile={true}
-                userAuth={userById}
+                  renderData={item}
+                  key={item._id}
+                  setEvents={setUserById}
+                  profile={true}
+                  userAuth={userById}
+                  handleDeleteExperience={handleDeleteExperience}
+                  handleUpdateExperience={handleUpdateExperience}
                 />
               ))
             ) : (

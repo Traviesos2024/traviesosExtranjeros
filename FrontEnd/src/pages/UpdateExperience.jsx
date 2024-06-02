@@ -1,28 +1,29 @@
-// impor * "./UpdateExperience.css"
-
 import { useForm } from "react-hook-form";
-import { FigureExperience, NavProfile } from "../components";
 import "./FormProfile.css";
 import { Uploadfile } from "../components";
-import { useAuth } from "../context/authContext";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
-import { update } from "../services/experiences.service";
-import { useUpdateError } from "../hooks";
+import { useErrorExperienceDetalle } from "../hooks";
+import { Navigate, useParams } from "react-router-dom";
+import { byId, update } from "../services/experiences.service";
 
 export const UpdateExperience = () => {
-  const { user, setUser, logout } = useAuth();
-  const { handleSubmit, register} = useForm();
+  const [ok, setOk] = useState(false);
+  const [experienceById, setExperienceById] = useState(null);
+  const { id } = useParams();
+  const [resExperience, setResExperience] = useState(null);
+  const { handleSubmit, register } = useForm();
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
 
   const defaultData = {
-    name: user?.user,
+    name: experienceById?.name,
+    description: experienceById?.description,
   };
 
   const formSubmit = (formData) => {
     Swal.fire({
-      title: "Are you sure you want to change your data profile?",
+      title: "¿Estás seguro de que quieres actualizar los datos?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "rgb(73, 193, 162)",
@@ -31,51 +32,45 @@ export const UpdateExperience = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const inputFile = document.getElementById("file-upload").files;
-
         const formDataToSubmit = new FormData();
         formDataToSubmit.append("name", formData.name);
         formDataToSubmit.append("description", formData.description);
 
         if (inputFile.length != 0) {
-          const custonFormData = {
-            ...formData,
-            image: inputFile[0],
-          };
-
-          setSend(true);
-          setRes(await update(custonFormData));
-          setSend(false);
-        } else {
-          const custonFormData = {
-            ...formData,
-            image: inputFile[0],
-          };
-          setSend(true);
-          setRes(await update(custonFormData));
-          setSend(false);
+          formDataToSubmit.append("image", inputFile[0]);
         }
+
+        setSend(true);
+        setRes(await update(id, formDataToSubmit));
+        setSend(false);
       }
     });
   };
 
   useEffect(() => {
-    console.log(res);
-    useUpdateError(res, setRes, setUser, logout);
-  }, [res]);
+    const fetchExperience = async () => {
+      const response = await byId(id);
+      setResExperience(response);
+    };
+    fetchExperience();
+  }, [id]);
 
-//  
+  useErrorExperienceDetalle(resExperience, setResExperience, setExperienceById);
+  if (send) {
+    return <Navigate to="/profile" />;
+  }
+
   return (
     <>
-      <NavProfile />
       <div className="containerProfile">
-      <div className="containerDataNoChange">
-          <FigureExperience experience={idExperience} />
-        </div>
         <div className="form-wrap formProfile">
-          <h1>Change your data profile ♻</h1>
-          <p>Please, enter your new data profile</p>
+          <h1>Actualiza tu experiencia ♻</h1>
+          <p>Introduce los nuevos datos de tu experiencia</p>
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                Nombre de la experiencia
+              </label>
               <input
                 className="input_user"
                 type="text"
@@ -85,25 +80,22 @@ export const UpdateExperience = () => {
                 defaultValue={defaultData?.name}
                 {...register("name")}
               />
-              <label htmlFor="custom-input" className="custom-placeholder">
-                Username
-              </label>
             </div>
-            <div className="user_container form-group">
+
+            <div className="description_container form-group">
+              <label htmlFor="description" className="custom-placeholder">
+                Descripción
+              </label>
               <input
                 className="input_user"
                 type="text"
                 id="description"
-                name="name"
-                autoComplete="false"
-                defaultValue={defaultData?.name}
-                {...register("name")}
+                name="description"
+                defaultValue={defaultData?.description}
+                {...register("description", { required: true })}
               />
-              <label htmlFor="custom-input" className="custom-placeholder">
-                Username
-              </label>
             </div>
-            
+
             <Uploadfile />
 
             <div className="btn_container">
@@ -113,7 +105,7 @@ export const UpdateExperience = () => {
                 disabled={send}
                 style={{ background: send ? "#49c1a388" : "#49c1a2" }}
               >
-                CHANGE DATA <EXPERIENCE></EXPERIENCE>
+                ACTUALIZA LOS DATOS
               </button>
             </div>
           </form>

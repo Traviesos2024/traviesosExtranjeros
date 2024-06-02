@@ -281,35 +281,74 @@ const byId = async (req, res, next) => {
 //! -----------------------------------------------------------------------------
 
 const update = async (req, res, next) => {
+  let catchImg = req.file?.path;
+
   try {
+    await Experience.syncIndexes();
     const { idExperience } = req.params;
-    const experienceById = await Experience.findById(idExperience);
+    const experience = await Experience.findById(idExperience);
+    if (experience) {
+      //*eventByTypeByType//
+      const oldImg = experience.image;
 
-    if (!experienceById) {
-      return res.status(404).json("Esta experiencia no existe");
-    }
+      const customBody = {
+        image: req.file?.path ? catchImg : oldImg,
+        description: req.body?.description
+          ? req.body?.description
+          : experience.description,
+        name: req.body?.name ? req.body?.name : experience.name,
+      };
 
-    // Verificar si se ha subido una nueva imagen
-    let catchImg;
-    if (req.file) {
-      catchImg = req.file.path;
+      try {
+        await Experience.findByIdAndUpdate(idExperience, customBody);
+        if (req.file?.path) {
+          deleteImgCloudinary(oldImg);
+        }
+
+        const elementUpdateExperience = Object.keys(req.body);
+
+        let test = {};
+
+        elementUpdateExperience.forEach((item) => {
+          if (req.body[item] === experience[item]) {
+            test[item] = false;
+          } else {
+            test[item] = true;
+          }
+        });
+
+        if (catchImg) {
+          experience.image === catchImg //*
+            ? (test = { ...test, file: false })
+            : (test = { ...test, file: true });
+        }
+
+        let acc = 0;
+        for (clave in test) {
+          test[clave] == false && acc++;
+        }
+        if (acc > 0) {
+          return res.status(404).json({
+            dataTest: test,
+            update: false,
+          });
+        } else {
+          return res.status(200).json({
+            dataTest: test,
+            update: true,
+          });
+        }
+      } catch (error) {
+        console.log(error.message);
+        return res.status(404).json(error.message);
+      }
     } else {
-      return res.status(400).json("Debes subir una imagen para actualizar");
+      console.log(error.message);
+      return res.status(404).json("este character no existe");
     }
-
-    // Actualizar solo la imagen de la experiencia
-    const updatedExperience = await Experience.findByIdAndUpdate(
-      idExperience,
-      { image: catchImg },
-      { new: true }
-    );
-
-    // Eliminar la antigua imagen de Cloudinary
-    deleteImgCloudinary(experienceById.image);
-
-    return res.status(200).json({ updatedExperience });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    console.log(error.message);
+    return res.status(404).json(error.message);
   }
 };
 

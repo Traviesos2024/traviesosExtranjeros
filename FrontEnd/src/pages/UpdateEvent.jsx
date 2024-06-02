@@ -1,5 +1,3 @@
-
-
 import { useForm } from "react-hook-form";
 import "./FormProfile.css";
 import { Uploadfile } from "../components";
@@ -25,7 +23,7 @@ export const UpdateEvent = () => {
 
   const formSubmit = (formData) => {
     Swal.fire({
-      title: "Are you sure you want to change your event data?",
+      title: "¿Estás seguro de que quieres actualizar los datos?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "rgb(73, 193, 162)",
@@ -60,17 +58,19 @@ export const UpdateEvent = () => {
   useErrorEventDetalle(resEvent, setResEvent, setEventById);
   if (send) {
     return <Navigate to="/profile" />;
-
   }
 
   return (
     <>
       <div className="containerProfile">
         <div className="form-wrap formProfile">
-          <h1>Change your event data ♻</h1>
-          <p>Please, enter your new event data</p>
+          <h1>Actualiza tu evento ♻</h1>
+          <p>Introduce los nuevos datos de tu evento</p>
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                Nombre del evento
+              </label>
               <input
                 className="input_user"
                 type="text"
@@ -80,25 +80,22 @@ export const UpdateEvent = () => {
                 defaultValue={defaultData?.name}
                 {...register("name")}
               />
-              <label htmlFor="custom-input" className="custom-placeholder">
-                Event name
-              </label>
             </div>
 
             <div className="description_container form-group">
-            <input
-              className="input_user"
-              type="text"
-              id="description"
-              name="description"
-              defaultValue={defaultData?.description}
-              {...register("description", { required: true })}
-            />
-            <label htmlFor="description" className="custom-placeholder">
-              Descripción
-            </label>
-          </div>
-            
+              <label htmlFor="description" className="custom-placeholder">
+                Descripción
+              </label>
+              <input
+                className="input_user"
+                type="text"
+                id="description"
+                name="description"
+                defaultValue={defaultData?.description}
+                {...register("description", { required: true })}
+              />
+            </div>
+
             <Uploadfile />
 
             <div className="btn_container">
@@ -108,9 +105,8 @@ export const UpdateEvent = () => {
                 disabled={send}
                 style={{ background: send ? "#49c1a388" : "#49c1a2" }}
               >
-                CHANGE EVENT DATA 
+                ACTUALIZA LOS DATOS
               </button>
-            
             </div>
           </form>
         </div>
@@ -118,5 +114,3 @@ export const UpdateEvent = () => {
     </>
   );
 };
-
-
