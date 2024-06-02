@@ -28,6 +28,7 @@ export const useAutoLogin = async (allUser, login) => {
         experiencesFav,
         followers,
         followed,
+        rol,
       } = sendData?.data?.user;
       const userCustom = {
         token: sendData.data.token,
@@ -46,6 +47,7 @@ export const useAutoLogin = async (allUser, login) => {
         experiencesFav,
         followers,
         followed,
+        rol,
 
         _id: sendData.data.user._id,
       };

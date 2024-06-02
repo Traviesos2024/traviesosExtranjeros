@@ -21,6 +21,7 @@ export const useLoginError = (res, setRes, login, setLoginOk) => {
       followers: res.data.user.followers,
       followed: res.data.user.followed,
       _id: res.data.user._id,
+      rol: res.data.user.rol,
     };
 
     const stringUser = JSON.stringify(dataCustom);

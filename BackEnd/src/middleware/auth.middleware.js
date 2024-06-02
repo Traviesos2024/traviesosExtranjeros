@@ -64,8 +64,8 @@ const isAuthSuper = async (req, res, next) => {
     req.user = await User.findById(decoded.id);
 
     // pongo un requisito mas y es que sea admin
-    if (req.user.rol !== "superadmin") {
-      return next(new Error("Unauthorized, not superadmin"));
+    if (req.user.rol !== "superAdmin") {
+      return next(new Error("Unauthorized, not superAdmin"));
     }
     next();
   } catch (error) {

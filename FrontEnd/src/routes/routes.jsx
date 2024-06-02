@@ -25,12 +25,11 @@ import {
   UpdateEvent,
   UpdateExperience,
   CreateCountryForm,
-  SuperAdminPage
+  SuperAdminPage,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
 import { HomeLogadoPage } from "../pages/HomeLogadoPage";
-
 
 export const router = createBrowserRouter([
   {
@@ -197,23 +196,23 @@ export const router = createBrowserRouter([
         ),
       },
       {
-       path: '/superadmin',
+        path: "/superAdminPage",
         element: (
-         <ProtectedSuperAdmin>
-        <SuperAdminPage />
-        </ProtectedSuperAdmin>
-         ),
-      children: [
-    {
-      path: "createCountry", // Cambiado a una ruta relativa
-      element: (
-        <ProtectedSuperAdmin>
-          <CreateCountryForm />
-        </ProtectedSuperAdmin>
-      ),
-    },
-  ],
-},
+          <ProtectedSuperAdmin>
+            <SuperAdminPage />
+          </ProtectedSuperAdmin>
+        ),
+        children: [
+          {
+            path: "createCountry", // Cambiado a una ruta relativa
+            element: (
+              <ProtectedSuperAdmin>
+                <CreateCountryForm />
+              </ProtectedSuperAdmin>
+            ),
+          },
+        ],
+      },
       {
         path: "*",
         element: <NotFound />,
