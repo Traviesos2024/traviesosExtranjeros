@@ -21,3 +21,4 @@ export * from "./EventDetalle";
 export * from "./CardUser";
 export * from "./FigureExperience";
 export * from "./FigureEvent";
+export * from "./ProtectedSuperAdmin";

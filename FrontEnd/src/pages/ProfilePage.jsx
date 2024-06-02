@@ -1,7 +1,7 @@
 import { Experience } from "../components";
 import "./ProfilePage.css";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 // import { useErrorEvent } from "../hooks/useErrorEvent";
 // import { eventById, getAll } from "../services/events.service";
@@ -68,6 +68,11 @@ export const ProfilePage = ({ item }) => {
   return (
     <>
       <main>
+        <div className="superadmin-profile">
+          <button>
+            <Link to="/superAdminPage"> Administración </Link>
+          </button>
+      </div>
         <div className="homePage">
           <h3 className="TituloViajeros">
             ¡¡Hola {user.user}, aquí tienes todo tu contenido!!

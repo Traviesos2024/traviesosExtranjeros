@@ -1,5 +1,5 @@
 import App from "../App";
-import { Protected } from "../components";
+import { Protected, ProtectedSuperAdmin } from "../components";
 import {
   Country,
   CountryCity,
@@ -25,10 +25,12 @@ import {
   UpdateEvent,
   UpdateExperience,
   CreateCountryForm,
+  SuperAdminPage
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
 import { HomeLogadoPage } from "../pages/HomeLogadoPage";
+
 
 export const router = createBrowserRouter([
   {
@@ -195,13 +197,23 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/createCountry",
+       path: '/superadmin',
         element: (
-          <Protected>
-            <CreateCountryForm />
-          </Protected>
-        ),
-      },
+         <ProtectedSuperAdmin>
+        <SuperAdminPage />
+        </ProtectedSuperAdmin>
+         ),
+      children: [
+    {
+      path: "createCountry", // Cambiado a una ruta relativa
+      element: (
+        <ProtectedSuperAdmin>
+          <CreateCountryForm />
+        </ProtectedSuperAdmin>
+      ),
+    },
+  ],
+},
       {
         path: "*",
         element: <NotFound />,
