@@ -1,7 +1,7 @@
 import "./FigureUser.css";
 
 export const FigureEvent = ({ events }) => {
-  console.log("events", events);
+  // console.log("events", events);
 
   // Convertir la edad a un objeto Date
   const fechaCreacion = new Date(events.date);

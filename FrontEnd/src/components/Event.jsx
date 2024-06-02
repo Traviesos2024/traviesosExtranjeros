@@ -3,7 +3,7 @@ import { Comments } from "./index";
 import { useRef, useState } from "react";
 import { toggleFollowEvent, toggleLikeEvent } from "../services/events.service";
 import { useAuth } from "../context/authContext";
-import { Link, NavLink } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { followUserToggle } from "../services/user.service";
 
 export const Event = ({
@@ -28,6 +28,8 @@ export const Event = ({
   } = renderData;
 
   console.log("render data", renderData);
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(false);
   const spanFollowRef = useRef(null);
   const { user } = useAuth();
@@ -149,13 +151,18 @@ export const Event = ({
 
           {handleDelete && (
             <button onClick={() => handleDelete(_id)}>
-              <span class="material-symbols-outlined">delete</span>
+              <span className="material-symbols-outlined">delete</span>
             </button>
           )}
           {handleUpdate && (
-            <NavLink to="/events/updateEvent">
-              <span class="material-symbols-outlined">update</span>
-            </NavLink>
+            <button
+            onClick={() =>
+              navigate(`/events/${_id}/updateEvent`)
+            }
+            
+          >
+           <span className="material-symbols-outlined">update</span>
+            </button>
           )}
         </div>
         <p>Evento: {name}</p>

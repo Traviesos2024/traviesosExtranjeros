@@ -291,14 +291,14 @@ export const router = createBrowserRouter([
           </Protected>
         ),
       },
-      {
-        path: "/events/updateEvent",
-        element: (
-          <Protected>
-            <UpdateEvent />
-          </Protected>
-        ),
-      },
+      // {
+      //   path: "/events/updateEvent",
+      //   element: (
+      //     <Protected>
+      //       <UpdateEvent />
+      //     </Protected>
+      //   ),
+      // },
       {
         path: "/experiences/update",
         element: (
@@ -391,8 +391,17 @@ export const router = createBrowserRouter([
               </Protected>
             ),
           },
+          {
+            path: "updateEvent",
+            element: (
+              <Protected>
+                <UpdateEvent />
+              </Protected>
+            ),
+          },
         ],
       },
+      
       {
         path: "/chats",
         element: (
