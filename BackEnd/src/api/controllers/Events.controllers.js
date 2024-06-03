@@ -524,6 +524,15 @@ const eventById = async (req, res, next) => {
     const eventById = await Event.findById(idEvent)
       .populate("name experience cities")
       .populate({
+        path: "experience",
+        populate: [
+          {
+            path: "comments",
+            populate: [{ path: "owner" }, { path: "likes" }],
+          },
+        ],
+      })
+      .populate({
         path: "comments",
         populate: [{ path: "owner" }, { path: "likes" }],
       });

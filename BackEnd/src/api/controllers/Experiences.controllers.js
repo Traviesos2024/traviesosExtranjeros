@@ -263,7 +263,10 @@ const byId = async (req, res, next) => {
     /* creamos una constante, apuntamos al modelo y hacemos un findById para buscar por id. 
     El id lo encontramos con req.params y la clave .id. Si no lo encuentra es un null */
     const { idExperience } = req.params;
-    const experienceById = await Experience.findById(idExperience);
+    const experienceById = await Experience.findById(idExperience).populate({
+      path: "comments",
+      populate: [{ path: "owner" }],
+    });
     if (experienceById) {
       // comprobamos si existe
       return res.status(200).json(experienceById); // mandamos un json con el objeto
