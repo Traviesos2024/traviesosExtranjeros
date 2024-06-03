@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useErrorEventDetalle } from "../hooks";
 import { Loader } from "./Loader";
 import { eventById } from "../services/events.service";
@@ -11,6 +11,7 @@ export const EventDetalle = () => {
   const [resEvent, setResEvent] = useState({});
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [open, setOpen] = useState(false);
   const [commentsCounter, setCommentsCounter] = useState(false);
 
@@ -25,6 +26,15 @@ export const EventDetalle = () => {
 
   // Llama al hook directamente en el componente
   useErrorEventDetalle(resEvent, setResEvent, setEventById);
+  useEffect(() => {
+    // If there is a newExperience in the location state, add it to the event experiences
+    if (location.state && location.state.newExperience) {
+      setEventById((prevEvent) => ({
+        ...prevEvent,
+        experience: [...prevEvent.experience, location.state.newExperience],
+      }));
+    }
+  }, [location.state]);
 
   const onToggleComments = () => {
     setOpen(!open);
@@ -101,20 +111,9 @@ export const EventDetalle = () => {
           </button>
           <div className="experiences">
             <h3>Experiencias</h3>
-            {/* {experiences.length > 0 ? (
-              experiences.map((experience) => (
-                <div key={experience._id} className="experience">
-                  <h4>{experience.name}</h4>
-                  <p>{experience.description}</p>
-                  <p>{new Date(experience.date).toLocaleString()}</p>
-                </div>
-              ))
-            ) : (
-              <p>No hay experiencias para este evento.</p>
-            )} */}
           </div>
           <div>
-            {eventoById != null ? (
+            {eventoById != null && eventoById.experience.length > 0 ? (
               eventoById.experience.map((item) => (
                 <Experience
                   renderData={item}
@@ -128,7 +127,10 @@ export const EventDetalle = () => {
                 />
               ))
             ) : (
-              <p>No hay experiencias creadas disponibles</p>
+              <p>
+                No hay experiencias disponibles para este evento. Sé el primero
+                ⬆️
+              </p>
             )}
           </div>
         </figure>
