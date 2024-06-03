@@ -69,10 +69,14 @@ export const ProfilePage = ({ item }) => {
     <>
       <main>
         <div className="superadmin-profile">
-          <button>
+          <button
+            style={{
+              display: userById?.rol === "superAdmin" ? "block" : "none",
+            }}
+          >
             <Link to="/superAdminPage"> Administración </Link>
           </button>
-      </div>
+        </div>
         <div className="homePage">
           <h3 className="TituloViajeros">
             ¡¡Hola {user.user}, aquí tienes todo tu contenido!!
@@ -152,9 +156,6 @@ export const ProfilePage = ({ item }) => {
           </p>
           <button>
             <Link to="/events">Eventos</Link>
-          </button>
-          <button>
-            <Link to="/createCountry"> Añadir nuevo país</Link>
           </button>
         </div>
       </main>
