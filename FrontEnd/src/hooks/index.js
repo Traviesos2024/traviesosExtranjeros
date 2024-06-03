@@ -22,3 +22,4 @@ export * from "./useErrorExperienceDetalle";
 export * from "./useErrorCreateCountry";
 export * from "./useErrorEventPages";
 export * from "./useUpdateErrorEvent";
+export * from "./useErrorCountryDetalle"
