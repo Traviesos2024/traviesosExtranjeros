@@ -105,7 +105,7 @@ export const Comments = ({
 
     let commentsToUpdate = [...comments];
     const indexOfMessageToReplace = commentsToUpdate.findIndex(
-      (message) => message._id == updatedMessage.data.message._id
+      (message) => message._id == updatedMessage.data?.message?._id
     );
     commentsToUpdate[indexOfMessageToReplace] = updatedMessage.data.message;
 
@@ -202,14 +202,15 @@ export const Comments = ({
               <div
                 key={comment?._id}
                 className={
-                  user._id == comment?.owner || user._id == comment?.owner._id
+                  user._id == comment?.owner || user._id == comment?.owner?._id
                     ? "my-text-wrapper"
                     : "friend-text-wrapper"
                 }
               >
                 <div
                   className={
-                    user._id == comment?.owner || user._id == comment?.owner._id
+                    user._id == comment?.owner ||
+                    user._id == comment?.owner?._id
                       ? "my-text"
                       : "friend-text"
                   }
@@ -217,7 +218,7 @@ export const Comments = ({
                   <div className="comments-header">
                     <>
                       {user._id == comment?.owner ||
-                      user._id == comment?.owner._id ? (
+                      user._id == comment?.owner?._id ? (
                         <div
                           onMouseEnter={(e) => {
                             setHoveredElement(comment?._id);
@@ -243,7 +244,7 @@ export const Comments = ({
                               <span
                                 className={
                                   comment?.likes?.find(
-                                    (userFav) => userFav?._id == user._id
+                                    (userFav) => userFav?._id == user?._id
                                   )
                                     ? "material-symbols-outlined like comments-actions-icon"
                                     : "material-symbols-outlined comments-actions-icon"
@@ -282,17 +283,17 @@ export const Comments = ({
                         ""
                       )}
                     </>
-                    <h5 onClick={() => onClickUserName(comment?.owner._id)}>
+                    <h5 onClick={() => onClickUserName(comment?.owner?._id)}>
                       {comment?.owner.name}:
                     </h5>
 
                     <>
-                      {user._id != comment?.owner._id ? (
+                      {user._id != comment?.owner?._id ? (
                         <div className="friend-like-wrapper">
                           <span
                             className={
                               comment.likes.find(
-                                (userFav) => userFav._id == user._id
+                                (userFav) => userFav?._id == user?._id
                               )
                                 ? "material-symbols-outlined like"
                                 : "material-symbols-outlined"
