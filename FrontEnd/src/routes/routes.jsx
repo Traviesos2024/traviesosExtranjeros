@@ -63,14 +63,14 @@ export const router = createBrowserRouter([
         path: "/log",
         element: <HomeLogadoPage />,
       },
-      {
-        path: "/experiences",
-        element: (
-          <Protected>
-            <ExperiencesPage />
-          </Protected>
-        ),
-      },
+      // {
+      //   path: "/experiences",
+      //   element: (
+      //     <Protected>
+      //       <ExperiencesPage />
+      //     </Protected>
+      //   ),
+      // },
       {
         path: "/events",
         element: (
