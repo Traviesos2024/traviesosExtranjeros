@@ -17,6 +17,10 @@
   }
 }
 
+.person_add{
+  color: green
+}
+
 .cardUser img {
   width: 150px;
   height: 150px;

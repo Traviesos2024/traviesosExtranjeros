@@ -5,11 +5,11 @@ import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 // import { useErrorEvent } from "../hooks/useErrorEvent";
 // import { eventById, getAll } from "../services/events.service";
-import { deleteExperience } from "../services/experiences.service";
+import { deleteExperience, update } from "../services/experiences.service";
 import { Event } from "../components";
 import { useErrorExperience, useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
-import { deleteEvent } from "../services/events.service";
+import { deleteEvent, updateEvent } from "../services/events.service";
 
 export const ProfilePage = ({ item }) => {
   const { user } = useAuth();
@@ -58,11 +58,36 @@ export const ProfilePage = ({ item }) => {
     }
   };
 
-  const handleUpdate = (eventId) => {
-    console.log("Evento actualizado:", eventId);
+  const handleUpdate = async (eventId) => {
+    try {
+      await updateEvent(eventId);
+      setUserById((prevUser) => ({
+        ...prevUser,
+        eventsOwner: prevUser.eventsOwner.filter(
+          (event) => event._id !== eventId
+        ),
+      }));
+      console.log("Evento actualizado:", eventId);
+    } catch (error) {
+      console.error("Error al actualizar el evento:", error);
+    }
   };
-  const handleUpdateExperience = (experienceId) => {
-    console.log("Experiencia actualizada:", experienceId);
+
+  const handleUpdateExperience = async (experienceId) => {
+    try {
+      await update(experienceId);
+      setUserById((prevUser) => ({
+        ...prevUser,
+        experiencesOwner: prevUser.experiencesOwner.map((experience) =>
+          experience._id === updatedExperience._id
+            ? updatedExperience
+            : experience
+        ),
+      }));
+      console.log("Experiencia actualizada:", experienceId);
+    } catch (error) {
+      console.error("Error al actualizar la experiencia:", error);
+    }
   };
 
   return (

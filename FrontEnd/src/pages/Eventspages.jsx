@@ -99,7 +99,8 @@ export const Eventspages = () => {
       />
       <hr />
       <br></br>
-      {console.log("jldi<udwju", userById)}
+
+      {console.log("dataaaaaaaa", data)}
       <div className="cards-wrapper">
         {data.length > 0
           ? data.map((item) => (

@@ -22,3 +22,4 @@ export * from "./CardUser";
 export * from "./FigureExperience";
 export * from "./FigureEvent";
 export * from "./ProtectedSuperAdmin";
+export * from "./CardUserNoFollow";

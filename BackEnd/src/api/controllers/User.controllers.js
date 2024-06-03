@@ -767,7 +767,9 @@ const byId = async (req, res, next) => {
           { path: "events", model: Event },
         ],
       })
-      .populate("city country");
+      .populate("city country")
+      .populate("followed", "name image")
+      .populate("followers", "name image");
     if (userById) {
       // comprobamos si existe
       return res.status(200).json(userById); // mandamos un json con el objeto
@@ -892,6 +894,7 @@ const followUserToggle = async (req, res, next) => {
               .populate("city country experiencesOwner experiencesFav"),
             userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
             allEvent: await Event.find().populate("cities eventOwner"),
+            allUser: await User.find().populate("city country"),
           });
         } catch (error) {
           return res.status(404).json({
@@ -956,6 +959,7 @@ const followUserToggle = async (req, res, next) => {
               .populate("city country experiencesOwner experiencesFav"),
             userSeQuiereSeguir: await User.findById(idUserSeQuiereSeguir),
             allEvent: await Event.find().populate("cities eventOwner"),
+            allUser: await User.find().populate("city country"),
           });
         } catch (error) {
           return res.status(404).json({

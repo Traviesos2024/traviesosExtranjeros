@@ -19,6 +19,7 @@ export const UpdateEvent = () => {
   const defaultData = {
     name: eventoById?.name,
     description: eventoById?.description,
+    date: eventoById?.date,
   };
 
   const formSubmit = (formData) => {
@@ -32,16 +33,17 @@ export const UpdateEvent = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const inputFile = document.getElementById("file-upload").files;
-        const formDataToSubmit = new FormData();
-        formDataToSubmit.append("name", formData.name);
-        formDataToSubmit.append("description", formData.description);
+        let customFormData = formData;
 
         if (inputFile.length != 0) {
-          formDataToSubmit.append("image", inputFile[0]);
+          customFormData = {
+            ...formData,
+            image: inputFile[0],
+          };
         }
 
         setSend(true);
-        setRes(await updateEvent(id, formDataToSubmit));
+        setRes(await updateEvent(id, customFormData));
         setSend(false);
       }
     });
@@ -50,13 +52,17 @@ export const UpdateEvent = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       const response = await eventById(id);
+      response?.status == 200 && setEventById(response.data);
       setResEvent(response);
     };
     fetchEvent();
   }, [id]);
 
-  useErrorEventDetalle(resEvent, setResEvent, setEventById);
-  if (send) {
+  useEffect(() => {
+    res?.status == 200 && setOk(true);
+  }, [res]);
+
+  if (ok) {
     return <Navigate to="/profile" />;
   }
 
@@ -92,7 +98,43 @@ export const UpdateEvent = () => {
                 id="description"
                 name="description"
                 defaultValue={defaultData?.description}
-                {...register("description", { required: true })}
+                {...register("description")}
+              />
+            </div>
+            <div className="category_container form-group">
+              <label htmlFor="category" className="custom-placeholder">
+                Categoria
+              </label>
+              <input
+                className="input_user"
+                type="text"
+                id="category"
+                name="category"
+                autoComplete="off"
+                placeholder="Selecciona una categoría"
+                list="category-options"
+                {...register("category")}
+              />
+              <datalist id="category-options">
+                <option value="Música" />
+                <option value="Gastronomía" />
+                <option value="Deportes" />
+                <option value="Otros..." />
+              </datalist>
+            </div>
+
+            <div className="date_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
+                Fecha y Hora
+              </label>
+              <input
+                className="input_user"
+                type="datetime-local"
+                id="date"
+                name="daytime"
+                autoComplete="false"
+                placeholder="DD-MM-AAAA"
+                {...register("date")}
               />
             </div>
 

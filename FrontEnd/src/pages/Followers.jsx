@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/authContext";
 import { useErrorUser } from "../hooks";
 import { byId } from "../services/user.service";
-import { CardUser } from "../components";
+import { CardUserNoFollow } from "../components/CardUserNoFollow";
 
 export const Followers = ({}) => {
   const { user } = useAuth();
@@ -19,7 +19,7 @@ export const Followers = ({}) => {
   useEffect(() => {
     useErrorUser(resUser, setResUser, setUserById);
 
-    console.log(resUser);
+    console.log("Datos de los usuarios sigo", userById);
   }, [resUser]);
   console.log("user", resUser);
 
@@ -30,7 +30,11 @@ export const Followers = ({}) => {
         {userById != null ? (
           <>
             {userById.followed.map((item, index) => (
-              <CardUser data={item} key={item._id} />
+              <CardUserNoFollow
+                data={item}
+                key={item._id}
+                userById={userById}
+              />
               //   <li key={index}>{item.name}</li>
             ))}
           </>
@@ -43,7 +47,7 @@ export const Followers = ({}) => {
         {userById != null ? (
           <>
             {userById.followers.map((item, index) => (
-              <CardUser data={item} key={item._id} />
+              <CardUserNoFollow data={item} key={item._id} />
             ))}
           </>
         ) : (

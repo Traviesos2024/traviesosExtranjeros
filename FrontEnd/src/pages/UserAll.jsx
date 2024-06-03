@@ -10,21 +10,17 @@ export const UserAll = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const result = await getAll();
-      setRes(result);
+      result.status === 200 && setUsers(result.data.data);
     };
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    if (res) {
-      useErrorUser(res, setRes, setUsers);
-    }
-  }, [res]);
-
   return (
     <div id="containerCountryAll">
       {users.length !== 0 ? (
-        users.data.map((item) => <CardUser data={item} key={item._id} />)
+        users.map((item) => (
+          <CardUser data={item} key={item._id} setUsers={setUsers} />
+        ))
       ) : (
         <p>Cargando...</p>
       )}
