@@ -17,9 +17,7 @@ export const EventsForm = () => {
   const [ok, setOk] = useState(false);
   const { user, allUser, setAllUser, bridgeData } = useAuth();
   const [events, setEvents] = useState([]);
-
   const [cities, setCities] = useState([]);
-
   const [resCity, setResCity] = useState({});
   const [city, setCity] = useState("");
 
@@ -31,6 +29,7 @@ export const EventsForm = () => {
 
   const formSubmit = async (formData) => {
     const inputFile = document.getElementById("file-upload").files;
+    let customFormData = formData;
     //* condicional para enviar los datos del formulario al backend tanto si hay subida imagen como si no
     if (inputFile.length != 0) {
       // si es diferente a 0 es que hay algo dentro de files
@@ -61,7 +60,7 @@ export const EventsForm = () => {
   useEffect(() => {
     useErrorRegister(res, setRes, setOk);
     // si la res es ok llamamos a la funcion puente del contexto y le pasamos el parámetro ALLUSER
-    if (res?.status == 200) {
+    if (res?.status == 200 && setOk(true)) {
       setEvents([...events, response.data]);
       bridgeData("ALLUSER");
     }
@@ -88,7 +87,7 @@ export const EventsForm = () => {
   //! 5) estados de navegacion
 
   if (ok) {
-    return <Navigate to="/Events" />;
+    return <Navigate to="/events" />;
   }
 
   return (

@@ -12,9 +12,9 @@ const createEvent = async (req, res, next) => {
   //*Se captura la url de la imagen de Cloudinary por si se diera el error de que en como la imagen se sube antes de meternos al controlador
   //*si hay un error en el controlador, una vez dentro, el elemento no se crea y por ende
   //*tenmos que borrar la imagen en cloudinary */
-
-  //** El optional chaining se pone porque la imagen no es obligatoria por lo cual
+  //* El optional chaining se pone porque la imagen no es obligatoria por lo cual
   //* puede ser que no tengamos req.file.path
+
   let catchImg = req.file?.path;
 
   try {
