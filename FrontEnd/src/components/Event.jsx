@@ -66,12 +66,15 @@ export const Event = ({
 
       if (profile) {
         setEvents(res.data.user);
-      } else {
+      } else if (home) {
         const filteredEvents = res.data.allEvent.filter((event) =>
           event.cities.some((city) => city.name === userAuth.city.name)
         );
         console.log(filteredEvents);
         setEvents(filteredEvents);
+      } else {
+        console.log("Estoy pasando por aqui 🎃", res.data.user);
+        setEvents(res.data);
       }
       console.log("Toggle Follow Response:", res.data);
     } catch (error) {
@@ -91,14 +94,15 @@ export const Event = ({
 
       if (profile) {
         res.status === 200 && setEvents(res.data.authUser);
+      } else if (home) {
+        const filteredEvents = res.data.allEvent.filter((event) =>
+          event.cities.some((city) => city.name === userAuth.city.name)
+        );
+        console.log(filteredEvents);
+        setEvents(filteredEvents);
       } else {
-        if (res.status === 200) {
-          const filteredEvents = res.data.allEvent.filter((event) =>
-            event.cities.some((city) => city.name === userAuth.city.name)
-          );
-          console.log(filteredEvents);
-          setEvents(filteredEvents);
-        }
+        console.log("Estoy pasando por aqui 🎃", res.data.user);
+        setEvents(res.data);
       }
     } catch (error) {
       console.error("Error toggling follow:", error);

@@ -237,6 +237,14 @@ const toggleLikeEvent = async (req, res, next) => {
                 path: "comments",
                 populate: [{ path: "owner" }],
               }),
+            data: await Event.findById(idEvent)
+              .populate("experience")
+              .populate("eventOwner")
+              .populate("cities")
+              .populate({
+                path: "comments",
+                populate: [{ path: "owner" }],
+              }),
             allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
@@ -290,6 +298,7 @@ const toggleLikeEvent = async (req, res, next) => {
               })
               .populate("city country experiencesOwner experiencesFav"),
             events: await Event.findById(idEvent),
+
             allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {
@@ -539,13 +548,15 @@ const updateEvent = async (req, res, next) => {
   try {
     await Event.syncIndexes();
     const { idEvent } = req.params;
+    const { _id } = req.user;
+
     const event = await Event.findById(idEvent);
     if (event) {
       //*eventByTypeByType//
       const oldImg = event.image;
 
       const customBody = {
-        _category: event._category,
+        category: req.body?.category ? req.body?.category : event.category,
         image: req.file?.path ? catchImg : oldImg,
         description: req.body?.description
           ? req.body?.description
@@ -556,7 +567,7 @@ const updateEvent = async (req, res, next) => {
 
       if (req.body?.category) {
         //* cambiamos gender por category dada la modificación del modelo de Event//
-        const resultEnum = enumOk(req.body?.category);
+        const resultEnum = enumOk.enumOkCategory(req.body?.category);
         customBody.category = resultEnum.check
           ? req.body?.category
           : event.category;
@@ -567,14 +578,6 @@ const updateEvent = async (req, res, next) => {
         if (req.file?.path) {
           deleteImgCloudinary(oldImg);
         }
-
-        //** ------------------------------------------------------------------- */
-        //** VAMOS A TESTEAR EN TIEMPO REAL QUE ESTO SE HAYA HECHO CORRECTAMENTE */
-        //** ------------------------------------------------------------------- */
-
-        // ......> VAMOS A BUSCAR EL ELEMENTO ACTUALIZADO POR ID //* modificado por type//
-
-        //const eventByTypeUpdateEvent = await Event.findById(idEvent);
 
         // ......> me cojer el req.body y vamos a sacarle las claves para saber que elementos nos ha dicho de actualizar
         const elementUpdateEvent = Object.keys(req.body);
@@ -607,7 +610,8 @@ const updateEvent = async (req, res, next) => {
           test[clave] == false && acc++;
         }
         if (acc > 0) {
-          return res.status(404).json({
+          return res.status(200).json({
+            texto: "error",
             dataTest: test,
             update: false,
           });
@@ -615,6 +619,45 @@ const updateEvent = async (req, res, next) => {
           return res.status(200).json({
             dataTest: test,
             update: true,
+            user: await User.findById(_id)
+              .populate({
+                path: "eventsOwner",
+                populate: [
+                  { path: "eventOwner", model: User },
+                  { path: "cities", model: City },
+                ],
+              })
+              .populate({
+                path: "eventsFav",
+                populate: [
+                  // { path: "likeEvent", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "eventsFollow",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "cities", model: City },
+                  { path: "eventOwner", model: User },
+                ],
+              })
+              .populate({
+                path: "experiencesFav",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "events", model: Event },
+                ],
+              })
+              .populate({
+                path: "experiencesOwner",
+                populate: [
+                  // { path: "eventFollowers", model: User },
+                  { path: "events", model: Event },
+                ],
+              })
+              .populate("city country"),
           });
         }
       } catch (error) {

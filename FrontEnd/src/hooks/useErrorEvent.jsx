@@ -5,6 +5,7 @@ export const useErrorEvent = (resData, setResData, setData) => {
   if (resData?.status == 200) {
     console.log("esta todo correcto");
     setData(resData.data);
+    console.log("⚰️", resData.data);
     setResData(() => ({}));
   }
 
