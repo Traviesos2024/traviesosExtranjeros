@@ -33,6 +33,7 @@ export const Event = ({
   const [open, setOpen] = useState(false);
   const spanFollowRef = useRef(null);
   const { user } = useAuth();
+
   const onToggleLike = async () => {
     try {
       const res = await toggleLikeEvent(_id);
@@ -48,9 +49,8 @@ export const Event = ({
           console.log(filteredEvents);
           setEvents(filteredEvents);
         } else {
-          
-          console.log("Estoy pasando por aqui 🎃",res.data.user);
-          setEvents(res.data.events);
+          console.log("Estoy pasando por aqui 🎃", res.data.user);
+          setEvents(res.data);
         }
         console.log("Toggle Like Response:", res.data);
       }
@@ -155,13 +155,8 @@ export const Event = ({
             </button>
           )}
           {handleUpdate && (
-            <button
-            onClick={() =>
-              navigate(`/events/${_id}/updateEvent`)
-            }
-            
-          >
-           <span className="material-symbols-outlined">update</span>
+            <button onClick={() => navigate(`/events/${_id}/updateEvent`)}>
+              <span className="material-symbols-outlined">update</span>
             </button>
           )}
         </div>

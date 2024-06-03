@@ -5,7 +5,7 @@
   color: rgb(0, 255, 38);
 }
 
-#favorite {
+.favorite {
   color: red;
   padding: 10px 20px;
 }
@@ -29,4 +29,3 @@
   position: relative;
   transform: scale(1);
 }
-

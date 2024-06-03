@@ -9,7 +9,6 @@ import { byId } from "../services/user.service";
 import { useErrorEventPages } from "../hooks";
 
 export const Eventspages = () => {
-
   const { user } = useAuth();
 
   const [events, setEvents] = useState([]);
@@ -18,7 +17,6 @@ export const Eventspages = () => {
 
   const [resById, setResById] = useState({});
   const [userById, setUserById] = useState(null);
-
 
   const [valueInput, setValueInput] = useState(() => {
     return localStorage.getItem("input")
@@ -101,6 +99,7 @@ export const Eventspages = () => {
       />
       <hr />
       <br></br>
+      {console.log("jldi<udwju", userById)}
       <div className="cards-wrapper">
         {data.length > 0
           ? data.map((item) => (
@@ -114,7 +113,6 @@ export const Eventspages = () => {
               />
             ))
           : events.allEvent?.length > 0 &&
-          userById != null &&
             events.allEvent?.map((item) => (
               <Event
                 renderData={item}

@@ -147,7 +147,7 @@ const getAll = async (req, res, next) => {
       .populate("cities")
       .populate({
         path: "comments",
-        populate: [{ path: "owner" }, { path: "likes" }],
+        populate: [{ path: "owner" }],
       });
     /** el find nos devuelve un array */
     if (allEvent.length > 0) {
@@ -229,7 +229,14 @@ const toggleLikeEvent = async (req, res, next) => {
                 ],
               })
               .populate("city country experiencesOwner experiencesFav"),
-            events: await Event.findById(idEvent),
+            events: await Event.findById(idEvent)
+              .populate("experience")
+              .populate("eventOwner")
+              .populate("cities")
+              .populate({
+                path: "comments",
+                populate: [{ path: "owner" }],
+              }),
             allEvent: await Event.find().populate("cities eventOwner"),
           });
         } catch (error) {

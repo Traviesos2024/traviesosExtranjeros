@@ -9,6 +9,9 @@ export const SuperAdminPage = () => {
         <button onClick={() => navigate(`/superAdminPage/createCountry`)}>
           Crear nuevo país
         </button>
+        <button onClick={() => navigate(`/superAdminPage/createCity`)}>
+          Crear nueva ciudad
+        </button>
 
         <Outlet />
       </div>

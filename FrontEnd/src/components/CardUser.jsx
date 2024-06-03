@@ -16,9 +16,9 @@ export const CardUser = ({ data }) => {
   console.log("data", data);
   return (
     <div className="cardUser">
-      <img src={data.image} alt={data.name} />
+      <img src={data?.image} alt={data?.name} />
       <p> {name}</p>
-      <p>{city.name}</p>
+      <p>{city?.name}</p>
       <span onClick={handleToggleFollow} style={{ cursor: "pointer" }}>
         {" "}
         {isFollowing ? "Unfollow" : "Follow"}

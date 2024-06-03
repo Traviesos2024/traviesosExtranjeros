@@ -15,7 +15,7 @@ const createCountry = async (req, res, next) => {
       image: req.file?.path,
       tipicalFood: req.body?.tipicalFood,
       traditions: req.body?.traditions,
-      cities: city,
+      // cities: city,
     };
     const newCountry = new Country(customBody);
     const savedCountry = await newCountry.save();
@@ -25,9 +25,9 @@ const createCountry = async (req, res, next) => {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
     // Obtenemos el ID de la ciudad del cuerpo de la solicitud
-    city.forEach(async (item) => {
-      await City.findByIdAndUpdate(item, { $push: { country: item } });
-    });
+    // city.forEach(async (item) => {
+    //   await City.findByIdAndUpdate(item, { $push: { country: item } });
+    // });
     // Devolvemos el usuario actualizado
     return res.status(200).json({
       country: await Country.findById(newCountry._id).populate("cities"),
@@ -77,7 +77,6 @@ const getAll = async (req, res, next) => {
     return next(error);
   }
 };
-
 
 //! ---------------------------------------------------------------------
 //? -------------------------------UPDATE -------------------------------

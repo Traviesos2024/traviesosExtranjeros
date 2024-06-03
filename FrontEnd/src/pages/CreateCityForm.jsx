@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import "./CreateCountryForm.css";
+import "./CreateCityForm.css";
 import { useErrorRegister } from "../hooks";
 import { useAuth } from "../context/authContext";
 import { Uploadfile } from "../components";
 import { Navigate } from "react-router-dom";
-import { createCountry } from "../services/country.service";
+import { createCity } from "../services/city.service";
+import { fetchCountries } from "../services/user.service";
 
-export const CreateCountryForm = () => {
+export const CreateCityForm = () => {
   //! 1) crear los estados
 
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
   const [ok, setOk] = useState(false);
   const { user, allUser, setAllUser, bridgeData } = useAuth();
-  const [country, setCountry] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [city, setCity] = useState([]);
 
   //! 2) llamada al hook de react hook form
 
@@ -23,7 +25,6 @@ export const CreateCountryForm = () => {
   //! 3) la funcion que gestiona los datos del formulario
 
   const formSubmit = async (formData) => {
-    console.log("formdata", formData);
     const inputFile = document.getElementById("file-upload").files;
     //* condicional para enviar los datos del formulario al backend tanto si hay subida imagen como si no
     if (inputFile.length != 0) {
@@ -34,7 +35,7 @@ export const CreateCountryForm = () => {
       };
       //llamada al backend
       setSend(true);
-      setRes(await createCountry(customFormData));
+      setRes(await createCity(customFormData));
       setSend(false);
     } else {
       // si no hay imagen solo hago una copia del formData
@@ -43,7 +44,7 @@ export const CreateCountryForm = () => {
       };
       //llamada al backend
       setSend(true);
-      setRes(await createCountry(customFormData));
+      setRes(await createCity(customFormData));
       setSend(false);
     }
   };
@@ -54,7 +55,7 @@ export const CreateCountryForm = () => {
     useErrorRegister(res, setRes, setOk);
     // si la res es ok llamamos a la funcion puente del contexto y le pasamos el parámetro ALLUSER
     if (res?.status == 200) {
-      setCountry([...country, response.data]);
+      setCity([...city, response.data]);
       bridgeData("ALLUSER");
     }
   }, [res]);
@@ -62,6 +63,16 @@ export const CreateCountryForm = () => {
   useEffect(() => {
     console.log("allUser 🤡", allUser);
   }, [allUser]);
+
+  //! 5) cargar países al montar el componente
+  useEffect(() => {
+    const loadCountries = async () => {
+      const countriesData = await fetchCountries();
+      setCountries(countriesData);
+    };
+    loadCountries();
+    console.log(loadCountries);
+  }, []);
 
   //! 5) estados de navegacion
 
@@ -73,11 +84,11 @@ export const CreateCountryForm = () => {
     <div>
       <div className="form-wrap">
         <div>
-          <h1>Crear país</h1>
+          <h1>Crear tu ciudad</h1>
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
               <label htmlFor="custom-input" className="custom-placeholder">
-                País
+                Ciudad
               </label>
               <input
                 className="input_user"
@@ -104,34 +115,38 @@ export const CreateCountryForm = () => {
               />
             </div>
 
-            <div className="tipicalFood_container form-group">
+            <div className="numHab_container form-group">
               <label htmlFor="custom-input" className="custom-placeholder">
-                Comida típica
+                Número de habitantes
               </label>
               <input
                 className="input_user"
-                type="texto"
-                id="tipicalFood"
-                name="tipicalFood"
+                type="number"
+                id="numHab"
+                name="numHab"
                 autoComplete="false"
                 placeholder=""
-                {...register("tipicalFood", { required: true })}
+                {...register("numHab", { required: true })}
               />
             </div>
 
-            <div className="traditions_container form-group">
-              <label htmlFor="custom-input" className="custom-placeholder">
-                Principales tradiciones
-              </label>
-              <input
+            <div className="country_container form-group">
+              <select
                 className="input_user"
-                type="texto"
-                id="traditions"
-                name="traditions"
-                autoComplete="false"
-                placeholder=""
-                {...register("traditions", { required: true })}
-              />
+                id="country"
+                name="country"
+                {...register("country", { required: true })}
+              >
+                <option value="">Selecciona tu país</option>
+                {countries.map((country) => (
+                  <option key={country._id} value={country._id}>
+                    {country.name}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="country" className="custom-placeholder">
+                Paises
+              </label>
             </div>
 
             <div>
@@ -151,7 +166,7 @@ export const CreateCountryForm = () => {
           </form>
         </div>
       </div>
-      {country.map((country) => (
+      {countries.map((country) => (
         <li key={country._id}>
           <h3>{country.name}</h3>
           <img

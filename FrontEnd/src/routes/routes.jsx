@@ -26,6 +26,7 @@ import {
   UpdateExperience,
   CreateCountryForm,
   SuperAdminPage,
+  CreateCityForm,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -208,6 +209,14 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedSuperAdmin>
                 <CreateCountryForm />
+              </ProtectedSuperAdmin>
+            ),
+          },
+          {
+            path: "createCity", // Cambiado a una ruta relativa
+            element: (
+              <ProtectedSuperAdmin>
+                <CreateCityForm />
               </ProtectedSuperAdmin>
             ),
           },
