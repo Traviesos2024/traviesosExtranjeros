@@ -43,9 +43,9 @@ export const update = async (idCountry, formData) => {
     .catch((error) => error);
 };
 
-// ----------------deleteCity ------------------------
+// ----------------deleteCountry ------------------------
 //! SUPER ADMIN
-export const deleteCity = async (idCountry) => {
+export const deleteCountry = async (idCountry) => {
   return APITraviesos.delete(`/country/${idCountry}`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,

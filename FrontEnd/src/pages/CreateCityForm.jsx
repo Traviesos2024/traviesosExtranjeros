@@ -166,7 +166,7 @@ export const CreateCityForm = () => {
           </form>
         </div>
       </div>
-      {countries.map((country) => (
+      {/* {countries.map((country) => (
         <li key={country._id}>
           <h3>{country.name}</h3>
           <img
@@ -175,8 +175,8 @@ export const CreateCityForm = () => {
             style={{ maxWidth: "200px" }}
           />
           <p>{country.description}</p>
-        </li>
-      ))}
+        </li> */}
+      {/* ))} */}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-
+import "./SuperAdminPage.css";
 export const SuperAdminPage = () => {
   const navigate = useNavigate();
   return (
