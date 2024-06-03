@@ -27,6 +27,8 @@ import {
   CreateCountryForm,
   SuperAdminPage,
   CreateCityForm,
+  AboutCard,
+  AboutPage,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -193,6 +195,22 @@ export const router = createBrowserRouter([
         element: (
           <Protected>
             <ChatPage />
+          </Protected>
+        ),
+      },
+      {
+        path: "/AboutPage",
+        element: (
+          <Protected>
+            <AboutPage />
+          </Protected>
+        ),
+      },
+      {
+        path: "/AboutCard",
+        element: (
+          <Protected>
+            <AboutCard />
           </Protected>
         ),
       },

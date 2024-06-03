@@ -25,3 +25,5 @@ export * from "./UserAll";
 export * from "./CreateCountryForm";
 export * from "./CreateCityForm";
 export * from "./SuperAdminPage";
+export * from "./AboutPage";
+export * from "./AboutCard";
