@@ -14,7 +14,11 @@ import { getChatByUser, createEmptyChat } from "../services/chats.service";
 
 import { useForm } from "react-hook-form";
 
-export const Comments = ({ selectedRecipient, commentsProps }) => {
+export const Comments = ({
+  selectedRecipient,
+  commentsProps,
+  updateCommentsCounter,
+}) => {
   //! 1) crear los estados
 
   const [send, setSend] = useState(false);
@@ -117,6 +121,7 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
     );
 
     setComments(commentsToUpdate);
+    updateCommentsCounter(commentsToUpdate.length);
   }
 
   function onSetCommentToModify(commentToModify) {
@@ -141,11 +146,16 @@ export const Comments = ({ selectedRecipient, commentsProps }) => {
     setSend(true);
 
     const newComment = await createMessage(selectedRecipient, customFormData);
-
-    setComments([...comments, newComment.data.recipient.comments.at(-1)]);
+    let commentsToUpdate = [
+      ...comments,
+      newComment.data.recipient.comments.at(-1),
+    ];
+    setComments(commentsToUpdate);
     setRes(newComment.data);
     setCommentContent("");
     setSend(false);
+    updateCommentsCounter(commentsToUpdate.length);
+
     reset();
   }
 

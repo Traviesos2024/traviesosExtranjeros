@@ -12,11 +12,13 @@ export const EventDetalle = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [commentsCounter, setCommentsCounter] = useState(false);
 
   useEffect(() => {
     const fetchEvent = async () => {
       const response = await eventById(id);
       setResEvent(response);
+      setCommentsCounter(response.data.comments.length);
     };
     fetchEvent();
   }, [id]);
@@ -27,6 +29,10 @@ export const EventDetalle = () => {
   const onToggleComments = () => {
     setOpen(!open);
   };
+
+  function updateCommentsCounter(commentsCount) {
+    setCommentsCounter(commentsCount);
+  }
 
   return (
     <div>
@@ -44,14 +50,12 @@ export const EventDetalle = () => {
               </span>
               <p
                 className={
-                  eventoById?.comments?.length > 9
+                  commentsCounter > 9
                     ? "comments-likes-counter"
                     : "comments-likes-counter comments-likes-counter-2"
                 }
               >
-                {eventoById?.comments?.length
-                  ? eventoById?.comments?.length
-                  : ""}
+                {commentsCounter ? commentsCounter : ""}
               </p>
             </div>
           </div>
@@ -63,6 +67,7 @@ export const EventDetalle = () => {
                 <Comments
                   selectedRecipient={eventoById._id}
                   commentsProps={eventoById?.comments}
+                  updateCommentsCounter={updateCommentsCounter}
                 />
                 <div className="close-chat-wrapper">
                   <span
