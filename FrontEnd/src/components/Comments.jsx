@@ -212,7 +212,7 @@ export const Comments = ({
                     user._id == comment?.owner ||
                     user._id == comment?.owner?._id
                       ? "my-text"
-                      : "friend-text"
+                      : "friend-text-comments"
                   }
                 >
                   <div className="comments-header">
@@ -284,12 +284,12 @@ export const Comments = ({
                       )}
                     </>
                     <h5 onClick={() => onClickUserName(comment?.owner?._id)}>
-                      {comment?.owner.name}:
+                      {comment?.owner?.name}:
                     </h5>
 
                     <>
                       {user._id != comment?.owner?._id ? (
-                        <div className="friend-like-wrapper">
+                        <div className="friend-like-wrapper-comments">
                           <span
                             className={
                               comment.likes.find(

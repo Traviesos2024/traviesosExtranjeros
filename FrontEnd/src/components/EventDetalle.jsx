@@ -48,7 +48,11 @@ export const EventDetalle = () => {
     <div>
       {eventoById != null ? (
         <figure id="eventId">
-          <img src={eventoById.image} alt={eventoById.name} />
+          <img
+            className="event-detail-image"
+            src={eventoById.image}
+            alt={eventoById.name}
+          />
           <div className="title-and-icons-wrapper">
             <h2>{eventoById.name}</h2>
             <div className="comment-icon-padding">

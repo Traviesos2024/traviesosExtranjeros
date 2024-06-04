@@ -41,7 +41,7 @@
   position: relative;
 }
 
-.friend-text {
+.friend-text-comments {
   background: linear-gradient(
       180deg,
       rgb(87, 100, 101) 0%,
@@ -49,6 +49,7 @@
       rgb(108, 118, 160) 92%
     )
     no-repeat center;
+  position: relative;
   background-attachment: fixed;
   color: #fff;
   border-radius: 0.5rem 0.2rem 0.2rem 0.5rem;
@@ -177,9 +178,9 @@ h5 {
   right: 2px;
 }
 
-.friend-like-wrapper {
+.friend-like-wrapper-comments {
   position: absolute;
-  left: -55px;
-  bottom: -26px;
+  left: -40px;
+  bottom: -11px;
   color: black;
 }

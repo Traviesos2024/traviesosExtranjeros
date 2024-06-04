@@ -24,3 +24,8 @@
 .comments-likes-counter-2 {
   right: 2px;
 }
+
+.event-detail-image {
+  max-width: 90%;
+  margin-inline: auto;
+}
