@@ -37,13 +37,13 @@ export const Homepages = () => {
       
         <p className="parrafo">Échale un ojo a nuestra lista de países más destacados. En ellos podrás conocer
           un pedacito de cada uno ya que se reflejan tradiciones, comidas típicas y una breve descripción. Y, lo más 
-          importante de todo, ¡¡Podrás conocer gente qué se cuece en cada una de sus ciudades!!</p>        
+          importante de todo, ¡¡Podrás conocer qué se cuece en cada una de sus ciudades!!</p>        
           
           <p className="parrafo">En cada uno de ellos hay una variedad de ciudades en las que podrás encontrar los eventos disponibles y más 
           punteros. ¡¡Estaremos encantados de que compartas tus experiencias con nosotros!!</p>
 
-          <p className="parrafo">¡Sigue los organizadores y eventos que más encajen con tu filosofía traviesa! Seguro que haces muy buenos 
-          amigos en estos encuentros increíbles a lo largo de tu recorrido a través del globo.</p>
+          <p className="parrafo">¡Sigue a los organizadores y eventos que más encajen con tu filosofía traviesa! Seguro que haces muy buenas 
+          migas en estos increíbles encuentros a lo largo de tu recorrido a través del globo.</p>
 
         <h2 className="tituloPaises">Países</h2>
           <p className="parrafo">
@@ -69,7 +69,7 @@ export const Homepages = () => {
         <h2 className="EventosHome">
           ¿Quieres ver lo que se cuece en tu nueva ciudad?
         </h2>
-        <p className="parrafo">¡Ojo al dato! Aquí están los mejores eventos disponibles</p>
+        <p className="parrafo">¡Ojo al dato! Aquí están los mejores eventos disponibles ⬇️⬇️</p>
         <button>
           <Link to="/events">Eventos</Link>
         </button>
