@@ -139,7 +139,7 @@ export const CheckCode = () => {
                 className="btn"
                 type="submit"
                 disabled={send}
-                style={{ background: send ? "#49c1a388" : "#49c1a2" }}
+                style={{ background: send ? "#49c1a388" : "#FEB0CD" }}
                 >
                 Verify Code
                 </button>
@@ -149,7 +149,7 @@ export const CheckCode = () => {
                 id="btnResend"
                 className="btn"
                 disabled={send}
-                style={{ background: send ? "#49c1a388" : "#49c1a2" }}
+                style={{ background: send ? "#49c1a388" : "#FEB0CD" }}
                 onClick={() => handleReSend()}
                 >
                 Resend Code

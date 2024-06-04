@@ -101,11 +101,11 @@ a {
 }
 
 footer a {
-  color: #49c1a2;
+  color: #FEB0CD;
 }
 
 footer a:hover {
-  color: #37a08e;
+  color: #FFB2CE;
 }
 
 .btn:disabled {
@@ -156,5 +156,5 @@ a {
 }
 
 .anchorCustom {
-  color: #e7cb57ff;
+  color: #df6d96;
 }

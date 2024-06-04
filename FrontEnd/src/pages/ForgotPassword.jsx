@@ -50,7 +50,7 @@ export const ForgotPassword = () => {
               className="btn"
               type="submit"
               disabled={send}
-              style={{ background: send ? "#49c1a388" : "#49c1a2" }}
+              style={{ background: send ? "#49c1a388" : "#FEB0CD" }}
             >
               Change password
             </button>

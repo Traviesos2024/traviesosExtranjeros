@@ -6,7 +6,7 @@ export const useDeleteUser = (setUser, setDeleteUser) => {
     title: "Are you sure you want to delete your profile?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonColor: "rgb(73, 193, 162)",
+    confirmButtonColor: "rgb(255, 177, 205)",
     cancelButtonColor: "#d33",
     confirmButtonText: "YES",
   }).then(async (result) => {

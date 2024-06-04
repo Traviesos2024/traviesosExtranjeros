@@ -68,17 +68,17 @@ a {
   width: 100%;
   padding: 10px;
   margin-top: 25px;
-  background: #e7cb57ff;
+  background: #FFB2CE;
   color: #fff;
   cursor: pointer;
-  border: #e7cb57ff 1px solid;
+  border: #FFB2CE 1px solid;
   border-radius: 5px;
   font-family: inherit;
   font-size: inherit;
 }
 
 .form-wrap .btn:hover {
-  background: #e7cb57ff;
+  background: #FFB2CE;
   color: #f4f4f4;
 }
 
@@ -101,11 +101,11 @@ a {
 }
 
 footer a {
-  color: #49c1a2;
+  color: #FEB0CD;
 }
 
 footer a:hover {
-  color: #37a08e;
+  color: #FFB2CE;
 }
 
 .btn:disabled {
@@ -147,7 +147,7 @@ input[type="radio"] {
 }
 
 input[type="radio"]:checked + .label-radio {
-  background: #2f7a67;
+  background: #FFB2CE;
   color: #fff !important;
 }
 
@@ -156,5 +156,5 @@ a {
 }
 
 .anchorCustom {
-  color: #e7cb57ff;
+  color: #df6d96;
 }

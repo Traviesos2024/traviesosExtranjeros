@@ -41,7 +41,7 @@ export const UpdateProfile = () => {
       title: "Save changes?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "rgb(73, 193, 162)",
+      confirmButtonColor: "rgb(255, 177, 205)",
       cancelButtonColor: "#DB3236",
       cancelButtonText: "Cancel",
       confirmButtonText: "Save",
@@ -163,7 +163,7 @@ export const UpdateProfile = () => {
               className="btn"
               type="submit"
               disabled={send}
-              style={{ background: send ? "#49c1a388" : "#49c1a2" }}
+              style={{ background: send ? "#49c1a388" : "#FEB0CD" }}
             >
               SAVE CHANGES
             </button>

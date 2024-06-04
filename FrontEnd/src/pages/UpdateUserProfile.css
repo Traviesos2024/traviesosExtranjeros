@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2f7a67;
+  background-color: #ffffff;
   max-width: 1000px;
   margin: 2rem 0 2rem 0;
   border-radius: 20px;
@@ -17,6 +17,14 @@
 
 .formProfile {
   margin: 2rem;
+}
+
+.input_user{
+  width: 7,5rem;
+  height: 2rem;
+  border: solid 2px #FFB1CE;
+  border-radius: 5%;
+
 }
 
 @media (max-width: 900px) {
@@ -37,3 +45,4 @@
     width: 90%;
   }
 }
+

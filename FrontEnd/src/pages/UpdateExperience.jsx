@@ -26,7 +26,7 @@ export const UpdateExperience = () => {
       title: "¿Estás seguro de que quieres actualizar los datos?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "rgb(73, 193, 162)",
+      confirmButtonColor: "rgb()",
       cancelButtonColor: "#d33",
       confirmButtonText: "YES",
     }).then(async (result) => {
@@ -103,7 +103,7 @@ export const UpdateExperience = () => {
                 className="btn"
                 type="submit"
                 disabled={send}
-                style={{ background: send ? "#49c1a388" : "#49c1a2" }}
+                style={{ background: send ? "#49c1a388" : "#FEB0CD" }}
               >
                 ACTUALIZA LOS DATOS
               </button>
