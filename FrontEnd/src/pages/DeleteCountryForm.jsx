@@ -3,10 +3,10 @@ import { useForm } from "react-hook-form";
 import { useErrorRegister } from "../hooks/useErrorRegister";
 import "./FormProfile.css";
 import { useAuth } from "../context/authContext";
+import Swal from "sweetalert2/dist/sweetalert2.all.js";
 import { Navigate } from "react-router-dom";
 import { fetchCountries } from "../services/user.service";
 import { deleteCountry } from "../services/country.service";
-// import { useDeleteCountry } from "../hooks";
 
 export const DeleteCountryForm = () => {
   const [res, setRes] = useState({});
@@ -20,18 +20,19 @@ export const DeleteCountryForm = () => {
   const { register, handleSubmit, setValue } = useForm();
 
   const formSubmit = async (formData) => {
+    Swal.fire({
+      title: "¿Estás segur@ de que quieres eliminar el país seleccionado?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "rgb(73, 193, 162)",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "YES",
+    });
     setSend(true);
     setResDelete(await deleteCountry(formData.country));
     setSend(false);
   };
 
-  // useEffect(() => {
-  //   useDeleteCountry(res, setRes, setOk);
-  //   if (res?.status === 200) {
-  //     setCountry([...countries, res.data]);
-  //     bridgeData("ALLUSER");
-  //   }
-  // }, [res]);
   useEffect(() => {
     useErrorRegister(res, setRes, setOk);
     if (res?.status === 200) {
