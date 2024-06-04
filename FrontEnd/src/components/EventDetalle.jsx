@@ -31,7 +31,7 @@ export const EventDetalle = () => {
     if (location.state && location.state.newExperience) {
       setEventById((prevEvent) => ({
         ...prevEvent,
-        experience: [...prevEvent.experience, location.state.newExperience],
+        experience: [...prevEvent?.experience, location?.state?.newExperience],
       }));
     }
   }, [location.state]);
@@ -47,14 +47,14 @@ export const EventDetalle = () => {
   return (
     <div>
       {eventoById != null ? (
-        <figure id="eventId">
+        <figure className="event-detail-figure" id="eventId">
           <img
             className="event-detail-image"
-            src={eventoById.image}
-            alt={eventoById.name}
+            src={eventoById?.image}
+            alt={eventoById?.name}
           />
           <div className="title-and-icons-wrapper">
-            <h2>{eventoById.name}</h2>
+            <h2>{eventoById?.name}</h2>
             <div className="comment-icon-padding">
               <span
                 className="material-symbols-outlined event-comment-experience-icon"
@@ -117,8 +117,8 @@ export const EventDetalle = () => {
             <h3>Experiencias</h3>
           </div>
           <div>
-            {eventoById != null && eventoById.experience.length > 0 ? (
-              eventoById.experience.map((item) => (
+            {eventoById != null && eventoById?.experience?.length > 0 ? (
+              eventoById?.experience?.map((item) => (
                 <Experience
                   renderData={item}
                   key={item._id}

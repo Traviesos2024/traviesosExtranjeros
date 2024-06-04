@@ -176,3 +176,7 @@ label {
   margin-top: auto;
   margin-right: -7px;
 }
+
+.friend-like:hover {
+  color: grey;
+}
