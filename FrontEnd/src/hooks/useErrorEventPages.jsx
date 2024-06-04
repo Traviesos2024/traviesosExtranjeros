@@ -4,7 +4,7 @@ export const useErrorEventPages = (res, setRes, setEvents) => {
   // 200 --> lo que vamos es hacer setear la data en el setData
   if (res?.status == 200) {
     console.log("esta todo correcto");
-    setEvents(res.data);
+    setEvents(res.data.allEvent);
     setRes(() => ({}));
   }
 

@@ -14,6 +14,8 @@ export const Event = ({
   handleDelete,
   handleUpdate,
   userAuth,
+    eventsPage,
+    inputValue
 }) => {
   const {
     _id,
@@ -24,7 +26,8 @@ export const Event = ({
     category,
     date,
     cities,
-    eventOwner,
+    eventOwner
+  
   } = renderData;
 
   
@@ -33,6 +36,9 @@ export const Event = ({
   const [open, setOpen] = useState(false);
   const spanFollowRef = useRef(null);
   const { user } = useAuth();
+const eliminarDiacriticos = (texto) => {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
 
   const onToggleLike = async () => {
     try {
@@ -48,7 +54,25 @@ export const Event = ({
           );
           
           setEvents(filteredEvents);
-        } else {
+        } else if (  eventsPage) {
+          
+          
+          const filter = res.data.allEvent?.filter((event) =>
+          event.cities?.some((city) =>
+            eliminarDiacriticos(city.name.toLowerCase()).includes(
+              eliminarDiacriticos(inputValue.toLowerCase())
+            )
+          )
+        );
+
+        console.log("filter", filter);
+          
+          setEvents(filter);
+        } 
+
+        else {
+        
+        
           
           setEvents(res.data);
         }
@@ -72,7 +96,21 @@ export const Event = ({
         );
         
         setEvents(filteredEvents);
-      } else {
+      } else if (  eventsPage) {
+          
+          
+          const filter = res.data.allEvent?.filter((event) =>
+          event.cities?.some((city) =>
+            eliminarDiacriticos(city.name.toLowerCase()).includes(
+              eliminarDiacriticos(inputValue.toLowerCase())
+            )
+          )
+        );
+
+        console.log("filter", filter);
+          
+          setEvents(filter);
+        }  else {
         
         setEvents(res.data);
       }
@@ -95,12 +133,29 @@ export const Event = ({
       if (profile) {
         res.status === 200 && setEvents(res.data.authUser);
       } else if (home) {
-        const filteredEvents = res.data.allEvent.filter((event) =>
+        let filteredEvents
+        res.status === 200 && (filteredEvents = res.data.allEvent.filter((event) =>
           event.cities.some((city) => city.name === userAuth.city.name)
-        );
+        ))
         
-        setEvents(filteredEvents);
-      } else {
+       res.status === 200 && setEvents(filteredEvents);
+      } else if (  eventsPage) {
+          
+          
+          let filter 
+          
+          res.status === 200 && (filter = res.data.allEvent?.filter((event) =>
+          event.cities?.some((city) =>
+            eliminarDiacriticos(city.name.toLowerCase()).includes(
+              eliminarDiacriticos(inputValue.toLowerCase())
+            )
+          )
+        ))
+
+        console.log("filter", filter);
+          
+          setEvents(filter);
+        }else {
         
         setEvents(res.data);
       }

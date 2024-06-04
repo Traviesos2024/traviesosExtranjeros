@@ -41,15 +41,18 @@ export const Eventspages = () => {
 
   useEffect(() => {
     setData(() => {
-      if (events && events.allEvent?.length > 0) {
+      console.log(events)
+      if (events && events.length > 0) {
         // Check if events is defined and is an array
-        const filter = events.allEvent?.filter((event) =>
+        const filter = events.filter((event) =>
           event.cities?.some((city) =>
             eliminarDiacriticos(city.name.toLowerCase()).includes(
               eliminarDiacriticos(valueInput.toLowerCase())
             )
           )
         );
+
+        console.log(filter)
 
         localStorage.setItem("input", JSON.stringify(valueInput.toLowerCase()));
 
@@ -103,27 +106,34 @@ export const Eventspages = () => {
     
       <div className="cards-wrapper">
         {data.length > 0
-          ? data.map((item) => (
-              <Event
+          ? data.map((item) => {
+            console.log("entro data")
+            return   <Event
                 renderData={item}
                 key={item._id}
                 setEvents={setData}
                 profile={false}
                 home={false}
                 userAuth={userById}
+                eventsPage={true}
+                inputValue={valueInput}
               />
-            ))
-          : events.allEvent?.length > 0 &&
-            events.allEvent?.map((item) => (
-              <Event
+})
+          : events.length > 0 &&
+            events.map((item) => { 
+              console.log("entro event")
+              return  <Event
                 renderData={item}
                 key={item._id}
-                setEvents={setEvents}
+                setEvents={setData}
                 profile={false}
                 home={false}
                 userAuth={userById}
-              />
-            ))}
+                eventsPage={true}
+                inputValue={valueInput}
+              />}
+            
+            )}
       </div>
     </div>
   );
