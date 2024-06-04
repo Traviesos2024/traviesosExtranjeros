@@ -54,6 +54,9 @@ export const SuperAdminPage = () => {
         <button onClick={() => navigate(`/superAdminPage/deleteCountry`)}>
           Eliminar país
         </button>
+        <button onClick={() => navigate(`/superAdminPage/deleteCity`)}>
+          Eliminar ciudad
+        </button>
         <button onClick={() => navigate(`/superAdminPage/updateCountry`)}>
           Actualiza el país
         </button>
