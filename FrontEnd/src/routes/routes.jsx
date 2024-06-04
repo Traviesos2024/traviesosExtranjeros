@@ -31,6 +31,7 @@ import {
   AboutPage,
   UpdateCountry,
   UpdateCity,
+  DeleteCountryForm,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -229,6 +230,14 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedSuperAdmin>
                 <CreateCountryForm />
+              </ProtectedSuperAdmin>
+            ),
+          },
+          {
+            path: "deleteCountry",
+            element: (
+              <ProtectedSuperAdmin>
+                <DeleteCountryForm />
               </ProtectedSuperAdmin>
             ),
           },
