@@ -54,6 +54,9 @@ export const SuperAdminPage = () => {
         <button onClick={() => navigate(`/superAdminPage/updateCountry`)}>
           Actualiza el país
         </button>
+        <button onClick={() => navigate(`/superAdminPage/updateCity`)}>
+          Actualiza la ciudad
+        </button>
 
         <Outlet />
         {/* <button onClick={() => navigate(`/superAdminPage/createCountry`)}>

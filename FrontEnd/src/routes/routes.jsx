@@ -30,6 +30,7 @@ import {
   AboutCard,
   AboutPage,
   UpdateCountry,
+  UpdateCity,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -244,6 +245,14 @@ export const router = createBrowserRouter([
             element: (
               <ProtectedSuperAdmin>
                 <UpdateCountry />
+              </ProtectedSuperAdmin>
+            ),
+          },
+          {
+            path: "updateCity", // Cambiado a una ruta relativa
+            element: (
+              <ProtectedSuperAdmin>
+                <UpdateCity />
               </ProtectedSuperAdmin>
             ),
           },

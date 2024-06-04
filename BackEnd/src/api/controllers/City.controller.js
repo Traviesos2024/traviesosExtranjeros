@@ -207,6 +207,7 @@ const toggleCountry = async (req, res, next) => {
 //! ---------------------------------------------------------------------
 
 const updateCity = async (req, res, next) => {
+  await City.syncIndexes();
   try {
     const { idCity } = req.params;
     const cityById = await City.findById(idCity);
@@ -215,26 +216,34 @@ const updateCity = async (req, res, next) => {
       return res.status(404).json("Esta ciudad no existe");
     }
 
-    // Verificar si se ha subido una nueva imagen o se ha enviado un nuevo numHab
-    let updateFields = {};
+    let customBody ={...req.body} 
+
+    let catchImg;
     if (req.file) {
-      updateFields.image = req.file.path;
-    }
-    if (req.body.numHab) {
-      updateFields.numHab = req.body.numHab;
-    }
+      catchImg = req.file.path;
+      customBody ={...req.body, image: req.file.path} 
+
+    } 
+    // Verificar si se ha subido una nueva imagen o se ha enviado un nuevo numHab
+    // let updateFields = {};
+    // if (req.file) {
+    //   updateFields.image = req.file.path;
+    // }
+    // if (req.body.numHab) {
+    //   updateFields.numHab = req.body.numHab;
+    // }
 
     // Verificar que al menos uno de los campos a actualizar esté presente
-    if (Object.keys(updateFields).length === 0) {
-      return res
-        .status(400)
-        .json(
-          "Debes enviar al menos una imagen o un nuevo número de habitaciones para actualizar"
-        );
-    }
+    // if (Object.keys(updateFields).length === 0) {
+    //   return res
+    //     .status(400)
+    //     .json(
+    //       "Debes enviar al menos una imagen o un nuevo número de habitaciones para actualizar"
+    //     );
+    // }
 
     // Actualizar la ciudad con los campos proporcionados
-    const updatedCity = await City.findByIdAndUpdate(idCity, updateFields, {
+    const updatedCity = await City.findByIdAndUpdate(idCity, customBody, {
       new: true,
     });
 

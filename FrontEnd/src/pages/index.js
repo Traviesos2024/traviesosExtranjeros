@@ -28,3 +28,4 @@ export * from "./SuperAdminPage";
 export * from "./AboutPage";
 export * from "./AboutCard";
 export * from "./UpdateCountry";
+export * from "./UpdateCity";
