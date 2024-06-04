@@ -26,10 +26,10 @@ export const Country = () => {
   return (
     <div id="containerCountry">
       <h1>{country != null && country.name}</h1>
-      <p>{country != null && country.description}</p>
+      <p className="parrafo">{country != null && country.description}</p>
       <h4>Principales tradiciones:</h4>
-      <p> {country != null && country.traditions}</p>
-      <h4>Comida típica:</h4> <p> {country != null && country.tipicalFood}</p>
+      <p className="parrafo"> {country != null && country.traditions}</p>
+      <h4>Comida típica:</h4> <p className="parrafo"> {country != null && country.tipicalFood}</p>
       <div className="TarjetasCiudades">
         {country != null &&
           country.cities.map((item) => (

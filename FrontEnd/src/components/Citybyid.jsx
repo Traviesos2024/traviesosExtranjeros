@@ -29,7 +29,7 @@ export const Citybyid = () => {
         <figure id="cityId">
           <img src={city.image} className="imagen" />
           <h2>{city.name}</h2>
-          <p>{city.description}</p>
+          <p className="parrafo">{city.description}</p>
           {/* <p>{city?.country[0].name}</p> */}
           {city.events.map((item) => (
             <Eventos
