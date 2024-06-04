@@ -83,6 +83,9 @@ const getAll = async (req, res, next) => {
 //! ---------------------------------------------------------------------
 
 const update = async (req, res, next) => {
+
+    await Country.syncIndexes();
+  
   try {
     const { idCountry } = req.params;
     const countryById = await Country.findById(idCountry);
@@ -91,19 +94,23 @@ const update = async (req, res, next) => {
       return res.status(404).json("Esta country no existe");
     }
 
+    let customBody ={...req.body} 
+
+    console.log("req.body", req.body)
+
     // Verificar si se ha subido una nueva imagen
     let catchImg;
     if (req.file) {
       catchImg = req.file.path;
-    } else {
-      return res.status(400).json("Debes subir una imagen para actualizar");
-    }
+      customBody ={...req.body, image: req.file.path} 
 
+    } 
     // Actualizar solo la imagen de la experiencia
+
+    console.log("customBody", customBody);
     const updatedCountry = await Country.findByIdAndUpdate(
       idCountry,
-      { image: catchImg },
-      { new: true }
+      customBody
     );
 
     // Eliminar la antigua imagen de Cloudinary

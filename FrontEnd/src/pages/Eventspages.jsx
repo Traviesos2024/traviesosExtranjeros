@@ -75,7 +75,7 @@ export const Eventspages = () => {
   }, [res]);
 
   useEffect(() => {
-    console.log("👽", events);
+  
   }, [events]);
 
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ export const Eventspages = () => {
       <hr />
       <br></br>
 
-      {console.log("dataaaaaaaa", data)}
+    
       <div className="cards-wrapper">
         {data.length > 0
           ? data.map((item) => (

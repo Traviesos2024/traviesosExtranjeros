@@ -56,7 +56,7 @@ export const SuperAdminPage = () => {
         </button>
 
         <Outlet />
-        <button onClick={() => navigate(`/superAdminPage/createCountry`)}>
+        {/* <button onClick={() => navigate(`/superAdminPage/createCountry`)}>
           Países
           <div id="containerCountryAll">
       {countries.length !== 0 ? (
@@ -64,8 +64,8 @@ export const SuperAdminPage = () => {
       ) : (
         <p>Cargando..</p>
       )}
-    </div>
-        </button>
+    </div> */}
+        {/* </button> */}
       
       </div>
     </div>

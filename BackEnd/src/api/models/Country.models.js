@@ -10,7 +10,7 @@ const CountrySchema = new mongoose.Schema(
     cities: [{ type: mongoose.Schema.Types.ObjectId, ref: "City" }],
     tipicalFood: { type: String },
     traditions: { type: String },
-    image: { type: String, required: true },
+    image: { type: String },
   },
   {
     timestamps: true,

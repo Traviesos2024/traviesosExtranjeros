@@ -27,7 +27,7 @@ export const Event = ({
     eventOwner,
   } = renderData;
 
-  console.log("render data", renderData);
+  
   const navigate = useNavigate();
 
   const [open, setOpen] = useState(false);
@@ -38,7 +38,7 @@ export const Event = ({
     try {
       const res = await toggleLikeEvent(_id);
       if (res.status === 200) {
-        console.log(res.data);
+      
         //! siguiente linea no SE TOCA!!!
         if (profile) {
           setEvents(res.data.user);
@@ -46,13 +46,13 @@ export const Event = ({
           const filteredEvents = res.data.allEvent.filter((event) =>
             event.cities.some((city) => city.name === userAuth.city.name)
           );
-          console.log(filteredEvents);
+          
           setEvents(filteredEvents);
         } else {
-          console.log("Estoy pasando por aqui 🎃", res.data.user);
+          
           setEvents(res.data);
         }
-        console.log("Toggle Like Response:", res.data);
+      
       }
     } catch (error) {
       console.error("Error toggling like:", error);
@@ -62,7 +62,7 @@ export const Event = ({
   const onToggleFollow = async () => {
     try {
       const res = await toggleFollowEvent(_id);
-      console.log("res", res);
+    
 
       if (profile) {
         setEvents(res.data.user);
@@ -70,13 +70,13 @@ export const Event = ({
         const filteredEvents = res.data.allEvent.filter((event) =>
           event.cities.some((city) => city.name === userAuth.city.name)
         );
-        console.log(filteredEvents);
+        
         setEvents(filteredEvents);
       } else {
-        console.log("Estoy pasando por aqui 🎃", res.data.user);
+        
         setEvents(res.data);
       }
-      console.log("Toggle Follow Response:", res.data);
+      
     } catch (error) {
       console.error("Error toggling follow:", error);
     }
@@ -88,7 +88,7 @@ export const Event = ({
         ? "material-symbols-outlined"
         : "material-symbols-outlined person_add";
     spanFollowRef.current.className = classCustomOptimistic;
-    console.log(eventOwner._id);
+  
     try {
       const res = await followUserToggle(idUserSeQuiereSeguir);
 
@@ -98,14 +98,14 @@ export const Event = ({
         const filteredEvents = res.data.allEvent.filter((event) =>
           event.cities.some((city) => city.name === userAuth.city.name)
         );
-        console.log(filteredEvents);
+        
         setEvents(filteredEvents);
       } else {
-        console.log("Estoy pasando por aqui 🎃", res.data.user);
+        
         setEvents(res.data);
       }
     } catch (error) {
-      console.error("Error toggling follow:", error);
+      
 
       let classCustomOptimistic =
         spanFollowRef.current.className ==
@@ -169,7 +169,7 @@ export const Event = ({
         <p>Fecha: {new Date(date).toLocaleString()}</p>
         <p>Ciudad: {cities[0]?.name}</p>
         <p>
-          Organizador: {console.log("😋", eventOwner._id)}
+          Organizador: 
           <span ref={spanFollowRef}>{eventOwner?.name}</span>
         </p>
 

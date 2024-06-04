@@ -6,26 +6,24 @@ import Swal from "sweetalert2/dist/sweetalert2.all.js";
 import { useErrorCountryDetalle} from "../hooks";
 import { Navigate, useParams } from "react-router-dom";
 import { countryById, update } from "../services/country.service";
-
+import { fetchCountries } from "../services/user.service";
 export const UpdateCountry = () => {
   const [ok, setOk] = useState(false);
   const [countrieById, setCountrieById] = useState(null);
-  const { id } = useParams();
   const [resCountrie, setResCountrie] = useState(null);
   const { handleSubmit, register } = useForm();
   const [res, setRes] = useState({});
   const [send, setSend] = useState(false);
   const [countries, setCountries] = useState([]);
+  const [idCountry, setIdCountry] = useState(null);
+
+  const  [defaultData, setDefaultData] = useState(null);
 
 
-//   const defaultData = {
-//     name: countries?._id?.name,
-//     description: countries?._id?.description,
-//     tipicalFood: countries?._id.tipicalFood,
-//     traditions: countries?._id.traditions,
-//   };
+  
 
   const formSubmit = (formData) => {
+    console.log("formData", formData);
     Swal.fire({
       title: "¿Estás seguro de que quieres actualizar los datos?",
       icon: "warning",
@@ -43,23 +41,19 @@ export const UpdateCountry = () => {
             ...formData,
             image: inputFile[0],
           };
+
         }
 
+        delete  customFormData.country
+
         setSend(true);
-        setRes(await update(id, customFormData));
+        setRes(await update(idCountry, customFormData));
         setSend(false);
       }
     });
   };
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      const response = await countryById(id);
-      response?.status == 200 && setCountrieById(response.data);
-      setResCountrie(response);
-    };
-    fetchCountries();
-  }, [id]);
+  
 
   useEffect(() => {
     res?.status == 200 && setOk(true);
@@ -73,6 +67,35 @@ export const UpdateCountry = () => {
     };
     loadCountries();
   }, []);
+
+  useEffect(() => {
+
+    const fetchCounty = async () => {
+    
+      const response = await countryById(idCountry);
+      response?.status == 200 && setCountrieById(response.data);
+      setResCountrie(response);
+    };
+    
+
+    idCountry != null && fetchCounty();
+    
+  }, [idCountry])
+
+
+  useEffect(() => {
+
+    if (countryById != null){
+      setDefaultData({
+    name: countrieById?.name,
+    description:countrieById?.description,
+    tipicalFood: countrieById?.tipicalFood,
+    traditions:countrieById?.traditions,
+  })
+    }
+  }, [countrieById])
+  
+  
 
   if (ok) {
     return <Navigate to="/country" />;
@@ -91,7 +114,9 @@ export const UpdateCountry = () => {
                 className="input_user"
                 id="country"
                 name="country"
+                
                 {...register("country", { required: true })}
+                onInput={(e)=>{setIdCountry(e.target.value)}}
               >
                 <option value="">Select a country</option>
                 {countries.map((country) => (
@@ -113,7 +138,8 @@ export const UpdateCountry = () => {
                 id="name"
                 name="name"
                 autoComplete="false"
-                // defaultValue={defaultData?.name}
+              
+                defaultValue={defaultData?.name}
                 {...register("name")}
               />
             </div>
@@ -127,7 +153,7 @@ export const UpdateCountry = () => {
                 type="text"
                 id="description"
                 name="description"
-                // defaultValue={defaultData?.description}
+                defaultValue={defaultData?.description}
                 {...register("description")}
               />
             </div>
@@ -141,7 +167,7 @@ export const UpdateCountry = () => {
                 id="tipicalFood"
                 name="tipicalFood"
                 autoComplete="false"
-                // defaultValue={defaultData?.tipicalFood}
+                defaultValue={defaultData?.tipicalFood}
                 {...register("tipicalFood")}
               />
             </div>
@@ -155,7 +181,7 @@ export const UpdateCountry = () => {
                 id="traditions"
                 name="traditions"
                 autoComplete="false"
-                // defaultValue={defaultData?.traditions}
+                defaultValue={defaultData?.traditions}
                 {...register("traditions")}
               />
             </div>
