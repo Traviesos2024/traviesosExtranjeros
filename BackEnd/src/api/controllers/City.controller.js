@@ -216,14 +216,13 @@ const updateCity = async (req, res, next) => {
       return res.status(404).json("Esta ciudad no existe");
     }
 
-    let customBody ={...req.body} 
+    let customBody = { ...req.body };
 
     let catchImg;
     if (req.file) {
       catchImg = req.file.path;
-      customBody ={...req.body, image: req.file.path} 
-
-    } 
+      customBody = { ...req.body, image: req.file.path };
+    }
     // Verificar si se ha subido una nueva imagen o se ha enviado un nuevo numHab
     // let updateFields = {};
     // if (req.file) {
@@ -277,7 +276,6 @@ const deleteCity = async (req, res, next) => {
           { city: idCity },
           { $pull: { city: idCity } }
         );
-        console.log(test);
 
         try {
           await User.updateMany(

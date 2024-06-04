@@ -31,6 +31,8 @@ import {
   AboutPage,
   UpdateCountry,
   UpdateCity,
+  DeleteCountryForm,
+  DeleteCityForm,
 } from "../pages";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -233,10 +235,26 @@ export const router = createBrowserRouter([
             ),
           },
           {
+            path: "deleteCountry",
+            element: (
+              <ProtectedSuperAdmin>
+                <DeleteCountryForm />
+              </ProtectedSuperAdmin>
+            ),
+          },
+          {
             path: "createCity", // Cambiado a una ruta relativa
             element: (
               <ProtectedSuperAdmin>
                 <CreateCityForm />
+              </ProtectedSuperAdmin>
+            ),
+          },
+          {
+            path: "deleteCity",
+            element: (
+              <ProtectedSuperAdmin>
+                <DeleteCityForm />
               </ProtectedSuperAdmin>
             ),
           },

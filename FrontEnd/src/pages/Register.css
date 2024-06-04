@@ -101,11 +101,11 @@ a {
 }
 
 footer a {
-  color: #49c1a2;
+  color: #FEB0CD;
 }
 
 footer a:hover {
-  color: #37a08e;
+  color: #FFB2CE;
 }
 
 .btn:disabled {
@@ -152,9 +152,9 @@ input[type="radio"]:checked + .label-radio {
 }
 
 a {
-  color: #e7cb57ff;
+  color: #065f72;
 }
 
 .anchorCustom {
-  color: #e7cb57ff;
+  color: #df6d96;
 }

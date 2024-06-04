@@ -12,11 +12,12 @@
   object-fit: cover;
   border-radius: 10px;
   transition: transform 0.2s;
+
 }
 
 #cityId h2 {
   font-size: 4em;
-  color: #6d71e5ff;
+  color: #FFB1CD;
   margin: 20px 0;
 }
 

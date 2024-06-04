@@ -29,3 +29,5 @@ export * from "./AboutPage";
 export * from "./AboutCard";
 export * from "./UpdateCountry";
 export * from "./UpdateCity";
+export * from "./DeleteCountryForm";
+export * from "./DeleteCityForm";

@@ -3,12 +3,11 @@ import "./FormProfile.css";
 import { Uploadfile } from "../components";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
-// import { useErrorCountryDetalle} from "../hooks";
 import { Navigate, useParams } from "react-router-dom";
-import { cityById, updateCity } from "../services/city.service";
+import { cityById, deleteCity } from "../services/city.service";
 import { fetchCountries, fetchCities } from "../services/user.service";
 
-export const UpdateCity = () => {
+export const DeleteCityForm = () => {
   const [ok, setOk] = useState(false);
   const [citiesById, setCitiesById] = useState(null);
   const [resCities, setResCities] = useState(null);
@@ -21,12 +20,11 @@ export const UpdateCity = () => {
   const [defaultData, setDefaultData] = useState(null);
 
   const formSubmit = (formData) => {
-    console.log("formData", formData);
     Swal.fire({
-      title: "¿Estás segur@ de que quieres actualizar los datos?",
+      title: "¿Estás segur@ de que quieres eliminar la ciudad seleccionada?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "rgb(255, 177, 205)",
+      confirmButtonColor: "rgb(73, 193, 162)",
       cancelButtonColor: "#d33",
       confirmButtonText: "YES",
     }).then(async (result) => {
@@ -44,7 +42,7 @@ export const UpdateCity = () => {
         delete customFormData.city;
 
         setSend(true);
-        setRes(await updateCity(idCity, customFormData));
+        setRes(await deleteCity(idCity, customFormData));
         setSend(false);
       }
     });
@@ -79,9 +77,6 @@ export const UpdateCity = () => {
     if (cityById != null) {
       setDefaultData({
         name: citiesById?.name,
-        description: citiesById?.description,
-        tipicalFood: citiesById?.tipicalFood,
-        traditions: citiesById?.traditions,
       });
     }
   }, [citiesById]);
@@ -94,8 +89,7 @@ export const UpdateCity = () => {
     <>
       <div className="containerProfile">
         <div className="form-wrap formProfile">
-          <h1>Actualiza la ciudad ♻</h1>
-          <p>Introduce los nuevos datos de la ciudad</p>
+          <h1>Eliminar ciudad </h1>
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
               <div className="user_container form-group">
@@ -105,16 +99,14 @@ export const UpdateCity = () => {
                   name="country"
                   {...register("country", { required: true })}
                 >
-                  <option value="">Select a country</option>
+                  <option value="">Selecciona el país</option>
                   {countries.map((country) => (
                     <option key={country._id} value={country._id}>
                       {country.name}
                     </option>
                   ))}
                 </select>
-                <label htmlFor="country" className="custom-placeholder">
-                  Country
-                </label>
+                <label htmlFor="country" className="custom-placeholder"></label>
               </div>
 
               {selectedCountry && (
@@ -128,44 +120,15 @@ export const UpdateCity = () => {
                       setIdCity(e.target.value);
                     }}
                   >
-                    <option value="">Select a city</option>
+                    <option value="">Selecciona la ciudad</option>
                     {cities.map((city) => (
                       <option key={city._id} value={city._id}>
                         {city.name}
                       </option>
                     ))}
                   </select>
-                  <label htmlFor="city" className="custom-placeholder">
-                    City
-                  </label>
                 </div>
               )}
-              <label htmlFor="custom-input" className="custom-placeholder">
-                Nombre de la ciudad
-              </label>
-              <input
-                className="input_user"
-                type="text"
-                id="name"
-                name="name"
-                autoComplete="false"
-                defaultValue={defaultData?.name}
-                {...register("name")}
-              />
-            </div>
-
-            <div className="description_container form-group">
-              <label htmlFor="description" className="custom-placeholder">
-                Descripción
-              </label>
-              <input
-                className="input_user"
-                type="text"
-                id="description"
-                name="description"
-                defaultValue={defaultData?.description}
-                {...register("description")}
-              />
             </div>
 
             <Uploadfile />
@@ -175,9 +138,9 @@ export const UpdateCity = () => {
                 className="btn"
                 type="submit"
                 disabled={send}
-                style={{ background: send ? "#49c1a388" : "#FEB0CD" }}
+                style={{ background: send ? "#49c1a388" : "#49c1a2" }}
               >
-                ACTUALIZA LOS DATOS
+                ELIMINAR
               </button>
             </div>
           </form>

@@ -6,7 +6,7 @@ import { useAuth } from "../context/authContext";
 export const NavProfile = () => {
   const { setUser, setDeleteUser } = useAuth();
   return (
-    <div className="containerNavProfile">
+    <div className="Profile">
       <Link to="/ajustes/changePassword">
         <img
           src="https://res.cloudinary.com/dq186ej4c/image/upload/v1686125399/pngwing.com_npd5sa.png"

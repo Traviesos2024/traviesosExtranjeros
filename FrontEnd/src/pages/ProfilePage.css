@@ -1,5 +1,5 @@
 .containerNavProfile {
-  background-color: #2f7a67;
+  background-color: #ffffff;
   height: 12vh;
   display: flex;
   justify-content: center;
@@ -24,58 +24,3 @@
   border-radius: 50%;
 }
 
-
-/* .container {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #6d71e5ff;
-}
-
-form {
-  display: grid;
-  gap: 15px;
-}
-
-label {
-  font-size: 16px;
-  color: #8a7e72ff;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="file"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #b0d8d6ff;
-  border-radius: 6px;
-  font-size: 16px;
-}
-
-input[type="file"] {
-  padding: 7px;
-}
-
-button[type="submit"] {
-  background-color: #e7cb57ff;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 12px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button[type="submit"]:hover {
-  background-color: #b0d8d6ff;
-} */

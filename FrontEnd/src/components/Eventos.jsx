@@ -6,7 +6,7 @@ export const Eventos = ({ name, src, date, item }) => {
   return (
     <Link to={`/events/${item._id}`}>
       <figure>
-        <img src={src} alt={name} width={350} height={200} />
+        <img className= "cardEventos"src={src} alt={name} width={350} height={200} />
         <p>Evento: {name}</p>
         <p>Fecha: {new Date(date).toLocaleString()}</p>
       </figure>

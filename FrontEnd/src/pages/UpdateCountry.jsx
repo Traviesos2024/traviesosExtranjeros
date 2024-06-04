@@ -3,7 +3,7 @@ import "./FormProfile.css";
 import { Uploadfile } from "../components";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2/dist/sweetalert2.all.js";
-import { useErrorCountryDetalle} from "../hooks";
+import { useErrorCountryDetalle } from "../hooks";
 import { Navigate, useParams } from "react-router-dom";
 import { countryById, update } from "../services/country.service";
 import { fetchCountries } from "../services/user.service";
@@ -17,18 +17,15 @@ export const UpdateCountry = () => {
   const [countries, setCountries] = useState([]);
   const [idCountry, setIdCountry] = useState(null);
 
-  const  [defaultData, setDefaultData] = useState(null);
-
-
-  
+  const [defaultData, setDefaultData] = useState(null);
 
   const formSubmit = (formData) => {
     console.log("formData", formData);
     Swal.fire({
-      title: "¿Estás seguro de que quieres actualizar los datos?",
+      title: "¿Estás segur@ de que quieres actualizar los datos?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: "rgb(73, 193, 162)",
+      confirmButtonColor: "rgb(255, 177, 205)",
       cancelButtonColor: "#d33",
       confirmButtonText: "YES",
     }).then(async (result) => {
@@ -41,10 +38,9 @@ export const UpdateCountry = () => {
             ...formData,
             image: inputFile[0],
           };
-
         }
 
-        delete  customFormData.country
+        delete customFormData.country;
 
         setSend(true);
         setRes(await update(idCountry, customFormData));
@@ -52,8 +48,6 @@ export const UpdateCountry = () => {
       }
     });
   };
-
-  
 
   useEffect(() => {
     res?.status == 200 && setOk(true);
@@ -69,33 +63,25 @@ export const UpdateCountry = () => {
   }, []);
 
   useEffect(() => {
-
     const fetchCounty = async () => {
-    
       const response = await countryById(idCountry);
       response?.status == 200 && setCountrieById(response.data);
       setResCountrie(response);
     };
-    
 
     idCountry != null && fetchCounty();
-    
-  }, [idCountry])
-
+  }, [idCountry]);
 
   useEffect(() => {
-
-    if (countryById != null){
+    if (countryById != null) {
       setDefaultData({
-    name: countrieById?.name,
-    description:countrieById?.description,
-    tipicalFood: countrieById?.tipicalFood,
-    traditions:countrieById?.traditions,
-  })
+        name: countrieById?.name,
+        description: countrieById?.description,
+        tipicalFood: countrieById?.tipicalFood,
+        traditions: countrieById?.traditions,
+      });
     }
-  }, [countrieById])
-  
-  
+  }, [countrieById]);
 
   if (ok) {
     return <Navigate to="/country" />;
@@ -109,26 +95,27 @@ export const UpdateCountry = () => {
           <p>Introduce los nuevos datos del país</p>
           <form onSubmit={handleSubmit(formSubmit)}>
             <div className="user_container form-group">
-            <div className="user_container form-group">
-              <select
-                className="input_user"
-                id="country"
-                name="country"
-                
-                {...register("country", { required: true })}
-                onInput={(e)=>{setIdCountry(e.target.value)}}
-              >
-                <option value="">Select a country</option>
-                {countries.map((country) => (
-                  <option key={country._id} value={country._id}>
-                    {country.name}
-                  </option>
-                ))}
-              </select>
-              <label htmlFor="country" className="custom-placeholder">
-                Country
-              </label>
-            </div>
+              <div className="user_container form-group">
+                <select
+                  className="input_user"
+                  id="country"
+                  name="country"
+                  {...register("country", { required: true })}
+                  onInput={(e) => {
+                    setIdCountry(e.target.value);
+                  }}
+                >
+                  <option value="">Select a country</option>
+                  {countries.map((country) => (
+                    <option key={country._id} value={country._id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+                <label htmlFor="country" className="custom-placeholder">
+                  Country
+                </label>
+              </div>
               <label htmlFor="custom-input" className="custom-placeholder">
                 Nombre del país
               </label>
@@ -138,7 +125,6 @@ export const UpdateCountry = () => {
                 id="name"
                 name="name"
                 autoComplete="false"
-              
                 defaultValue={defaultData?.name}
                 {...register("name")}
               />
@@ -158,7 +144,7 @@ export const UpdateCountry = () => {
               />
             </div>
             <div className="description_container form-group">
-            <label htmlFor="custom-input" className="custom-placeholder">
+              <label htmlFor="custom-input" className="custom-placeholder">
                 Comida típica
               </label>
               <input
@@ -171,8 +157,8 @@ export const UpdateCountry = () => {
                 {...register("tipicalFood")}
               />
             </div>
-            <div className="description_container form-group"> 
-             <label htmlFor="custom-input" className="custom-placeholder">
+            <div className="description_container form-group">
+              <label htmlFor="custom-input" className="custom-placeholder">
                 Tradiciones
               </label>
               <input
@@ -193,7 +179,7 @@ export const UpdateCountry = () => {
                 className="btn"
                 type="submit"
                 disabled={send}
-                style={{ background: send ? "#49c1a388" : "#49c1a2" }}
+                style={{ background: send ? "#49c1a388" : "#FEB0CD" }}
               >
                 ACTUALIZA LOS DATOS
               </button>
