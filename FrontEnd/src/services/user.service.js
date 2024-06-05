@@ -1,11 +1,13 @@
 import { updateToken } from "../utils";
-import { APITraviesos } from "./serviceApi.config";
+import { extraConfig } from "./serviceApi.config";
 import axios from "axios";
 
 
 //* ---------------------- REGISTER (registerWithRedirect)----------------------
 export const registerUser = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.post("/users/register", formData, {
+    
     headers: { "Content-Type": "multipart/form-data" },
   })
     .then((res) => res)
@@ -15,6 +17,7 @@ export const registerUser = async (formData) => {
 //* ------------------------------- SEND MAIL REDIRECT -------------------------
 //!no estoy segura si lleva o no formData, creo que no
 export const sendMailRedirect = async (id) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.post(`/users/register/sendMail/${id}`)
     .then((res) => res)
     .catch((error) => error);
@@ -23,6 +26,7 @@ export const sendMailRedirect = async (id) => {
 //*  ------------------------------- RESEND CODE -------------------------------
 
 export const resendCodeConfirmationUser = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.post("/users/resend", formData)
     .then((res) => res)
     .catch((error) => error);
@@ -31,6 +35,7 @@ export const resendCodeConfirmationUser = async (formData) => {
 //* ------------------------------- CHECK CODE ---------------------------------
 
 export const checkCodeConfirmationUser = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.post("/users/check", formData)
     .then((res) => res)
     .catch((error) => error);
@@ -39,6 +44,7 @@ export const checkCodeConfirmationUser = async (formData) => {
 //* -------------------------------- LOGIN -------------------------------------
 
 export const loginUserService = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.post("/users/login", formData)
     .then((res) => res)
     .catch((error) => error);
@@ -47,6 +53,7 @@ export const loginUserService = async (formData) => {
 //* -------------------------------- AUTOLOGIN ----------------------------------
 
 export const autologinUser = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.post("/users/login/autologin", formData)
     .then((res) => res)
     .catch((error) => error);
@@ -55,6 +62,7 @@ export const autologinUser = async (formData) => {
 //* ----------------CAMBIO CONTRASEÑA SIN TOKEN (changePassword)--------
 
 export const forgotPasswordUser = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.patch("/users/forgotpassword", formData)
     .then((res) => res)
     .catch((error) => error);
@@ -63,6 +71,7 @@ export const forgotPasswordUser = async (formData) => {
 //* ------------------------------- SEND PASSWORD -------------------------
 //!no estoy segura si lleva o no formData, creo que no
 export const sendPassword = async (id) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.patch(`/users/sendPassword/${id}`)
     .then((res) => res)
     .catch((error) => error);
@@ -71,6 +80,7 @@ export const sendPassword = async (id) => {
 //* -------------CAMBIO CONTRASEÑA CUANDO ESTAS LOGUEADO (modifyPassword)----
 
 export const changePasswordUserToken = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.patch("/users/changepassword", formData, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -83,6 +93,7 @@ export const changePasswordUserToken = async (formData) => {
 //* ------------------------------ UPDATE USER -----------------------
 
 export const updateUser = async (formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.patch("/users/update/update", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -96,6 +107,7 @@ export const updateUser = async (formData) => {
 // ----------------------------------GET ALL------------------------
 
 export const getAll = async () => {
+  const APITraviesos = extraConfig();
   return APITraviesos.get(`/users/`)
     .then((res) => res)
     .catch((error) => error);
@@ -104,6 +116,7 @@ export const getAll = async () => {
 // -----------------------------------byId------------------------
 
 export const byId = async (id) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.get(`/users/finById/${id}`)
     .then((res) => res)
     .catch((error) => error);
@@ -112,6 +125,7 @@ export const byId = async (id) => {
 // --------------------------------getByName------------------------
 
 export const byName = async (name) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.get(`/users/finByName/${name}`)
     .then((res) => res)
     .catch((error) => error);
@@ -120,6 +134,7 @@ export const byName = async (name) => {
 // --------------------------------byGender------------------------
 
 export const byGender = async (gender) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.get(`/users/finByGender/${gender}`)
     .then((res) => res)
     .catch((error) => error);
@@ -128,6 +143,7 @@ export const byGender = async (gender) => {
 //* ------------------------------followUserToggle------------------
 
 export const followUserToggle = async (idUserSeQuiereSeguir) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.patch(`/users/follow/${idUserSeQuiereSeguir}`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -140,6 +156,7 @@ export const followUserToggle = async (idUserSeQuiereSeguir) => {
 // --------------------------------deleteMessageDeleteUser------------------------
 
 export const deleteMessageDeleteUser = async (arrayIdMessages) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.delete(`/users/redirect/message/${arrayIdMessages}`)
     .then((res) => res)
     .catch((error) => error);
@@ -148,6 +165,7 @@ export const deleteMessageDeleteUser = async (arrayIdMessages) => {
 //* ------------------------------------BORRADO DEL USUARIO----------------------
 
 export const deleteUserService = async () => {
+  const APITraviesos = extraConfig();
   return APITraviesos.delete("/users/", {
     headers: {
       Authorization: `Bearer ${updateToken()}`,

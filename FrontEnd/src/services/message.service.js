@@ -1,9 +1,10 @@
 import { updateToken } from "../utils";
-import { APITraviesos } from "./serviceApi.config";
+import {extraConfig } from "./serviceApi.config";
 
 // ----------------createMessage ------------------------
 
 export const createMessage = async (idRecipient, formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.post(`/messages/${idRecipient}`, formData, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -16,6 +17,7 @@ export const createMessage = async (idRecipient, formData) => {
 // ----------------deleteMessage ------------------------
 
 export const deleteMessage = async (id) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.delete(`/messages/${id}`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -28,6 +30,7 @@ export const deleteMessage = async (id) => {
 // ----------------updateMessage ------------------------
 
 export const updateMessage = async (id, formData) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.patch(`/messages/${id}`, formData, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -40,6 +43,7 @@ export const updateMessage = async (id, formData) => {
 // ----------------getAllMessages ------------------------
 
 export const getAllMessages = async () => {
+  const APITraviesos = extraConfig();
   return APITraviesos.get(`/messages/get/all`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -52,6 +56,7 @@ export const getAllMessages = async () => {
 // ----------------getMessageById ------------------------
 
 export const getMessageById = async (id) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.get(`/messages/get/id/${id}`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -64,6 +69,7 @@ export const getMessageById = async (id) => {
 // ----------------getMessageByUserOwner ------------------------
 
 export const getMessageByUserOwner = async (idUserOwner) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.get(`/messages/get/${idUserOwner}`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
@@ -76,6 +82,7 @@ export const getMessageByUserOwner = async (idUserOwner) => {
 // ----------------toggleLikeMessage ------------------------
 
 export const toggleLikeMessage = async (idMessage) => {
+  const APITraviesos = extraConfig();
   return APITraviesos.patch(`/messages/like/${idMessage}`, {
     headers: {
       Authorization: `Bearer ${updateToken()}`,
