@@ -43,6 +43,7 @@
   border-radius: 70%;
   transition: transform 0.2s ease;
   margin-bottom: 1rem;
+  object-fit: scale-down;
 }
 
 /*Card footer*/
