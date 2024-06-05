@@ -61,7 +61,7 @@ export const AboutPage = () => {
           git={'https://github.com/BeatrizGF90'}
           linkedin={'https://es.linkedin.com/in/beatrizgonzalezfernandez90'}
           image={
-            'https://res.cloudinary.com/dqiudrruv/image/upload/v1717035511/world-travel-graphic-clipart-design-free-png_uybrql.png'
+            'https://res.cloudinary.com/dqiudrruv/image/upload/v1717575154/Fotos%20Integrantes%20del%20Equipo/Beatriz_skusph.jpg'
           }
         />
         <AboutCard
